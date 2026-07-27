@@ -1,0 +1,40 @@
+# ===========================================================================
+# NODE 2 (or 3, 4...): Spark Worker
+#
+# Deploy this on each worker machine.
+# 1. Build:  docker compose -f docker-compose.worker.yml build
+# 2. Start:  MASTER_IP=<node1-ip> docker compose -f docker-compose.worker.yml up
+#
+# Replace <node1-ip> with the IP address of the master node.
+# ===========================================================================
+
+services:
+  spark-worker:
+    build:
+      context: ..
+      dockerfile: Dockerfile.worker
+    container_name: spark-worker
+    hostname: spark-worker
+    ports:
+      - "8081:8081"     # Worker Web UI
+    command: >
+      bash -c "
+        echo 'Connecting to master at $${SPARK_MASTER_URL}...' &&
+        $$SPARK_HOME/sbin/start-worker.sh $${SPARK_MASTER_URL} \
+          -m $${SPARK_WORKER_MEMORY} \
+          -c $${SPARK_WORKER_CORES} \
+          --webui-port 8081 &&
+        echo 'Worker connected!' &&
+        tail -f $$SPARK_HOME/logs/*
+      "
+    environment:
+      - SPARK_NO_DAEMONIZE=1
+      # Set MASTER_IP env var when running: MASTER_IP=192.168.1.100 docker compose up
+      - SPARK_MASTER_URL=spark://${MASTER_IP:-localhost}:7077
+      - SPARK_WORKER_MEMORY=4g
+      - SPARK_WORKER_CORES=4
+    deploy:
+      resources:
+        limits:
+          cpus: "4"
+          memory: 6g

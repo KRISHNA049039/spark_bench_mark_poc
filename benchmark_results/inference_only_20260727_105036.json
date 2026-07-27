@@ -1,0 +1,72 @@
+[
+  {
+    "model": "resnet50",
+    "config": {
+      "type": "vision",
+      "description": "ResNet-50 (ImageNet pretrained)",
+      "input_size": [
+        3,
+        224,
+        224
+      ],
+      "num_classes": 1000
+    },
+    "modes": {
+      "torch_cpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 6.393938702000014,
+        "throughput_samples_per_sec": 31.27962423809917,
+        "avg_latency_ms": 31.96969351000007,
+        "p50_batch_latency_ms": 996.0848299997451,
+        "p95_batch_latency_ms": 1071.2096603001555,
+        "p99_batch_latency_ms": 1079.2074272601894,
+        "predictions_hash": "ccec10e211136db5",
+        "model_info": {
+          "name": "resnet50",
+          "description": "ResNet-50 (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 25557032,
+          "size_mb": 97.49234008789062
+        },
+        "resources": {
+          "memory_delta_mb": 132.63671875,
+          "gc_collections": 0
+        }
+      },
+      "torch_gpu": {
+        "error": "CUDA error: no kernel image is available for execution on the device\nCUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.\nFor debugging consider passing CUDA_LAUNCH_BLOCKING=1\nCompile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.\n"
+      },
+      "spark_cpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 10.207918846999746,
+        "throughput_samples_per_sec": 19.592632249303477,
+        "avg_latency_ms": 51.03959423499873,
+        "p50_batch_latency_ms": 2551.9797117499365,
+        "p95_batch_latency_ms": 2807.17768292493,
+        "p99_batch_latency_ms": 3062.375654099924,
+        "predictions_hash": "ccec10e211136db5",
+        "model_info": {
+          "name": "resnet50",
+          "description": "ResNet-50 (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 25557032,
+          "size_mb": 97.49234008789062
+        },
+        "num_partitions": 4,
+        "use_gpu": false
+      },
+      "spark_gpu": {
+        "error": "'throughput_samples_per_sec'"
+      }
+    },
+    "reproducibility": {
+      "all_match": true,
+      "hashes": {
+        "torch_cpu": "ccec10e211136db5",
+        "spark_cpu": "ccec10e211136db5"
+      }
+    }
+  }
+]

@@ -1,0 +1,246 @@
+{
+  "mode": "torch_cpu",
+  "system_info": {
+    "platform": {
+      "cpu_count_physical": 20,
+      "cpu_count_logical": 20,
+      "total_memory_gb": 15.35,
+      "available_memory_gb": 13.72
+    },
+    "torch": {
+      "version": "2.3.0+cpu",
+      "num_threads": 20,
+      "num_interop_threads": 10
+    },
+    "device": "cpu",
+    "mode": "torch_cpu"
+  },
+  "structured": {
+    "mode": "torch_cpu",
+    "data_type": "structured",
+    "train_losses": [
+      1.3784380044937135,
+      1.058534155845642,
+      0.969209312915802,
+      0.904979299068451,
+      0.8567879962921142
+    ],
+    "train_accuracies": [
+      0.449375,
+      0.605125,
+      0.64425,
+      0.667625,
+      0.6935
+    ],
+    "test_loss": 0.6196490535736084,
+    "test_accuracy": 0.796,
+    "predictions_hash": "162bf5fbf52d3c3e",
+    "epoch_times": [
+      19.96101339200004,
+      33.79856922199997,
+      32.300730235999936,
+      17.30603735800014,
+      31.591357176999963
+    ],
+    "total_train_time": 134.95775098400009,
+    "total_inference_time": 1.5001143950000824,
+    "resource_metrics": {
+      "model_info": {
+        "total_params": 13637,
+        "trainable_params": 13637,
+        "non_trainable_params": 0,
+        "model_size_mb": 0.052
+      },
+      "cpu": {
+        "num_threads_configured": 20,
+        "user_time_sec": 534.5400000000001,
+        "system_time_sec": 2.96,
+        "cpu_percent": 0.0
+      },
+      "memory": {
+        "before": {
+          "rss_mb": 268.640625,
+          "vms_mb": 2441.1015625,
+          "percent": 1.708620269008562
+        },
+        "after": {
+          "rss_mb": 328.91015625,
+          "vms_mb": 3855.40234375,
+          "percent": 2.0919492710811074
+        },
+        "delta_rss_mb": 60.26953125,
+        "delta_vms_mb": 1414.30078125,
+        "peak_rss_mb": 328.91015625
+      },
+      "gc": {
+        "before": {
+          "collections": [
+            380,
+            34,
+            4
+          ],
+          "total_collected": 1127,
+          "uncollectable": 0,
+          "gc_enabled": true,
+          "thresholds": [
+            700,
+            10,
+            10
+          ]
+        },
+        "after": {
+          "collections": [
+            555,
+            49,
+            7
+          ],
+          "total_collected": 1691,
+          "uncollectable": 0,
+          "gc_enabled": true,
+          "thresholds": [
+            700,
+            10,
+            10
+          ]
+        },
+        "collections_gen0": 175,
+        "collections_gen1": 15,
+        "collections_gen2": 3,
+        "objects_collected": 564
+      },
+      "io": {
+        "read_bytes": 102441,
+        "write_bytes": 81920,
+        "read_count": 1513,
+        "write_count": 3
+      },
+      "timing": {
+        "total_train_time": 134.95775098400009,
+        "total_inference_time": 1.5001143950000824,
+        "avg_epoch_time": 26.99154147700001,
+        "epoch_times": [
+          19.96101339200004,
+          33.79856922199997,
+          32.300730235999936,
+          17.30603735800014,
+          31.591357176999963
+        ]
+      }
+    },
+    "model_state_hash": "514d15c567bddc808dcb237e34242377"
+  },
+  "unstructured": {
+    "mode": "torch_cpu",
+    "data_type": "unstructured",
+    "train_losses": [
+      0.40463848134502767,
+      0.0036004455713555218,
+      0.0008560307521838695,
+      0.0005038654210511595,
+      0.00045814261597115546
+    ],
+    "train_accuracies": [
+      0.87,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "test_loss": 5.347300044377334e-05,
+    "test_accuracy": 1.0,
+    "predictions_hash": "2e819ff4213b56e8",
+    "epoch_times": [
+      39.382778643000165,
+      30.594849120999925,
+      29.709081449999985,
+      35.092682549999836,
+      32.991642128999956
+    ],
+    "total_train_time": 167.7710721589999,
+    "total_inference_time": 2.213475019000043,
+    "resource_metrics": {
+      "model_info": {
+        "total_params": 620234,
+        "trainable_params": 620234,
+        "non_trainable_params": 0,
+        "model_size_mb": 2.366
+      },
+      "cpu": {
+        "num_threads_configured": 20,
+        "user_time_sec": 644.18,
+        "system_time_sec": 24.78,
+        "cpu_percent": 0.0
+      },
+      "memory": {
+        "before": {
+          "rss_mb": 337.39453125,
+          "vms_mb": 3863.48828125,
+          "percent": 2.145911977186595
+        },
+        "after": {
+          "rss_mb": 397.7265625,
+          "vms_mb": 3932.66015625,
+          "percent": 2.529638494589568
+        },
+        "delta_rss_mb": 60.33203125,
+        "delta_vms_mb": 69.171875,
+        "peak_rss_mb": 397.7265625
+      },
+      "gc": {
+        "before": {
+          "collections": [
+            555,
+            49,
+            8
+          ],
+          "total_collected": 1691,
+          "uncollectable": 0,
+          "gc_enabled": true,
+          "thresholds": [
+            700,
+            10,
+            10
+          ]
+        },
+        "after": {
+          "collections": [
+            559,
+            49,
+            10
+          ],
+          "total_collected": 1691,
+          "uncollectable": 0,
+          "gc_enabled": true,
+          "thresholds": [
+            700,
+            10,
+            10
+          ]
+        },
+        "collections_gen0": 4,
+        "collections_gen1": 0,
+        "collections_gen2": 2,
+        "objects_collected": 0
+      },
+      "io": {
+        "read_bytes": 0,
+        "write_bytes": 0,
+        "read_count": 18,
+        "write_count": 0
+      },
+      "timing": {
+        "total_train_time": 167.7710721589999,
+        "total_inference_time": 2.213475019000043,
+        "avg_epoch_time": 33.554206778599976,
+        "epoch_times": [
+          39.382778643000165,
+          30.594849120999925,
+          29.709081449999985,
+          35.092682549999836,
+          32.991642128999956
+        ]
+      }
+    },
+    "model_state_hash": "96df0fe325e794b9d545ad44a5a3e896"
+  }
+}

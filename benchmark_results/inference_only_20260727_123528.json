@@ -1,0 +1,544 @@
+[
+  {
+    "model": "resnet50",
+    "config": {
+      "type": "vision",
+      "description": "ResNet-50 (ImageNet pretrained)",
+      "input_size": [
+        3,
+        224,
+        224
+      ],
+      "num_classes": 1000
+    },
+    "modes": {
+      "torch_cpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 6.257626298000105,
+        "throughput_samples_per_sec": 31.961000941190537,
+        "avg_latency_ms": 31.288131490000524,
+        "p50_batch_latency_ms": 1003.5298509999393,
+        "p95_batch_latency_ms": 1080.7456129999082,
+        "p99_batch_latency_ms": 1092.5598049998916,
+        "predictions_hash": "ccec10e211136db5",
+        "model_info": {
+          "name": "resnet50",
+          "description": "ResNet-50 (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 25557032,
+          "size_mb": 97.49234008789062
+        },
+        "resources": {
+          "memory_delta_mb": 259.07421875,
+          "gc_collections": 0
+        }
+      },
+      "torch_gpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 0.3099385110001549,
+        "throughput_samples_per_sec": 645.2892844926265,
+        "avg_latency_ms": 1.5496925550007745,
+        "p50_batch_latency_ms": 39.902979000089545,
+        "p95_batch_latency_ms": 50.603772399972506,
+        "p99_batch_latency_ms": 54.233487280016554,
+        "predictions_hash": "ccec10e211136db5",
+        "model_info": {
+          "name": "resnet50",
+          "description": "ResNet-50 (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 25557032,
+          "size_mb": 97.49234008789062
+        },
+        "resources": {
+          "memory_delta_mb": 136.2578125,
+          "gc_collections": 0,
+          "gpu_peak_memory_mb": 466.84716796875,
+          "gpu_name": "NVIDIA GeForce RTX 5060"
+        }
+      },
+      "spark_cpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 10.093808599000113,
+        "throughput_samples_per_sec": 19.814126455678178,
+        "avg_latency_ms": 50.469042995000564,
+        "p50_batch_latency_ms": 2523.452149750028,
+        "p95_batch_latency_ms": 2775.797364725031,
+        "p99_batch_latency_ms": 3028.142579700034,
+        "predictions_hash": "ccec10e211136db5",
+        "model_info": {
+          "name": "resnet50",
+          "description": "ResNet-50 (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 25557032,
+          "size_mb": 97.49234008789062
+        },
+        "num_partitions": 4,
+        "use_gpu": false
+      },
+      "spark_gpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 3.8645718610000586,
+        "throughput_samples_per_sec": 51.75217519392815,
+        "avg_latency_ms": 19.322859305000293,
+        "p50_batch_latency_ms": 966.1429652500146,
+        "p95_batch_latency_ms": 1062.757261775016,
+        "p99_batch_latency_ms": 1159.3715583000176,
+        "predictions_hash": "ccec10e211136db5",
+        "model_info": {
+          "name": "resnet50",
+          "description": "ResNet-50 (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 25557032,
+          "size_mb": 97.49234008789062
+        },
+        "num_partitions": 4,
+        "use_gpu": true
+      }
+    },
+    "reproducibility": {
+      "all_match": true,
+      "hashes": {
+        "torch_cpu": "ccec10e211136db5",
+        "torch_gpu": "ccec10e211136db5",
+        "spark_cpu": "ccec10e211136db5",
+        "spark_gpu": "ccec10e211136db5"
+      }
+    }
+  },
+  {
+    "model": "mobilenet_v3",
+    "config": {
+      "type": "vision",
+      "description": "MobileNetV3-Small (ImageNet pretrained)",
+      "input_size": [
+        3,
+        224,
+        224
+      ],
+      "num_classes": 1000
+    },
+    "modes": {
+      "torch_cpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 3.2194839920000504,
+        "throughput_samples_per_sec": 62.12175631156139,
+        "avg_latency_ms": 16.097419960000252,
+        "p50_batch_latency_ms": 397.21244400016076,
+        "p95_batch_latency_ms": 817.5994814001114,
+        "p99_batch_latency_ms": 826.1656938801115,
+        "predictions_hash": "a1e49e9f0d1d8c81",
+        "model_info": {
+          "name": "mobilenet_v3",
+          "description": "MobileNetV3-Small (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 2542856,
+          "size_mb": 9.700225830078125
+        },
+        "resources": {
+          "memory_delta_mb": 2.2421875,
+          "gc_collections": 0
+        }
+      },
+      "torch_gpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 0.07429271899991363,
+        "throughput_samples_per_sec": 2692.0538471641144,
+        "avg_latency_ms": 0.37146359499956816,
+        "p50_batch_latency_ms": 6.003292000059446,
+        "p95_batch_latency_ms": 17.57285489989043,
+        "p99_batch_latency_ms": 21.4674253798239,
+        "predictions_hash": "f2ebbdfd18873cf0",
+        "model_info": {
+          "name": "mobilenet_v3",
+          "description": "MobileNetV3-Small (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 2542856,
+          "size_mb": 9.700225830078125
+        },
+        "resources": {
+          "memory_delta_mb": 5.11328125,
+          "gc_collections": 0,
+          "gpu_peak_memory_mb": 122.11181640625,
+          "gpu_name": "NVIDIA GeForce RTX 5060"
+        }
+      },
+      "spark_cpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 3.318839132999983,
+        "throughput_samples_per_sec": 60.26203500234581,
+        "avg_latency_ms": 16.594195664999916,
+        "p50_batch_latency_ms": 829.7097832499958,
+        "p95_batch_latency_ms": 912.6807615749955,
+        "p99_batch_latency_ms": 995.6517398999949,
+        "predictions_hash": "a1e49e9f0d1d8c81",
+        "model_info": {
+          "name": "mobilenet_v3",
+          "description": "MobileNetV3-Small (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 2542856,
+          "size_mb": 9.700225830078125
+        },
+        "num_partitions": 4,
+        "use_gpu": false
+      },
+      "spark_gpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 3.3470067430000654,
+        "throughput_samples_per_sec": 59.7548840970459,
+        "avg_latency_ms": 16.735033715000327,
+        "p50_batch_latency_ms": 836.7516857500163,
+        "p95_batch_latency_ms": 920.4268543250181,
+        "p99_batch_latency_ms": 1004.1020229000196,
+        "predictions_hash": "f2ebbdfd18873cf0",
+        "model_info": {
+          "name": "mobilenet_v3",
+          "description": "MobileNetV3-Small (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 2542856,
+          "size_mb": 9.700225830078125
+        },
+        "num_partitions": 4,
+        "use_gpu": true
+      }
+    },
+    "reproducibility": {
+      "all_match": false,
+      "hashes": {
+        "torch_cpu": "a1e49e9f0d1d8c81",
+        "torch_gpu": "f2ebbdfd18873cf0",
+        "spark_cpu": "a1e49e9f0d1d8c81",
+        "spark_gpu": "f2ebbdfd18873cf0"
+      }
+    }
+  },
+  {
+    "model": "efficientnet_b0",
+    "config": {
+      "type": "vision",
+      "description": "EfficientNet-B0 (ImageNet pretrained)",
+      "input_size": [
+        3,
+        224,
+        224
+      ],
+      "num_classes": 1000
+    },
+    "modes": {
+      "torch_cpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 5.032501161000027,
+        "throughput_samples_per_sec": 39.74166991752015,
+        "avg_latency_ms": 25.162505805000137,
+        "p50_batch_latency_ms": 544.6503250000205,
+        "p95_batch_latency_ms": 1462.1645013999337,
+        "p99_batch_latency_ms": 1681.72547067998,
+        "predictions_hash": "162be029d69f8ca2",
+        "model_info": {
+          "name": "efficientnet_b0",
+          "description": "EfficientNet-B0 (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 5288548,
+          "size_mb": 20.174209594726562
+        },
+        "resources": {
+          "memory_delta_mb": 85.9765625,
+          "gc_collections": 0
+        }
+      },
+      "torch_gpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 0.15526098100008312,
+        "throughput_samples_per_sec": 1288.1536540072032,
+        "avg_latency_ms": 0.7763049050004156,
+        "p50_batch_latency_ms": 17.72616600010224,
+        "p95_batch_latency_ms": 20.428359400034424,
+        "p99_batch_latency_ms": 21.30149668004833,
+        "predictions_hash": "6632077460bd252e",
+        "model_info": {
+          "name": "efficientnet_b0",
+          "description": "EfficientNet-B0 (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 5288548,
+          "size_mb": 20.174209594726562
+        },
+        "resources": {
+          "memory_delta_mb": 1.65625,
+          "gc_collections": 0,
+          "gpu_peak_memory_mb": 391.52978515625,
+          "gpu_name": "NVIDIA GeForce RTX 5060"
+        }
+      },
+      "spark_cpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 5.875343129999919,
+        "throughput_samples_per_sec": 34.04056504866683,
+        "avg_latency_ms": 29.376715649999596,
+        "p50_batch_latency_ms": 1468.8357824999798,
+        "p95_batch_latency_ms": 1615.719360749978,
+        "p99_batch_latency_ms": 1762.6029389999758,
+        "predictions_hash": "162be029d69f8ca2",
+        "model_info": {
+          "name": "efficientnet_b0",
+          "description": "EfficientNet-B0 (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 5288548,
+          "size_mb": 20.174209594726562
+        },
+        "num_partitions": 4,
+        "use_gpu": false
+      },
+      "spark_gpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 3.4683821109999826,
+        "throughput_samples_per_sec": 57.66377336732867,
+        "avg_latency_ms": 17.341910554999913,
+        "p50_batch_latency_ms": 867.0955277499957,
+        "p95_batch_latency_ms": 953.8050805249953,
+        "p99_batch_latency_ms": 1040.5146332999948,
+        "predictions_hash": "6632077460bd252e",
+        "model_info": {
+          "name": "efficientnet_b0",
+          "description": "EfficientNet-B0 (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 5288548,
+          "size_mb": 20.174209594726562
+        },
+        "num_partitions": 4,
+        "use_gpu": true
+      }
+    },
+    "reproducibility": {
+      "all_match": false,
+      "hashes": {
+        "torch_cpu": "162be029d69f8ca2",
+        "torch_gpu": "6632077460bd252e",
+        "spark_cpu": "162be029d69f8ca2",
+        "spark_gpu": "6632077460bd252e"
+      }
+    }
+  },
+  {
+    "model": "distilbert",
+    "config": {
+      "type": "nlp",
+      "description": "DistilBERT (HuggingFace, sentiment classification)",
+      "max_seq_length": 128,
+      "num_classes": 2
+    },
+    "modes": {
+      "torch_cpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 4.406927314999848,
+        "throughput_samples_per_sec": 45.383094774279684,
+        "avg_latency_ms": 22.03463657499924,
+        "p50_batch_latency_ms": 641.8155940000361,
+        "p95_batch_latency_ms": 916.7042500999513,
+        "p99_batch_latency_ms": 952.6680756199447,
+        "predictions_hash": "33b41c39440e7682",
+        "model_info": {
+          "name": "distilbert",
+          "description": "DistilBERT (HuggingFace, sentiment classification)",
+          "type": "nlp",
+          "total_params": 66660098,
+          "size_mb": 254.28809356689453
+        },
+        "resources": {
+          "memory_delta_mb": 83.078125,
+          "gc_collections": 0
+        }
+      },
+      "torch_gpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 0.27997663399992234,
+        "throughput_samples_per_sec": 714.3453264034008,
+        "avg_latency_ms": 1.3998831699996117,
+        "p50_batch_latency_ms": 41.845947999945565,
+        "p95_batch_latency_ms": 46.84733139995387,
+        "p99_batch_latency_ms": 47.15604387993608,
+        "predictions_hash": "33b41c39440e7682",
+        "model_info": {
+          "name": "distilbert",
+          "description": "DistilBERT (HuggingFace, sentiment classification)",
+          "type": "nlp",
+          "total_params": 66660098,
+          "size_mb": 254.28809356689453
+        },
+        "resources": {
+          "memory_delta_mb": 3.91796875,
+          "gc_collections": 0,
+          "gpu_peak_memory_mb": 383.65185546875,
+          "gpu_name": "NVIDIA GeForce RTX 5060"
+        }
+      },
+      "spark_cpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 8.24323427399986,
+        "throughput_samples_per_sec": 24.262321481123465,
+        "avg_latency_ms": 41.2161713699993,
+        "p50_batch_latency_ms": 2060.808568499965,
+        "p95_batch_latency_ms": 2266.8894253499616,
+        "p99_batch_latency_ms": 2472.970282199958,
+        "predictions_hash": "33b41c39440e7682",
+        "model_info": {
+          "name": "distilbert",
+          "description": "DistilBERT (HuggingFace, sentiment classification)",
+          "type": "nlp",
+          "total_params": 66660098,
+          "size_mb": 254.28809356689453
+        },
+        "num_partitions": 4,
+        "use_gpu": false
+      },
+      "spark_gpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 4.231095433999826,
+        "throughput_samples_per_sec": 47.269082704412526,
+        "avg_latency_ms": 21.15547716999913,
+        "p50_batch_latency_ms": 1057.7738584999565,
+        "p95_batch_latency_ms": 1163.5512443499522,
+        "p99_batch_latency_ms": 1269.3286301999478,
+        "predictions_hash": "33b41c39440e7682",
+        "model_info": {
+          "name": "distilbert",
+          "description": "DistilBERT (HuggingFace, sentiment classification)",
+          "type": "nlp",
+          "total_params": 66660098,
+          "size_mb": 254.28809356689453
+        },
+        "num_partitions": 4,
+        "use_gpu": true
+      }
+    },
+    "reproducibility": {
+      "all_match": true,
+      "hashes": {
+        "torch_cpu": "33b41c39440e7682",
+        "torch_gpu": "33b41c39440e7682",
+        "spark_cpu": "33b41c39440e7682",
+        "spark_gpu": "33b41c39440e7682"
+      }
+    }
+  },
+  {
+    "model": "tabular_deep",
+    "config": {
+      "type": "tabular",
+      "description": "Deep tabular model with attention (production-grade)",
+      "num_features": 20,
+      "num_classes": 5
+    },
+    "modes": {
+      "torch_cpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 0.7847170000000006,
+        "throughput_samples_per_sec": 254.8689527562164,
+        "avg_latency_ms": 3.9235850000000028,
+        "p50_batch_latency_ms": 109.73250900019593,
+        "p95_batch_latency_ms": 164.82854119992678,
+        "p99_batch_latency_ms": 178.14326263991003,
+        "predictions_hash": "a129b369cc852515",
+        "model_info": {
+          "name": "tabular_deep",
+          "description": "Deep tabular model with attention (production-grade)",
+          "type": "tabular",
+          "total_params": 161605,
+          "size_mb": 0.6164741516113281
+        },
+        "resources": {
+          "memory_delta_mb": 0.40625,
+          "gc_collections": 1
+        }
+      },
+      "torch_gpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 0.015696827000056146,
+        "throughput_samples_per_sec": 12741.428570199863,
+        "avg_latency_ms": 0.07848413500028073,
+        "p50_batch_latency_ms": 1.76486999998815,
+        "p95_batch_latency_ms": 3.216640800110326,
+        "p99_batch_latency_ms": 3.402094560096884,
+        "predictions_hash": "a129b369cc852515",
+        "model_info": {
+          "name": "tabular_deep",
+          "description": "Deep tabular model with attention (production-grade)",
+          "type": "tabular",
+          "total_params": 161605,
+          "size_mb": 0.6164741516113281
+        },
+        "resources": {
+          "memory_delta_mb": 7.15234375,
+          "gc_collections": 0,
+          "gpu_peak_memory_mb": 34.560546875,
+          "gpu_name": "NVIDIA GeForce RTX 5060"
+        }
+      },
+      "spark_cpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 2.6075568910000584,
+        "throughput_samples_per_sec": 76.70014820780972,
+        "avg_latency_ms": 13.037784455000292,
+        "p50_batch_latency_ms": 651.8892227500146,
+        "p95_batch_latency_ms": 717.0781450250162,
+        "p99_batch_latency_ms": 782.2670673000175,
+        "predictions_hash": "a129b369cc852515",
+        "model_info": {
+          "name": "tabular_deep",
+          "description": "Deep tabular model with attention (production-grade)",
+          "type": "tabular",
+          "total_params": 161605,
+          "size_mb": 0.6164741516113281
+        },
+        "num_partitions": 4,
+        "use_gpu": false
+      },
+      "spark_gpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 3.133259000999942,
+        "throughput_samples_per_sec": 63.83130150944189,
+        "avg_latency_ms": 15.666295004999709,
+        "p50_batch_latency_ms": 783.3147502499855,
+        "p95_batch_latency_ms": 861.6462252749842,
+        "p99_batch_latency_ms": 939.9777002999826,
+        "predictions_hash": "a129b369cc852515",
+        "model_info": {
+          "name": "tabular_deep",
+          "description": "Deep tabular model with attention (production-grade)",
+          "type": "tabular",
+          "total_params": 161605,
+          "size_mb": 0.6164741516113281
+        },
+        "num_partitions": 4,
+        "use_gpu": true
+      }
+    },
+    "reproducibility": {
+      "all_match": true,
+      "hashes": {
+        "torch_cpu": "a129b369cc852515",
+        "torch_gpu": "a129b369cc852515",
+        "spark_cpu": "a129b369cc852515",
+        "spark_gpu": "a129b369cc852515"
+      }
+    }
+  }
+]

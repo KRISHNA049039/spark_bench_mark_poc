@@ -1,0 +1,112 @@
+[
+  {
+    "model": "resnet50",
+    "config": {
+      "type": "vision",
+      "description": "ResNet-50 (ImageNet pretrained)",
+      "input_size": [
+        3,
+        224,
+        224
+      ],
+      "num_classes": 1000
+    },
+    "modes": {
+      "torch_cpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 5.744617885999787,
+        "throughput_samples_per_sec": 34.81519640974209,
+        "avg_latency_ms": 28.723089429998936,
+        "p50_batch_latency_ms": 922.5547429998642,
+        "p95_batch_latency_ms": 1031.081201099914,
+        "p99_batch_latency_ms": 1049.3454754199047,
+        "predictions_hash": "ccec10e211136db5",
+        "model_info": {
+          "name": "resnet50",
+          "description": "ResNet-50 (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 25557032,
+          "size_mb": 97.49234008789062
+        },
+        "resources": {
+          "memory_delta_mb": 108.890625,
+          "gc_collections": 0
+        }
+      },
+      "torch_gpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 0.30457853500001875,
+        "throughput_samples_per_sec": 656.6450915524553,
+        "avg_latency_ms": 1.5228926750000937,
+        "p50_batch_latency_ms": 39.9175689999538,
+        "p95_batch_latency_ms": 40.31013830012853,
+        "p99_batch_latency_ms": 40.420554860111224,
+        "predictions_hash": "ccec10e211136db5",
+        "model_info": {
+          "name": "resnet50",
+          "description": "ResNet-50 (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 25557032,
+          "size_mb": 97.49234008789062
+        },
+        "resources": {
+          "memory_delta_mb": 271.80859375,
+          "gc_collections": 0,
+          "gpu_peak_memory_mb": 466.84716796875,
+          "gpu_name": "NVIDIA GeForce RTX 5060"
+        }
+      },
+      "spark_cpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 10.070237576999943,
+        "throughput_samples_per_sec": 19.86050462769545,
+        "avg_latency_ms": 50.35118788499972,
+        "p50_batch_latency_ms": 2517.559394249986,
+        "p95_batch_latency_ms": 2769.3153336749847,
+        "p99_batch_latency_ms": 3021.071273099983,
+        "predictions_hash": "ccec10e211136db5",
+        "model_info": {
+          "name": "resnet50",
+          "description": "ResNet-50 (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 25557032,
+          "size_mb": 97.49234008789062
+        },
+        "num_partitions": 4,
+        "use_gpu": false
+      },
+      "spark_gpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 3.9069642629999635,
+        "throughput_samples_per_sec": 51.19063972354586,
+        "avg_latency_ms": 19.534821314999817,
+        "p50_batch_latency_ms": 976.7410657499909,
+        "p95_batch_latency_ms": 1074.41517232499,
+        "p99_batch_latency_ms": 1172.089278899989,
+        "predictions_hash": "ccec10e211136db5",
+        "model_info": {
+          "name": "resnet50",
+          "description": "ResNet-50 (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 25557032,
+          "size_mb": 97.49234008789062
+        },
+        "num_partitions": 4,
+        "use_gpu": true
+      }
+    },
+    "reproducibility": {
+      "all_match": true,
+      "hashes": {
+        "torch_cpu": "ccec10e211136db5",
+        "torch_gpu": "ccec10e211136db5",
+        "spark_cpu": "ccec10e211136db5",
+        "spark_gpu": "ccec10e211136db5"
+      }
+    }
+  }
+]

@@ -1,0 +1,208 @@
+{
+  "mode": "spark_cpu",
+  "system_info": {
+    "platform": {
+      "cpu_count_physical": 20,
+      "cpu_count_logical": 20,
+      "total_memory_gb": 15.35,
+      "available_memory_gb": 13.54
+    },
+    "torch": {
+      "version": "2.3.0+cpu"
+    },
+    "spark": {
+      "version": "3.5.1",
+      "master": "local[*]",
+      "driver_memory": "2g",
+      "executor_memory": "2g",
+      "executor_cores": 2,
+      "num_executors": 2
+    },
+    "device": "cpu",
+    "mode": "spark_cpu"
+  },
+  "structured": {
+    "mode": "spark_cpu",
+    "data_type": "structured",
+    "train_losses": [
+      2.015291567802429,
+      1.9486975667476654,
+      1.8858725543022157,
+      1.8269699831008912,
+      1.7719133348464966
+    ],
+    "train_accuracies": [
+      0.20975,
+      0.219875,
+      0.23525,
+      0.249875,
+      0.268625
+    ],
+    "test_loss": 6.310093668937683,
+    "test_accuracy": 0.1955,
+    "predictions_hash": "737967fde1156dd4",
+    "epoch_times": [
+      25.826965372999894,
+      3.213353270000198,
+      3.3851764730000014,
+      3.304377989999921,
+      3.3066362659999413
+    ],
+    "total_train_time": 39.03657299199995,
+    "total_inference_time": 2.219911239000112,
+    "resource_metrics": {
+      "model_info": {
+        "total_params": 13637,
+        "trainable_params": 13637,
+        "non_trainable_params": 0,
+        "model_size_mb": 0.052
+      },
+      "driver": {
+        "cpu_user_time_sec": 7.330000000000155,
+        "cpu_system_time_sec": 0.14000000000000057,
+        "memory_before": {
+          "rss_mb": 369.29296875,
+          "vms_mb": 3896.140625,
+          "percent": 2.3487938639533597
+        },
+        "memory_after": {
+          "rss_mb": 370.453125,
+          "vms_mb": 3897.140625,
+          "percent": 2.356172742274414
+        },
+        "memory_delta_rss_mb": 1.16015625
+      },
+      "executor": {
+        "num_executors": 2,
+        "executor_cores": 2,
+        "executor_memory": "2g"
+      },
+      "spark": {
+        "app_id": "local-1785134079488",
+        "default_parallelism": 20,
+        "master": "local[*]",
+        "active_executors": -1,
+        "driver_memory_configured": "2g",
+        "executor_memory_configured": "2g",
+        "executor_cores_configured": 2
+      },
+      "gc": {
+        "collections_gen0": 5,
+        "collections_gen1": 0,
+        "collections_gen2": 1,
+        "objects_collected": 492
+      },
+      "io": {
+        "read_bytes": 0,
+        "write_bytes": 4141056,
+        "read_count": 45,
+        "write_count": 252
+      },
+      "timing": {
+        "total_train_time": 39.03657299199995,
+        "total_inference_time": 2.219911239000112,
+        "avg_epoch_time": 7.807301874399991,
+        "epoch_times": [
+          25.826965372999894,
+          3.213353270000198,
+          3.3851764730000014,
+          3.304377989999921,
+          3.3066362659999413
+        ]
+      }
+    },
+    "model_state_hash": "9ad9488f8b6d551532774d43e6e978fa"
+  },
+  "unstructured": {
+    "mode": "spark_cpu",
+    "data_type": "unstructured",
+    "train_losses": [
+      2.5202652621269226,
+      1.7184825503826142,
+      2.2496355426311494,
+      1.663230773806572,
+      1.3496141654253007
+    ],
+    "train_accuracies": [
+      0.061875,
+      0.40875,
+      0.29375,
+      0.536875,
+      0.6325
+    ],
+    "test_loss": 3.1522034645080566,
+    "test_accuracy": 0.1025,
+    "predictions_hash": "6844d4c1795b5180",
+    "epoch_times": [
+      7.477230670999916,
+      6.087829855000109,
+      5.496917166000003,
+      5.501547271999925,
+      6.714947062999727
+    ],
+    "total_train_time": 31.27852083499988,
+    "total_inference_time": 2.8105123810000805,
+    "resource_metrics": {
+      "model_info": {
+        "total_params": 620234,
+        "trainable_params": 620234,
+        "non_trainable_params": 0,
+        "model_size_mb": 2.366
+      },
+      "driver": {
+        "cpu_user_time_sec": 13.540000000000191,
+        "cpu_system_time_sec": 0.2699999999999996,
+        "memory_before": {
+          "rss_mb": 376.30859375,
+          "vms_mb": 3903.12109375,
+          "percent": 2.393414959793809
+        },
+        "memory_after": {
+          "rss_mb": 419.27734375,
+          "vms_mb": 3946.07421875,
+          "percent": 2.6667067494624845
+        },
+        "memory_delta_rss_mb": 42.96875
+      },
+      "executor": {
+        "num_executors": 2,
+        "executor_cores": 2,
+        "executor_memory": "2g"
+      },
+      "spark": {
+        "app_id": "local-1785134079488",
+        "default_parallelism": 20,
+        "master": "local[*]",
+        "active_executors": -1,
+        "driver_memory_configured": "2g",
+        "executor_memory_configured": "2g",
+        "executor_cores_configured": 2
+      },
+      "gc": {
+        "collections_gen0": 5,
+        "collections_gen1": 0,
+        "collections_gen2": 1,
+        "objects_collected": 492
+      },
+      "io": {
+        "read_bytes": 0,
+        "write_bytes": 41447424,
+        "read_count": 18,
+        "write_count": 264
+      },
+      "timing": {
+        "total_train_time": 31.27852083499988,
+        "total_inference_time": 2.8105123810000805,
+        "avg_epoch_time": 6.255694405399936,
+        "epoch_times": [
+          7.477230670999916,
+          6.087829855000109,
+          5.496917166000003,
+          5.501547271999925,
+          6.714947062999727
+        ]
+      }
+    },
+    "model_state_hash": "46154a4ff45d8e2b6fdc79e22a39bc8a"
+  }
+}

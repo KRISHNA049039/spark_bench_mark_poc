@@ -1,0 +1,72 @@
+[
+  {
+    "model": "resnet50",
+    "config": {
+      "type": "vision",
+      "description": "ResNet-50 (ImageNet pretrained)",
+      "input_size": [
+        3,
+        224,
+        224
+      ],
+      "num_classes": 1000
+    },
+    "modes": {
+      "torch_cpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 5.952753631000004,
+        "throughput_samples_per_sec": 33.59789643543537,
+        "avg_latency_ms": 29.76376815500002,
+        "p50_batch_latency_ms": 941.6081809999994,
+        "p95_batch_latency_ms": 1151.6486402000044,
+        "p99_batch_latency_ms": 1207.603321640004,
+        "predictions_hash": "ccec10e211136db5",
+        "model_info": {
+          "name": "resnet50",
+          "description": "ResNet-50 (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 25557032,
+          "size_mb": 97.49234008789062
+        },
+        "resources": {
+          "memory_delta_mb": 172.98046875,
+          "gc_collections": 0
+        }
+      },
+      "torch_gpu": {
+        "error": "CUDA error: no kernel image is available for execution on the device\nSearch for `cudaErrorNoKernelImageForDevice' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.\nFor more detailed error information, run with CUDA_LOG_FILE=stderr\n"
+      },
+      "spark_cpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 9.533726342999998,
+        "throughput_samples_per_sec": 20.978156158934343,
+        "avg_latency_ms": 47.66863171499999,
+        "p50_batch_latency_ms": 2383.4315857499996,
+        "p95_batch_latency_ms": 2621.7747443249996,
+        "p99_batch_latency_ms": 2860.1179028999995,
+        "predictions_hash": "ccec10e211136db5",
+        "model_info": {
+          "name": "resnet50",
+          "description": "ResNet-50 (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 25557032,
+          "size_mb": 97.49234008789062
+        },
+        "num_partitions": 4,
+        "use_gpu": false
+      },
+      "spark_gpu": {
+        "error": "'throughput_samples_per_sec'"
+      }
+    },
+    "reproducibility": {
+      "all_match": true,
+      "hashes": {
+        "torch_cpu": "ccec10e211136db5",
+        "spark_cpu": "ccec10e211136db5"
+      }
+    }
+  }
+]

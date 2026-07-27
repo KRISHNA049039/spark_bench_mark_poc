@@ -1,0 +1,623 @@
+{
+  "metadata": {
+    "timestamp": "2026-07-27T06:44:45.626949",
+    "seed": 42,
+    "epochs": 5,
+    "batch_size": 64,
+    "learning_rate": 0.001,
+    "modes_run": [
+      "torch_cpu",
+      "spark_cpu"
+    ],
+    "total_time_sec": 387.3806380589999,
+    "torch_version": "2.3.0+cpu",
+    "cuda_available": false,
+    "cuda_version": null
+  },
+  "results_per_mode": {
+    "torch_cpu": {
+      "total_time_sec": 308.49502909700004,
+      "structured": {
+        "test_accuracy": 0.796,
+        "test_loss": 0.6196490535736084,
+        "total_train_time": 134.95775098400009,
+        "total_inference_time": 1.5001143950000824,
+        "epoch_times": [
+          19.96101339200004,
+          33.79856922199997,
+          32.300730235999936,
+          17.30603735800014,
+          31.591357176999963
+        ],
+        "train_losses": [
+          1.3784380044937135,
+          1.058534155845642,
+          0.969209312915802,
+          0.904979299068451,
+          0.8567879962921142
+        ],
+        "resource_metrics": {
+          "model_info": {
+            "total_params": 13637,
+            "trainable_params": 13637,
+            "non_trainable_params": 0,
+            "model_size_mb": 0.052
+          },
+          "cpu": {
+            "num_threads_configured": 20,
+            "user_time_sec": 534.5400000000001,
+            "system_time_sec": 2.96,
+            "cpu_percent": 0.0
+          },
+          "memory": {
+            "before": {
+              "rss_mb": 268.640625,
+              "vms_mb": 2441.1015625,
+              "percent": 1.708620269008562
+            },
+            "after": {
+              "rss_mb": 328.91015625,
+              "vms_mb": 3855.40234375,
+              "percent": 2.0919492710811074
+            },
+            "delta_rss_mb": 60.26953125,
+            "delta_vms_mb": 1414.30078125,
+            "peak_rss_mb": 328.91015625
+          },
+          "gc": {
+            "before": {
+              "collections": [
+                380,
+                34,
+                4
+              ],
+              "total_collected": 1127,
+              "uncollectable": 0,
+              "gc_enabled": true,
+              "thresholds": [
+                700,
+                10,
+                10
+              ]
+            },
+            "after": {
+              "collections": [
+                555,
+                49,
+                7
+              ],
+              "total_collected": 1691,
+              "uncollectable": 0,
+              "gc_enabled": true,
+              "thresholds": [
+                700,
+                10,
+                10
+              ]
+            },
+            "collections_gen0": 175,
+            "collections_gen1": 15,
+            "collections_gen2": 3,
+            "objects_collected": 564
+          },
+          "io": {
+            "read_bytes": 102441,
+            "write_bytes": 81920,
+            "read_count": 1513,
+            "write_count": 3
+          },
+          "timing": {
+            "total_train_time": 134.95775098400009,
+            "total_inference_time": 1.5001143950000824,
+            "avg_epoch_time": 26.99154147700001,
+            "epoch_times": [
+              19.96101339200004,
+              33.79856922199997,
+              32.300730235999936,
+              17.30603735800014,
+              31.591357176999963
+            ]
+          }
+        }
+      },
+      "unstructured": {
+        "test_accuracy": 1.0,
+        "test_loss": 5.347300044377334e-05,
+        "total_train_time": 167.7710721589999,
+        "total_inference_time": 2.213475019000043,
+        "epoch_times": [
+          39.382778643000165,
+          30.594849120999925,
+          29.709081449999985,
+          35.092682549999836,
+          32.991642128999956
+        ],
+        "train_losses": [
+          0.40463848134502767,
+          0.0036004455713555218,
+          0.0008560307521838695,
+          0.0005038654210511595,
+          0.00045814261597115546
+        ],
+        "resource_metrics": {
+          "model_info": {
+            "total_params": 620234,
+            "trainable_params": 620234,
+            "non_trainable_params": 0,
+            "model_size_mb": 2.366
+          },
+          "cpu": {
+            "num_threads_configured": 20,
+            "user_time_sec": 644.18,
+            "system_time_sec": 24.78,
+            "cpu_percent": 0.0
+          },
+          "memory": {
+            "before": {
+              "rss_mb": 337.39453125,
+              "vms_mb": 3863.48828125,
+              "percent": 2.145911977186595
+            },
+            "after": {
+              "rss_mb": 397.7265625,
+              "vms_mb": 3932.66015625,
+              "percent": 2.529638494589568
+            },
+            "delta_rss_mb": 60.33203125,
+            "delta_vms_mb": 69.171875,
+            "peak_rss_mb": 397.7265625
+          },
+          "gc": {
+            "before": {
+              "collections": [
+                555,
+                49,
+                8
+              ],
+              "total_collected": 1691,
+              "uncollectable": 0,
+              "gc_enabled": true,
+              "thresholds": [
+                700,
+                10,
+                10
+              ]
+            },
+            "after": {
+              "collections": [
+                559,
+                49,
+                10
+              ],
+              "total_collected": 1691,
+              "uncollectable": 0,
+              "gc_enabled": true,
+              "thresholds": [
+                700,
+                10,
+                10
+              ]
+            },
+            "collections_gen0": 4,
+            "collections_gen1": 0,
+            "collections_gen2": 2,
+            "objects_collected": 0
+          },
+          "io": {
+            "read_bytes": 0,
+            "write_bytes": 0,
+            "read_count": 18,
+            "write_count": 0
+          },
+          "timing": {
+            "total_train_time": 167.7710721589999,
+            "total_inference_time": 2.213475019000043,
+            "avg_epoch_time": 33.554206778599976,
+            "epoch_times": [
+              39.382778643000165,
+              30.594849120999925,
+              29.709081449999985,
+              35.092682549999836,
+              32.991642128999956
+            ]
+          }
+        }
+      }
+    },
+    "spark_cpu": {
+      "total_time_sec": 78.87847340899998,
+      "structured": {
+        "test_accuracy": 0.1955,
+        "test_loss": 6.310093668937683,
+        "total_train_time": 39.03657299199995,
+        "total_inference_time": 2.219911239000112,
+        "epoch_times": [
+          25.826965372999894,
+          3.213353270000198,
+          3.3851764730000014,
+          3.304377989999921,
+          3.3066362659999413
+        ],
+        "train_losses": [
+          2.015291567802429,
+          1.9486975667476654,
+          1.8858725543022157,
+          1.8269699831008912,
+          1.7719133348464966
+        ],
+        "resource_metrics": {
+          "model_info": {
+            "total_params": 13637,
+            "trainable_params": 13637,
+            "non_trainable_params": 0,
+            "model_size_mb": 0.052
+          },
+          "driver": {
+            "cpu_user_time_sec": 7.330000000000155,
+            "cpu_system_time_sec": 0.14000000000000057,
+            "memory_before": {
+              "rss_mb": 369.29296875,
+              "vms_mb": 3896.140625,
+              "percent": 2.3487938639533597
+            },
+            "memory_after": {
+              "rss_mb": 370.453125,
+              "vms_mb": 3897.140625,
+              "percent": 2.356172742274414
+            },
+            "memory_delta_rss_mb": 1.16015625
+          },
+          "executor": {
+            "num_executors": 2,
+            "executor_cores": 2,
+            "executor_memory": "2g"
+          },
+          "spark": {
+            "app_id": "local-1785134079488",
+            "default_parallelism": 20,
+            "master": "local[*]",
+            "active_executors": -1,
+            "driver_memory_configured": "2g",
+            "executor_memory_configured": "2g",
+            "executor_cores_configured": 2
+          },
+          "gc": {
+            "collections_gen0": 5,
+            "collections_gen1": 0,
+            "collections_gen2": 1,
+            "objects_collected": 492
+          },
+          "io": {
+            "read_bytes": 0,
+            "write_bytes": 4141056,
+            "read_count": 45,
+            "write_count": 252
+          },
+          "timing": {
+            "total_train_time": 39.03657299199995,
+            "total_inference_time": 2.219911239000112,
+            "avg_epoch_time": 7.807301874399991,
+            "epoch_times": [
+              25.826965372999894,
+              3.213353270000198,
+              3.3851764730000014,
+              3.304377989999921,
+              3.3066362659999413
+            ]
+          }
+        }
+      },
+      "unstructured": {
+        "test_accuracy": 0.1025,
+        "test_loss": 3.1522034645080566,
+        "total_train_time": 31.27852083499988,
+        "total_inference_time": 2.8105123810000805,
+        "epoch_times": [
+          7.477230670999916,
+          6.087829855000109,
+          5.496917166000003,
+          5.501547271999925,
+          6.714947062999727
+        ],
+        "train_losses": [
+          2.5202652621269226,
+          1.7184825503826142,
+          2.2496355426311494,
+          1.663230773806572,
+          1.3496141654253007
+        ],
+        "resource_metrics": {
+          "model_info": {
+            "total_params": 620234,
+            "trainable_params": 620234,
+            "non_trainable_params": 0,
+            "model_size_mb": 2.366
+          },
+          "driver": {
+            "cpu_user_time_sec": 13.540000000000191,
+            "cpu_system_time_sec": 0.2699999999999996,
+            "memory_before": {
+              "rss_mb": 376.30859375,
+              "vms_mb": 3903.12109375,
+              "percent": 2.393414959793809
+            },
+            "memory_after": {
+              "rss_mb": 419.27734375,
+              "vms_mb": 3946.07421875,
+              "percent": 2.6667067494624845
+            },
+            "memory_delta_rss_mb": 42.96875
+          },
+          "executor": {
+            "num_executors": 2,
+            "executor_cores": 2,
+            "executor_memory": "2g"
+          },
+          "spark": {
+            "app_id": "local-1785134079488",
+            "default_parallelism": 20,
+            "master": "local[*]",
+            "active_executors": -1,
+            "driver_memory_configured": "2g",
+            "executor_memory_configured": "2g",
+            "executor_cores_configured": 2
+          },
+          "gc": {
+            "collections_gen0": 5,
+            "collections_gen1": 0,
+            "collections_gen2": 1,
+            "objects_collected": 492
+          },
+          "io": {
+            "read_bytes": 0,
+            "write_bytes": 41447424,
+            "read_count": 18,
+            "write_count": 264
+          },
+          "timing": {
+            "total_train_time": 31.27852083499988,
+            "total_inference_time": 2.8105123810000805,
+            "avg_epoch_time": 6.255694405399936,
+            "epoch_times": [
+              7.477230670999916,
+              6.087829855000109,
+              5.496917166000003,
+              5.501547271999925,
+              6.714947062999727
+            ]
+          }
+        }
+      }
+    }
+  },
+  "reproducibility": {
+    "overall_passed": false,
+    "total_comparisons": 2,
+    "passed": 0,
+    "failed": 2,
+    "details": {
+      "modes_tested": [
+        "torch_cpu",
+        "spark_cpu"
+      ],
+      "data_types_tested": [
+        "structured",
+        "unstructured"
+      ],
+      "pairwise_results": {
+        "torch_cpu_vs_spark_cpu_structured": {
+          "passed": false,
+          "failures": [
+            "Loss comparison failed: final diff=0.9151253385543824",
+            "Accuracy difference too large: 0.6005 > 0.05"
+          ],
+          "warnings": [
+            "Model hashes differ between torch_cpu and spark_cpu (may be expected)"
+          ]
+        },
+        "torch_cpu_vs_spark_cpu_unstructured": {
+          "passed": false,
+          "failures": [
+            "Loss comparison failed: final diff=1.3491560228093296",
+            "Accuracy difference too large: 0.8975 > 0.05"
+          ],
+          "warnings": [
+            "Model hashes differ between torch_cpu and spark_cpu (may be expected)"
+          ]
+        }
+      }
+    }
+  },
+  "resource_efficiency": {
+    "torch_cpu": {
+      "structured": {
+        "train_throughput_samples_per_sec": 296.4,
+        "inference_throughput_samples_per_sec": 1333.2,
+        "peak_cpu_memory_mb": 328.91,
+        "peak_gpu_memory_mb": 0,
+        "accuracy": 0.796,
+        "time_to_accuracy_sec": 134.95775098400009
+      },
+      "unstructured": {
+        "train_throughput_samples_per_sec": 47.7,
+        "inference_throughput_samples_per_sec": 180.7,
+        "peak_cpu_memory_mb": 397.73,
+        "peak_gpu_memory_mb": 0,
+        "accuracy": 1.0,
+        "time_to_accuracy_sec": 167.7710721589999
+      }
+    },
+    "spark_cpu": {
+      "structured": {
+        "train_throughput_samples_per_sec": 1024.7,
+        "inference_throughput_samples_per_sec": 900.9,
+        "peak_cpu_memory_mb": 0,
+        "peak_gpu_memory_mb": 0,
+        "accuracy": 0.1955,
+        "time_to_accuracy_sec": 39.03657299199995
+      },
+      "unstructured": {
+        "train_throughput_samples_per_sec": 255.8,
+        "inference_throughput_samples_per_sec": 142.3,
+        "peak_cpu_memory_mb": 0,
+        "peak_gpu_memory_mb": 0,
+        "accuracy": 0.1025,
+        "time_to_accuracy_sec": 31.27852083499988
+      }
+    }
+  },
+  "system_impact": {
+    "duration_sec": 387.5672745704651,
+    "memory": {
+      "rss_delta_mb": 110.6796875,
+      "vms_delta_mb": 1642.265625,
+      "system_available_delta_mb": -2004.01953125
+    },
+    "gc": {
+      "gen0_collections": 213,
+      "gen1_collections": 17,
+      "gen2_collections": 11,
+      "tracked_objects_delta": 70689
+    },
+    "io": {
+      "read_bytes": 199725,
+      "write_bytes": 45674496,
+      "read_count": 2042,
+      "write_count": 532
+    },
+    "threads_delta": 20
+  },
+  "timing_comparison": {
+    "torch_cpu": 308.49502909700004,
+    "spark_cpu": 78.87847340899998
+  },
+  "pretrained_inference": {
+    "cpu": {
+      "resnet50": {
+        "num_samples": 200,
+        "batch_size": 64,
+        "total_time_sec": 109.19841198599988,
+        "throughput_samples_per_sec": 1.8315284660517006,
+        "avg_latency_ms": 545.9920599299994,
+        "p50_batch_latency_ms": 32003.141635999782,
+        "p95_batch_latency_ms": 33715.46538759994,
+        "p99_batch_latency_ms": 33774.52598631997,
+        "num_batches": 4,
+        "predictions_hash": "ccec10e211136db5",
+        "output_shape": [
+          200,
+          1000
+        ],
+        "output_mean": 0.0001270506327273324,
+        "output_std": 0.9170731902122498,
+        "model_info": {
+          "name": "resnet50",
+          "description": "ResNet-50 (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 25557032,
+          "size_mb": 97.49234008789062
+        }
+      },
+      "mobilenet_v3": {
+        "num_samples": 200,
+        "batch_size": 64,
+        "total_time_sec": 19.20152433200019,
+        "throughput_samples_per_sec": 10.415839729280822,
+        "avg_latency_ms": 96.00762166000095,
+        "p50_batch_latency_ms": 3444.956177999984,
+        "p95_batch_latency_ms": 8287.726143300095,
+        "p99_batch_latency_ms": 8949.617167860122,
+        "num_batches": 4,
+        "predictions_hash": "a1e49e9f0d1d8c81",
+        "output_shape": [
+          200,
+          1000
+        ],
+        "output_mean": 0.5606840252876282,
+        "output_std": 1.5290319919586182,
+        "model_info": {
+          "name": "mobilenet_v3",
+          "description": "MobileNetV3-Small (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 2542856,
+          "size_mb": 9.700225830078125
+        }
+      },
+      "efficientnet_b0": {
+        "num_samples": 200,
+        "batch_size": 64,
+        "total_time_sec": 71.9001172190001,
+        "throughput_samples_per_sec": 2.781636633370448,
+        "avg_latency_ms": 359.5005860950005,
+        "p50_batch_latency_ms": 18146.174938999822,
+        "p95_batch_latency_ms": 20053.679324350174,
+        "p99_batch_latency_ms": 20247.419284870226,
+        "num_batches": 4,
+        "predictions_hash": "162be029d69f8ca2",
+        "output_shape": [
+          200,
+          1000
+        ],
+        "output_mean": 0.005482321605086327,
+        "output_std": 0.40787872672080994,
+        "model_info": {
+          "name": "efficientnet_b0",
+          "description": "EfficientNet-B0 (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 5288548,
+          "size_mb": 20.174209594726562
+        }
+      },
+      "distilbert": {
+        "num_samples": 200,
+        "batch_size": 64,
+        "total_time_sec": 71.98935614900029,
+        "throughput_samples_per_sec": 2.7781884808922186,
+        "avg_latency_ms": 359.94678074500143,
+        "p50_batch_latency_ms": 21962.37600099994,
+        "p95_batch_latency_ms": 23634.54632414971,
+        "p99_batch_latency_ms": 23748.779712029704,
+        "num_batches": 4,
+        "predictions_hash": "33b41c39440e7682",
+        "output_shape": [
+          200,
+          2
+        ],
+        "output_mean": 0.22227543592453003,
+        "output_std": 0.2552158534526825,
+        "model_info": {
+          "name": "distilbert",
+          "description": "DistilBERT (HuggingFace, sentiment classification)",
+          "type": "nlp",
+          "total_params": 66660098,
+          "size_mb": 254.28809356689453
+        }
+      },
+      "tabular_deep": {
+        "num_samples": 200,
+        "batch_size": 64,
+        "total_time_sec": 4.7020199239996145,
+        "throughput_samples_per_sec": 42.534911215322275,
+        "avg_latency_ms": 23.510099619998073,
+        "p50_batch_latency_ms": 944.9006815000303,
+        "p95_batch_latency_ms": 2620.1413288498993,
+        "p99_batch_latency_ms": 2764.08735536987,
+        "num_batches": 4,
+        "predictions_hash": "a129b369cc852515",
+        "output_shape": [
+          200,
+          5
+        ],
+        "output_mean": 0.016834475100040436,
+        "output_std": 0.1678149253129959,
+        "model_info": {
+          "name": "tabular_deep",
+          "description": "Deep tabular model with attention (production-grade)",
+          "type": "tabular",
+          "total_params": 161605,
+          "size_mb": 0.6164741516113281
+        }
+      }
+    }
+  }
+}

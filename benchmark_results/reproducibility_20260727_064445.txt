@@ -1,0 +1,22 @@
+======================================================================
+REPRODUCIBILITY VERIFICATION REPORT
+======================================================================
+
+Overall Result: FAILED
+Total Comparisons: 2
+Passed: 0
+Failed: 2
+
+  [FAIL] torch_cpu vs spark_cpu (structured)
+        FAILURE: Loss comparison failed: final diff=0.9151253385543824
+        FAILURE: Accuracy difference too large: 0.6005 > 0.05
+        WARNING: Model hashes differ between torch_cpu and spark_cpu (may be expected)
+        Accuracy: 0.7960 vs 0.1955 (diff=0.6005)
+
+  [FAIL] torch_cpu vs spark_cpu (unstructured)
+        FAILURE: Loss comparison failed: final diff=1.3491560228093296
+        FAILURE: Accuracy difference too large: 0.8975 > 0.05
+        WARNING: Model hashes differ between torch_cpu and spark_cpu (may be expected)
+        Accuracy: 1.0000 vs 0.1025 (diff=0.8975)
+
+======================================================================

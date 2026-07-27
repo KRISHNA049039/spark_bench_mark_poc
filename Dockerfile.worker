@@ -1,0 +1,48 @@
+# ===========================================================================
+# Spark Worker with PyTorch — for cluster mode
+#
+# This image is used by Spark workers that need to run PyTorch inference
+# on their executors. Each worker gets a copy of the model code + dependencies.
+#
+# Build:
+#   docker build -f Dockerfile.worker -t pytorch-spark-worker .
+# ===========================================================================
+
+FROM python:3.11-slim
+
+# System deps
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    wget \
+    procps \
+    && rm -rf /var/lib/apt/lists/*
+
+# Java for Spark
+RUN mkdir -p /opt/java && \
+    wget -q https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.11%2B9/OpenJDK17U-jre_x64_linux_hotspot_17.0.11_9.tar.gz -O /tmp/java.tar.gz && \
+    tar -xzf /tmp/java.tar.gz -C /opt/java --strip-components=1 && \
+    rm /tmp/java.tar.gz
+
+ENV JAVA_HOME=/opt/java
+ENV PATH="${JAVA_HOME}/bin:${PATH}"
+
+# Python packages (same as benchmark container)
+RUN pip install --no-cache-dir \
+    torch==2.3.0 --index-url https://download.pytorch.org/whl/cpu && \
+    pip install --no-cache-dir \
+    torchvision==0.18.0 --index-url https://download.pytorch.org/whl/cpu && \
+    pip install --no-cache-dir \
+    pyspark==3.5.1 \
+    psutil==5.9.8 \
+    numpy==1.26.4 \
+    pandas==2.2.1 \
+    scikit-learn==1.4.2
+
+# Copy benchmark code (workers need this to deserialize and run functions)
+COPY pytorch_benchmark/ /app/pytorch_benchmark/
+
+ENV PYTHONPATH=/app
+ENV SPARK_HOME=/usr/local/lib/python3.11/site-packages/pyspark
+ENV PYSPARK_PYTHON=python
+
+WORKDIR /app

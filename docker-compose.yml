@@ -1,0 +1,282 @@
+# ===========================================================================
+# Docker Compose for PyTorch Benchmark Suite
+#
+# Services:
+#   benchmark-cpu    - Run all CPU modes (torch_cpu + spark_cpu)
+#   benchmark-gpu    - Run all modes including GPU (requires NVIDIA runtime)
+#   benchmark-full   - Run all 4 modes (requires GPU)
+#
+# Usage:
+#   docker compose up benchmark-cpu          # CPU-only run
+#   docker compose up benchmark-gpu          # All modes with GPU
+#   docker compose run benchmark-cpu --epochs 3 --batch-size 128
+#   docker compose up                        # Run all services
+#
+# Results are saved to ./benchmark_results/ on the host.
+# ===========================================================================
+
+services:
+  # -------------------------------------------------------------------------
+  # CPU-only benchmark (torch_cpu + spark_cpu)
+  # -------------------------------------------------------------------------
+  benchmark-cpu:
+    build:
+      context: .
+      target: cpu
+    container_name: pytorch-benchmark-cpu
+    volumes:
+      - ./benchmark_results:/app/benchmark_results
+      - ./pytorch_benchmark:/app/pytorch_benchmark:ro
+    environment:
+      - SPARK_MASTER=local[*]
+      - SPARK_DRIVER_MEMORY=2g
+      - SPARK_EXECUTOR_MEMORY=2g
+      - SPARK_EXECUTOR_CORES=2
+      - BENCHMARK_OUTPUT_DIR=/app/benchmark_results
+    command: ["--modes", "torch_cpu", "spark_cpu", "--epochs", "5"]
+    deploy:
+      resources:
+        limits:
+          cpus: "4"
+          memory: 8g
+        reservations:
+          cpus: "2"
+          memory: 4g
+
+  # -------------------------------------------------------------------------
+  # GPU benchmark (all 4 modes)
+  # -------------------------------------------------------------------------
+  benchmark-gpu:
+    build:
+      context: .
+      target: gpu
+    container_name: pytorch-benchmark-gpu
+    volumes:
+      - ./benchmark_results:/app/benchmark_results
+      - ./pytorch_benchmark:/app/pytorch_benchmark:ro
+    environment:
+      - SPARK_MASTER=local[*]
+      - SPARK_DRIVER_MEMORY=4g
+      - SPARK_EXECUTOR_MEMORY=4g
+      - SPARK_EXECUTOR_CORES=2
+      - SPARK_NUM_EXECUTORS=2
+      - BENCHMARK_OUTPUT_DIR=/app/benchmark_results
+      - NVIDIA_VISIBLE_DEVICES=all
+    command: ["--modes", "torch_cpu", "torch_gpu", "spark_cpu", "spark_gpu"]
+    deploy:
+      resources:
+        limits:
+          cpus: "8"
+          memory: 16g
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  # -------------------------------------------------------------------------
+  # Quick sanity check (torch_cpu only, 2 epochs)
+  # -------------------------------------------------------------------------
+  benchmark-quick:
+    build:
+      context: .
+      target: cpu
+    container_name: pytorch-benchmark-quick
+    volumes:
+      - ./benchmark_results:/app/benchmark_results
+    environment:
+      - BENCHMARK_OUTPUT_DIR=/app/benchmark_results
+    command: ["--cpu-only", "--epochs", "2"]
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 4g
+
+  # -------------------------------------------------------------------------
+  # Inference-only: single model, no training (FAST)
+  # -------------------------------------------------------------------------
+  inference-resnet50:
+    build:
+      context: .
+      target: gpu
+    container_name: pytorch-inference-resnet50
+    volumes:
+      - ./benchmark_results:/app/benchmark_results
+      - ./pytorch_benchmark:/app/pytorch_benchmark:ro
+    environment:
+      - BENCHMARK_OUTPUT_DIR=/app/benchmark_results
+      - SPARK_MASTER=local[4]
+    entrypoint: ["python", "-m", "pytorch_benchmark.run_inference_only"]
+    command: ["--model", "resnet50", "--samples", "200"]
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  inference-mobilenet:
+    build:
+      context: .
+      target: gpu
+    container_name: pytorch-inference-mobilenet
+    volumes:
+      - ./benchmark_results:/app/benchmark_results
+      - ./pytorch_benchmark:/app/pytorch_benchmark:ro
+    environment:
+      - BENCHMARK_OUTPUT_DIR=/app/benchmark_results
+      - SPARK_MASTER=local[4]
+    entrypoint: ["python", "-m", "pytorch_benchmark.run_inference_only"]
+    command: ["--model", "mobilenet_v3", "--samples", "200"]
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  inference-distilbert:
+    build:
+      context: .
+      target: gpu
+    container_name: pytorch-inference-distilbert
+    volumes:
+      - ./benchmark_results:/app/benchmark_results
+      - ./pytorch_benchmark:/app/pytorch_benchmark:ro
+    environment:
+      - BENCHMARK_OUTPUT_DIR=/app/benchmark_results
+      - SPARK_MASTER=local[4]
+    entrypoint: ["python", "-m", "pytorch_benchmark.run_inference_only"]
+    command: ["--model", "distilbert", "--samples", "200"]
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  inference-all:
+    build:
+      context: .
+      target: gpu
+    container_name: pytorch-inference-all
+    volumes:
+      - ./benchmark_results:/app/benchmark_results
+      - ./pytorch_benchmark:/app/pytorch_benchmark:ro
+    environment:
+      - BENCHMARK_OUTPUT_DIR=/app/benchmark_results
+      - SPARK_MASTER=local[4]
+    entrypoint: ["python", "-m", "pytorch_benchmark.run_inference_only"]
+    command: ["--all", "--samples", "200"]
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  # -------------------------------------------------------------------------
+  # Spark cluster mode (multi-container, simulates multi-node)
+  # -------------------------------------------------------------------------
+
+  # Spark Master — coordinates the cluster
+  spark-master:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    container_name: spark-master
+    ports:
+      - "8080:8080"
+      - "7077:7077"
+    command: >
+      bash -c "
+        python -m pyspark --version &&
+        $${SPARK_HOME}/sbin/start-master.sh --host 0.0.0.0 --port 7077 --webui-port 8080 &&
+        tail -f $${SPARK_HOME}/logs/*
+      "
+    environment:
+      - SPARK_NO_DAEMONIZE=1
+    deploy:
+      resources:
+        limits:
+          memory: 2g
+
+  # Spark Workers — each simulates a separate node
+  # Workers have PyTorch + benchmark code installed so they can execute UDFs
+  spark-worker-1:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    container_name: spark-worker-1
+    depends_on:
+      - spark-master
+    command: >
+      bash -c "
+        sleep 5 &&
+        $${SPARK_HOME}/sbin/start-worker.sh spark://spark-master:7077 -m 4g -c 2 &&
+        tail -f $${SPARK_HOME}/logs/*
+      "
+    environment:
+      - SPARK_NO_DAEMONIZE=1
+      - SPARK_WORKER_MEMORY=4g
+      - SPARK_WORKER_CORES=2
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 4g
+
+  spark-worker-2:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    container_name: spark-worker-2
+    depends_on:
+      - spark-master
+    command: >
+      bash -c "
+        sleep 5 &&
+        $${SPARK_HOME}/sbin/start-worker.sh spark://spark-master:7077 -m 4g -c 2 &&
+        tail -f $${SPARK_HOME}/logs/*
+      "
+    environment:
+      - SPARK_NO_DAEMONIZE=1
+      - SPARK_WORKER_MEMORY=4g
+      - SPARK_WORKER_CORES=2
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 4g
+
+  # Driver — submits work to the cluster
+  benchmark-cluster:
+    build:
+      context: .
+      target: cpu
+    container_name: pytorch-benchmark-cluster
+    volumes:
+      - ./benchmark_results:/app/benchmark_results
+      - ./pytorch_benchmark:/app/pytorch_benchmark:ro
+    environment:
+      - SPARK_MASTER=spark://spark-master:7077
+      - SPARK_DRIVER_MEMORY=2g
+      - SPARK_EXECUTOR_MEMORY=4g
+      - SPARK_EXECUTOR_CORES=2
+      - SPARK_NUM_EXECUTORS=2
+      - BENCHMARK_OUTPUT_DIR=/app/benchmark_results
+    entrypoint: ["python", "-m", "pytorch_benchmark.run_inference_only"]
+    command: ["--all", "--no-gpu", "--samples", "200"]
+    depends_on:
+      - spark-master
+      - spark-worker-1
+      - spark-worker-2
+    deploy:
+      resources:
+        limits:
+          memory: 4g
