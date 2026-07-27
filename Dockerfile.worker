@@ -26,10 +26,10 @@ RUN mkdir -p /opt/java && \
 ENV JAVA_HOME=/opt/java
 ENV PATH="${JAVA_HOME}/bin:${PATH}"
 
-# Download standalone Spark (includes sbin/start-master.sh, start-worker.sh)
-RUN wget -q https://archive.apache.org/dist/spark/spark-3.5.1/spark-3.5.1-bin-hadoop3.tgz -O /tmp/spark.tgz && \
+# Download standalone Spark 4.2.0 (must match master's pyspark version)
+RUN wget -q https://archive.apache.org/dist/spark/spark-4.2.0/spark-4.2.0-bin-hadoop3.tgz -O /tmp/spark.tgz && \
     tar -xzf /tmp/spark.tgz -C /opt/ && \
-    mv /opt/spark-3.5.1-bin-hadoop3 /opt/spark && \
+    mv /opt/spark-4.2.0-bin-hadoop3 /opt/spark && \
     rm /tmp/spark.tgz
 
 ENV SPARK_HOME=/opt/spark
@@ -38,15 +38,15 @@ ENV PYSPARK_PYTHON=python
 
 # Python packages
 RUN pip install --no-cache-dir \
-    torch==2.3.0 --index-url https://download.pytorch.org/whl/cpu && \
+    torch --index-url https://download.pytorch.org/whl/cpu && \
     pip install --no-cache-dir \
-    torchvision==0.18.0 --index-url https://download.pytorch.org/whl/cpu && \
+    torchvision --index-url https://download.pytorch.org/whl/cpu && \
     pip install --no-cache-dir \
-    pyspark==3.5.1 \
-    psutil==5.9.8 \
-    numpy==1.26.4 \
-    pandas==2.2.1 \
-    scikit-learn==1.4.2
+    pyspark==4.2.0 \
+    psutil \
+    numpy \
+    pandas \
+    scikit-learn
 
 # Copy benchmark code (workers need this to deserialize and run functions)
 COPY pytorch_benchmark/ /app/pytorch_benchmark/
