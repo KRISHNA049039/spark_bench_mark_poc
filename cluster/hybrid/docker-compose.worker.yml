@@ -27,29 +27,21 @@ services:
       - "35000-35050:35000-35050"
     command: >
       bash -c "
-        export SPARK_LOCAL_HOSTNAME=192.168.4.101 &&
-        export SPARK_PUBLIC_DNS=192.168.4.101 &&
-        export SPARK_WORKER_PORT=7078 &&
         CORES=$$(nproc) &&
         echo '==========================================' &&
-        echo \"Worker: $$SPARK_LOCAL_HOSTNAME ($$CORES cores, 28g)\" &&
+        echo \"Worker: 192.168.4.101 ($$CORES cores, 28g)\" &&
         echo 'Master: spark://192.168.4.100:7077' &&
         echo '==========================================' &&
-        /opt/spark/sbin/start-worker.sh spark://192.168.4.100:7077 \
-          -h $$SPARK_LOCAL_HOSTNAME \
-          -p 7078 \
-          -m 28g \
-          -c $$CORES \
-          --webui-port 8081 &&
+        /opt/spark/sbin/start-worker.sh spark://192.168.4.100:7077 --webui-port 8081 &&
         tail -f /opt/spark/logs/*
       "
     environment:
       - SPARK_NO_DAEMONIZE=1
+      # Advertise this IP to master (does NOT bind to it)
       - SPARK_LOCAL_HOSTNAME=192.168.4.101
       - SPARK_PUBLIC_DNS=192.168.4.101
-      - SPARK_WORKER_PORT=7078
-      # Pin executor ports to the mapped range
-      - SPARK_WORKER_OPTS=-Dspark.port.maxRetries=50 -Dspark.blockManager.port=35010
+      - SPARK_WORKER_MEMORY=28g
+      - SPARK_WORKER_WEBUI_PORT=8081
       # GPU
       - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=compute,utility
