@@ -65,7 +65,7 @@ NUM_PARTITIONS = int(os.environ.get("BENCHMARK_PARTITIONS", "8"))
 OUTPUT_DIR = os.environ.get("BENCHMARK_OUTPUT_DIR", "benchmark_results")
 SEED = 42
 
-ALL_MODELS = ["resnet50", "mobilenet_v3", "efficientnet_b0", "distilbert", "tabular_deep"]
+ALL_MODELS = os.environ.get("BENCHMARK_MODELS", "resnet50,mobilenet_v3,efficientnet_b0,distilbert,tabular_deep").split(",")
 
 logging.basicConfig(
     level=logging.INFO,

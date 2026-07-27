@@ -1,0 +1,375 @@
+{
+  "efficientnet_b0": {
+    "baseline_cpu": {
+      "throughput_samples_per_sec": 78.461552862273,
+      "total_time_sec": 12.745095699996455,
+      "avg_latency_ms": 12.745095699996455,
+      "predictions_hash": "9f4bb074e46c57a3",
+      "num_samples": 1000,
+      "model_info": {
+        "name": "efficientnet_b0",
+        "description": "EfficientNet-B0 (ImageNet pretrained)",
+        "type": "vision",
+        "total_params": 5288548,
+        "size_mb": 20.174209594726562
+      }
+    },
+    "phase1_dist_cpu": {
+      "phase": "cpu",
+      "throughput_samples_per_sec": 2.515044304018223,
+      "total_time_sec": 397.60730989999865,
+      "avg_latency_ms": 397.60730989999865,
+      "predictions_hash": "9f4bb074e46c57a3",
+      "num_samples": 1000,
+      "num_partitions": 8,
+      "model_info": {
+        "name": "efficientnet_b0",
+        "description": "EfficientNet-B0 (ImageNet pretrained)",
+        "type": "vision",
+        "total_params": 5288548,
+        "size_mb": 20.174209594726562
+      },
+      "executor_metrics": {
+        "num_executors_used": 8,
+        "avg_exec_time_sec": 6.302315608874437,
+        "max_exec_time_sec": 6.992639906002296,
+        "min_exec_time_sec": 5.733764288000202,
+        "total_throughput": 159.66757265609144,
+        "avg_throughput_per_executor": 19.95844658201143,
+        "devices_used": [
+          "cpu"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "device": "cpu",
+            "samples_processed": 125,
+            "execution_time_sec": 5.738198340999588,
+            "throughput": 21.783840950019364,
+            "memory_delta_mb": 100.26171875,
+            "gpu": {}
+          },
+          {
+            "partition_id": 1,
+            "device": "cpu",
+            "samples_processed": 125,
+            "execution_time_sec": 6.736507890000212,
+            "throughput": 18.555608045164195,
+            "memory_delta_mb": 100.8359375,
+            "gpu": {}
+          },
+          {
+            "partition_id": 2,
+            "device": "cpu",
+            "samples_processed": 125,
+            "execution_time_sec": 6.812356535996514,
+            "throughput": 18.349010263849166,
+            "memory_delta_mb": 105.9453125,
+            "gpu": {}
+          },
+          {
+            "partition_id": 3,
+            "device": "cpu",
+            "samples_processed": 125,
+            "execution_time_sec": 5.984605955000006,
+            "throughput": 20.886922370480423,
+            "memory_delta_mb": 84.47265625,
+            "gpu": {}
+          },
+          {
+            "partition_id": 4,
+            "device": "cpu",
+            "samples_processed": 125,
+            "execution_time_sec": 5.820237031999568,
+            "throughput": 21.47678854190165,
+            "memory_delta_mb": 14.56640625,
+            "gpu": {}
+          },
+          {
+            "partition_id": 5,
+            "device": "cpu",
+            "samples_processed": 125,
+            "execution_time_sec": 6.992639906002296,
+            "throughput": 17.87593836952813,
+            "memory_delta_mb": 100.8359375,
+            "gpu": {}
+          },
+          {
+            "partition_id": 6,
+            "device": "cpu",
+            "samples_processed": 125,
+            "execution_time_sec": 6.600214922997111,
+            "throughput": 18.938777215339282,
+            "memory_delta_mb": 105.9453125,
+            "gpu": {}
+          },
+          {
+            "partition_id": 7,
+            "device": "cpu",
+            "samples_processed": 125,
+            "execution_time_sec": 5.733764288000202,
+            "throughput": 21.80068689980923,
+            "memory_delta_mb": 84.6640625,
+            "gpu": {}
+          }
+        ]
+      }
+    },
+    "phase2_dist_gpu": {
+      "phase": "gpu",
+      "throughput_samples_per_sec": 1.8044364532899178,
+      "total_time_sec": 554.1896463999947,
+      "avg_latency_ms": 554.1896463999947,
+      "predictions_hash": "9f4bb074e46c57a3",
+      "num_samples": 1000,
+      "num_partitions": 8,
+      "model_info": {
+        "name": "efficientnet_b0",
+        "description": "EfficientNet-B0 (ImageNet pretrained)",
+        "type": "vision",
+        "total_params": 5288548,
+        "size_mb": 20.174209594726562
+      },
+      "executor_metrics": {
+        "num_executors_used": 8,
+        "avg_exec_time_sec": 6.573968599499949,
+        "max_exec_time_sec": 7.62992852699972,
+        "min_exec_time_sec": 5.472881493999921,
+        "total_throughput": 155.2992831717446,
+        "avg_throughput_per_executor": 19.412410396468076,
+        "devices_used": [
+          "cpu"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "device": "cpu",
+            "samples_processed": 125,
+            "execution_time_sec": 7.545038537999062,
+            "throughput": 16.567178467076445,
+            "memory_delta_mb": 118.47265625,
+            "gpu": {}
+          },
+          {
+            "partition_id": 1,
+            "device": "cpu",
+            "samples_processed": 125,
+            "execution_time_sec": 5.760309985999811,
+            "throughput": 21.70022104779208,
+            "memory_delta_mb": 100.28515625,
+            "gpu": {}
+          },
+          {
+            "partition_id": 2,
+            "device": "cpu",
+            "samples_processed": 125,
+            "execution_time_sec": 7.62992852699972,
+            "throughput": 16.38285333311676,
+            "memory_delta_mb": 100.9609375,
+            "gpu": {}
+          },
+          {
+            "partition_id": 3,
+            "device": "cpu",
+            "samples_processed": 125,
+            "execution_time_sec": 5.572164611000517,
+            "throughput": 22.43293382848492,
+            "memory_delta_mb": 105.7421875,
+            "gpu": {}
+          },
+          {
+            "partition_id": 4,
+            "device": "cpu",
+            "samples_processed": 125,
+            "execution_time_sec": 7.54427183900043,
+            "throughput": 16.568862133759186,
+            "memory_delta_mb": 118.48828125,
+            "gpu": {}
+          },
+          {
+            "partition_id": 5,
+            "device": "cpu",
+            "samples_processed": 125,
+            "execution_time_sec": 5.760397016999377,
+            "throughput": 21.699893189847042,
+            "memory_delta_mb": 100.328125,
+            "gpu": {}
+          },
+          {
+            "partition_id": 6,
+            "device": "cpu",
+            "samples_processed": 125,
+            "execution_time_sec": 7.306756784000754,
+            "throughput": 17.107453237489217,
+            "memory_delta_mb": 118.47265625,
+            "gpu": {}
+          },
+          {
+            "partition_id": 7,
+            "device": "cpu",
+            "samples_processed": 125,
+            "execution_time_sec": 5.472881493999921,
+            "throughput": 22.83988793417894,
+            "memory_delta_mb": 118.26171875,
+            "gpu": {}
+          }
+        ]
+      }
+    },
+    "phase3_hybrid": {
+      "phase": "hybrid",
+      "throughput_samples_per_sec": 1.7267414743174814,
+      "total_time_sec": 579.1254886000024,
+      "avg_latency_ms": 579.1254886000024,
+      "predictions_hash": "9f4bb074e46c57a3",
+      "num_samples": 1000,
+      "num_partitions": 8,
+      "model_info": {
+        "name": "efficientnet_b0",
+        "description": "EfficientNet-B0 (ImageNet pretrained)",
+        "type": "vision",
+        "total_params": 5288548,
+        "size_mb": 20.174209594726562
+      },
+      "executor_metrics": {
+        "num_executors_used": 8,
+        "avg_exec_time_sec": 7.422862936499655,
+        "max_exec_time_sec": 7.599721083999611,
+        "min_exec_time_sec": 7.2514388090003195,
+        "total_throughput": 134.7547771316069,
+        "avg_throughput_per_executor": 16.844347141450857,
+        "devices_used": [
+          "cpu"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "device": "cpu",
+            "samples_processed": 125,
+            "execution_time_sec": 7.524917255999753,
+            "throughput": 16.611478338892727,
+            "memory_delta_mb": 127.25390625,
+            "gpu": {}
+          },
+          {
+            "partition_id": 1,
+            "device": "cpu",
+            "samples_processed": 125,
+            "execution_time_sec": 7.471501445001195,
+            "throughput": 16.730238349031065,
+            "memory_delta_mb": 118.4765625,
+            "gpu": {}
+          },
+          {
+            "partition_id": 2,
+            "device": "cpu",
+            "samples_processed": 125,
+            "execution_time_sec": 7.2514388090003195,
+            "throughput": 17.237958326953386,
+            "memory_delta_mb": 105.5,
+            "gpu": {}
+          },
+          {
+            "partition_id": 3,
+            "device": "cpu",
+            "samples_processed": 125,
+            "execution_time_sec": 7.2895636129997,
+            "throughput": 17.147802891394445,
+            "memory_delta_mb": 123.23828125,
+            "gpu": {}
+          },
+          {
+            "partition_id": 4,
+            "device": "cpu",
+            "samples_processed": 125,
+            "execution_time_sec": 7.599721083999611,
+            "throughput": 16.44797205297099,
+            "memory_delta_mb": 109.59375,
+            "gpu": {}
+          },
+          {
+            "partition_id": 5,
+            "device": "cpu",
+            "samples_processed": 125,
+            "execution_time_sec": 7.465619807997427,
+            "throughput": 16.743418927668365,
+            "memory_delta_mb": 105.96484375,
+            "gpu": {}
+          },
+          {
+            "partition_id": 6,
+            "device": "cpu",
+            "samples_processed": 125,
+            "execution_time_sec": 7.285825645999466,
+            "throughput": 17.156600510833737,
+            "memory_delta_mb": 100.5390625,
+            "gpu": {}
+          },
+          {
+            "partition_id": 7,
+            "device": "cpu",
+            "samples_processed": 125,
+            "execution_time_sec": 7.494315830999767,
+            "throughput": 16.679307733862156,
+            "memory_delta_mb": 109.1796875,
+            "gpu": {}
+          }
+        ]
+      }
+    }
+  },
+  "_comparison": {
+    "efficientnet_b0": {
+      "reproducibility": {
+        "hashes": {
+          "baseline_cpu": "9f4bb074e46c57a3",
+          "phase1_dist_cpu": "9f4bb074e46c57a3",
+          "phase2_dist_gpu": "9f4bb074e46c57a3",
+          "phase3_hybrid": "9f4bb074e46c57a3"
+        },
+        "all_match": true,
+        "num_phases_compared": 4
+      },
+      "speedup": {
+        "phase1_dist_cpu": {
+          "throughput": 2.515044304018223,
+          "vs_baseline": 0.03205448034444323,
+          "time_saved_sec": -384.8622142000022
+        },
+        "phase2_dist_gpu": {
+          "throughput": 1.8044364532899178,
+          "vs_baseline": 0.022997715281742184,
+          "time_saved_sec": -541.4445506999982
+        },
+        "phase3_hybrid": {
+          "throughput": 1.7267414743174814,
+          "vs_baseline": 0.02200748533932927,
+          "time_saved_sec": -566.380392900006
+        }
+      },
+      "efficiency": {
+        "phase1_dist_cpu": {
+          "partitions_used": 8,
+          "devices": [
+            "cpu"
+          ],
+          "utilization_balance": 0.8199713363015435
+        },
+        "phase2_dist_gpu": {
+          "partitions_used": 8,
+          "devices": [
+            "cpu"
+          ],
+          "utilization_balance": 0.7172913186058371
+        },
+        "phase3_hybrid": {
+          "partitions_used": 8,
+          "devices": [
+            "cpu"
+          ],
+          "utilization_balance": 0.9541717029941319
+        }
+      }
+    }
+  }
+}
