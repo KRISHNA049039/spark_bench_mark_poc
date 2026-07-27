@@ -38,26 +38,24 @@ services:
       - bash
       - -c
       - |
-        CORES=$(nproc)
+        CORES=$$(nproc)
         echo '========================================'
-        echo "Spark Worker starting with $CORES cores..."
-        echo "Advertising as: ${SPARK_LOCAL_HOSTNAME}"
+        echo "Spark Worker starting with $$CORES cores..."
+        echo "Advertising as: $$SPARK_LOCAL_HOSTNAME"
         echo "Connecting to master: 192.168.4.100:7077"
-        echo "Memory: 28g, Cores: $CORES"
+        echo "Memory: 28g, Cores: $$CORES"
         echo '========================================'
-        /opt/spark/sbin/start-worker.sh spark://192.168.4.100:7077 \
-          -m 28g \
-          -c $CORES \
-          --webui-port 8081 \
-          --port 7078 &&
+        export SPARK_WORKER_CORES=$$CORES
+        /opt/spark/sbin/start-worker.sh spark://192.168.4.100:7077 &&
         echo 'Worker connected!' &&
         tail -f /opt/spark/logs/*
     environment:
       - SPARK_NO_DAEMONIZE=1
       - SPARK_WORKER_MEMORY=28g
+      - SPARK_WORKER_WEBUI_PORT=8081
+      - SPARK_WORKER_PORT=7078
       # SET THIS TO THE WORKER MACHINE'S ACTUAL LAN IP (from ipconfig)
       - SPARK_LOCAL_HOSTNAME=192.168.4.101
-      - SPARK_WORKER_PORT=7078
       - SPARK_WORKER_OPTS=-Dspark.executor.port=35000
       - CUDA_VISIBLE_DEVICES=0
       - NVIDIA_VISIBLE_DEVICES=all
