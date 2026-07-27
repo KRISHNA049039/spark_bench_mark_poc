@@ -34,14 +34,15 @@ services:
       - "8081:8081"
     command: >
       bash -c "
+        CORES=$$(nproc) &&
         echo '========================================' &&
-        echo 'Spark Worker starting...' &&
+        echo \"Spark Worker starting with $$CORES cores...\" &&
         echo 'Connecting to master: 192.168.4.100:7077' &&
-        echo 'Memory: 28g, Cores: all available' &&
+        echo \"Memory: 28g, Cores: $$CORES\" &&
         echo '========================================' &&
         /opt/spark/sbin/start-worker.sh spark://192.168.4.100:7077 \
           -m 28g \
-          -c $$(nproc) \
+          -c $$CORES \
           --webui-port 8081 &&
         echo 'Worker connected!' &&
         tail -f /opt/spark/logs/*
@@ -49,8 +50,6 @@ services:
     environment:
       - SPARK_NO_DAEMONIZE=1
       - SPARK_WORKER_MEMORY=28g
-      - SPARK_WORKER_CORES=0       # 0 = use all available
-      # GPU visibility
       - CUDA_VISIBLE_DEVICES=0
       - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=compute,utility
