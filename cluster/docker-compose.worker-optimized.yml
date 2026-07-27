@@ -30,18 +30,24 @@ services:
       context: ..
       dockerfile: Dockerfile.worker
     container_name: spark-worker-opt
-    network_mode: host
+    ports:
+      - "8081:8081"
+      - "7078:7078"
+      - "35000-35100:35000-35100"
     command: >
       bash -c "
         CORES=$$(nproc) &&
         echo '========================================' &&
         echo \"Spark Worker starting with $$CORES cores...\" &&
+        echo \"Advertising as: $${SPARK_LOCAL_HOSTNAME}\" &&
         echo 'Connecting to master: 192.168.4.100:7077' &&
         echo \"Memory: 28g, Cores: $$CORES\" &&
         echo '========================================' &&
+        export SPARK_LOCAL_HOSTNAME=$${SPARK_LOCAL_HOSTNAME} &&
         /opt/spark/sbin/start-worker.sh spark://192.168.4.100:7077 \
           -m 28g \
           -c $$CORES \
+          -h $${SPARK_LOCAL_HOSTNAME} \
           --webui-port 8081 &&
         echo 'Worker connected!' &&
         tail -f /opt/spark/logs/*
@@ -49,6 +55,10 @@ services:
     environment:
       - SPARK_NO_DAEMONIZE=1
       - SPARK_WORKER_MEMORY=28g
+      # SET THIS TO THE WORKER MACHINE'S ACTUAL LAN IP (from ipconfig)
+      - SPARK_LOCAL_HOSTNAME=192.168.4.101
+      - SPARK_WORKER_PORT=7078
+      - SPARK_WORKER_OPTS=-Dspark.executor.port=35000
       - CUDA_VISIBLE_DEVICES=0
       - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=compute,utility
