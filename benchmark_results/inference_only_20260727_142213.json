@@ -1,0 +1,314 @@
+[
+  {
+    "model": "resnet50",
+    "config": {
+      "type": "vision",
+      "description": "ResNet-50 (ImageNet pretrained)",
+      "input_size": [
+        3,
+        224,
+        224
+      ],
+      "num_classes": 1000
+    },
+    "modes": {
+      "torch_cpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 7.183219612999892,
+        "throughput_samples_per_sec": 27.84266815928171,
+        "avg_latency_ms": 35.91609806499946,
+        "p50_batch_latency_ms": 1078.125393999926,
+        "p95_batch_latency_ms": 1151.0446069997668,
+        "p99_batch_latency_ms": 1168.4824669997577,
+        "predictions_hash": "ccec10e211136db5",
+        "model_info": {
+          "name": "resnet50",
+          "description": "ResNet-50 (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 25557032,
+          "size_mb": 97.49234008789062
+        },
+        "resources": {
+          "memory_delta_mb": 85.8828125,
+          "gc_collections": 0
+        }
+      },
+      "spark_cpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 39.05346149600018,
+        "throughput_samples_per_sec": 5.121184968981145,
+        "avg_latency_ms": 195.2673074800009,
+        "p50_batch_latency_ms": 19526.73074800009,
+        "p95_batch_latency_ms": 21479.4038228001,
+        "p99_batch_latency_ms": 23432.076897600105,
+        "predictions_hash": "ccec10e211136db5",
+        "model_info": {
+          "name": "resnet50",
+          "description": "ResNet-50 (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 25557032,
+          "size_mb": 97.49234008789062
+        },
+        "num_partitions": 2,
+        "use_gpu": false
+      }
+    },
+    "reproducibility": {
+      "all_match": true,
+      "hashes": {
+        "torch_cpu": "ccec10e211136db5",
+        "spark_cpu": "ccec10e211136db5"
+      }
+    }
+  },
+  {
+    "model": "mobilenet_v3",
+    "config": {
+      "type": "vision",
+      "description": "MobileNetV3-Small (ImageNet pretrained)",
+      "input_size": [
+        3,
+        224,
+        224
+      ],
+      "num_classes": 1000
+    },
+    "modes": {
+      "torch_cpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 0.4715529439999955,
+        "throughput_samples_per_sec": 424.13052986898947,
+        "avg_latency_ms": 2.3577647199999774,
+        "p50_batch_latency_ms": 70.96533200001431,
+        "p95_batch_latency_ms": 84.8690266999256,
+        "p99_batch_latency_ms": 84.90945493987965,
+        "predictions_hash": "a1e49e9f0d1d8c81",
+        "model_info": {
+          "name": "mobilenet_v3",
+          "description": "MobileNetV3-Small (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 2542856,
+          "size_mb": 9.700225830078125
+        },
+        "resources": {
+          "memory_delta_mb": -43.84375,
+          "gc_collections": 0
+        }
+      },
+      "spark_cpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 12.264397522999843,
+        "throughput_samples_per_sec": 16.307364436364132,
+        "avg_latency_ms": 61.321987614999216,
+        "p50_batch_latency_ms": 6132.198761499922,
+        "p95_batch_latency_ms": 6745.418637649915,
+        "p99_batch_latency_ms": 7358.638513799906,
+        "predictions_hash": "a1e49e9f0d1d8c81",
+        "model_info": {
+          "name": "mobilenet_v3",
+          "description": "MobileNetV3-Small (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 2542856,
+          "size_mb": 9.700225830078125
+        },
+        "num_partitions": 2,
+        "use_gpu": false
+      }
+    },
+    "reproducibility": {
+      "all_match": true,
+      "hashes": {
+        "torch_cpu": "a1e49e9f0d1d8c81",
+        "spark_cpu": "a1e49e9f0d1d8c81"
+      }
+    }
+  },
+  {
+    "model": "efficientnet_b0",
+    "config": {
+      "type": "vision",
+      "description": "EfficientNet-B0 (ImageNet pretrained)",
+      "input_size": [
+        3,
+        224,
+        224
+      ],
+      "num_classes": 1000
+    },
+    "modes": {
+      "torch_cpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 2.9030119789999844,
+        "throughput_samples_per_sec": 68.89396304485628,
+        "avg_latency_ms": 14.515059894999922,
+        "p50_batch_latency_ms": 454.8269590000018,
+        "p95_batch_latency_ms": 494.41609170007723,
+        "p99_batch_latency_ms": 499.91680074013857,
+        "predictions_hash": "162be029d69f8ca2",
+        "model_info": {
+          "name": "efficientnet_b0",
+          "description": "EfficientNet-B0 (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 5288548,
+          "size_mb": 20.174209594726562
+        },
+        "resources": {
+          "memory_delta_mb": 49.765625,
+          "gc_collections": 0
+        }
+      },
+      "spark_cpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 17.74902252799984,
+        "throughput_samples_per_sec": 11.268226162003652,
+        "avg_latency_ms": 88.7451126399992,
+        "p50_batch_latency_ms": 8874.51126399992,
+        "p95_batch_latency_ms": 9761.962390399913,
+        "p99_batch_latency_ms": 10649.413516799905,
+        "predictions_hash": "162be029d69f8ca2",
+        "model_info": {
+          "name": "efficientnet_b0",
+          "description": "EfficientNet-B0 (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 5288548,
+          "size_mb": 20.174209594726562
+        },
+        "num_partitions": 2,
+        "use_gpu": false
+      }
+    },
+    "reproducibility": {
+      "all_match": true,
+      "hashes": {
+        "torch_cpu": "162be029d69f8ca2",
+        "spark_cpu": "162be029d69f8ca2"
+      }
+    }
+  },
+  {
+    "model": "distilbert",
+    "config": {
+      "type": "nlp",
+      "description": "DistilBERT (HuggingFace, sentiment classification)",
+      "max_seq_length": 128,
+      "num_classes": 2
+    },
+    "modes": {
+      "torch_cpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 3.339435107999634,
+        "throughput_samples_per_sec": 59.89036873958082,
+        "avg_latency_ms": 16.69717553999817,
+        "p50_batch_latency_ms": 484.61754599975393,
+        "p95_batch_latency_ms": 625.8430147999661,
+        "p99_batch_latency_ms": 628.434094159993,
+        "predictions_hash": "33b41c39440e7682",
+        "model_info": {
+          "name": "distilbert",
+          "description": "DistilBERT (HuggingFace, sentiment classification)",
+          "type": "nlp",
+          "total_params": 66660098,
+          "size_mb": 254.28809356689453
+        },
+        "resources": {
+          "memory_delta_mb": 25.5234375,
+          "gc_collections": 0
+        }
+      },
+      "spark_cpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 29.961733771000127,
+        "throughput_samples_per_sec": 6.675181133662545,
+        "avg_latency_ms": 149.80866885500063,
+        "p50_batch_latency_ms": 14980.866885500063,
+        "p95_batch_latency_ms": 16478.953574050072,
+        "p99_batch_latency_ms": 17977.040262600076,
+        "predictions_hash": "33b41c39440e7682",
+        "model_info": {
+          "name": "distilbert",
+          "description": "DistilBERT (HuggingFace, sentiment classification)",
+          "type": "nlp",
+          "total_params": 66660098,
+          "size_mb": 254.28809356689453
+        },
+        "num_partitions": 2,
+        "use_gpu": false
+      }
+    },
+    "reproducibility": {
+      "all_match": true,
+      "hashes": {
+        "torch_cpu": "33b41c39440e7682",
+        "spark_cpu": "33b41c39440e7682"
+      }
+    }
+  },
+  {
+    "model": "tabular_deep",
+    "config": {
+      "type": "tabular",
+      "description": "Deep tabular model with attention (production-grade)",
+      "num_features": 20,
+      "num_classes": 5
+    },
+    "modes": {
+      "torch_cpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 0.028777300999990985,
+        "throughput_samples_per_sec": 6949.922093112994,
+        "avg_latency_ms": 0.14388650499995492,
+        "p50_batch_latency_ms": 2.6853199997276533,
+        "p95_batch_latency_ms": 8.032008000009228,
+        "p99_batch_latency_ms": 8.159198399953311,
+        "predictions_hash": "a129b369cc852515",
+        "model_info": {
+          "name": "tabular_deep",
+          "description": "Deep tabular model with attention (production-grade)",
+          "type": "tabular",
+          "total_params": 161605,
+          "size_mb": 0.6164741516113281
+        },
+        "resources": {
+          "memory_delta_mb": 0.234375,
+          "gc_collections": 1
+        }
+      },
+      "spark_cpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 3.0111000849997254,
+        "throughput_samples_per_sec": 66.42090742726616,
+        "avg_latency_ms": 15.055500424998627,
+        "p50_batch_latency_ms": 1505.5500424998627,
+        "p95_batch_latency_ms": 1656.1050467498492,
+        "p99_batch_latency_ms": 1806.6600509998352,
+        "predictions_hash": "a129b369cc852515",
+        "model_info": {
+          "name": "tabular_deep",
+          "description": "Deep tabular model with attention (production-grade)",
+          "type": "tabular",
+          "total_params": 161605,
+          "size_mb": 0.6164741516113281
+        },
+        "num_partitions": 2,
+        "use_gpu": false
+      }
+    },
+    "reproducibility": {
+      "all_match": true,
+      "hashes": {
+        "torch_cpu": "a129b369cc852515",
+        "spark_cpu": "a129b369cc852515"
+      }
+    }
+  }
+]

@@ -1,11 +1,10 @@
 # ===========================================================================
-# NODE 1: Spark Master + Driver
+# NODE 1: Spark Master + Driver (Docker Desktop compatible)
 #
-# Deploy this on your first machine.
-# 1. Build:  docker compose -f docker-compose.master.yml build
-# 2. Start:  docker compose -f docker-compose.master.yml up
-#
-# After Node 2 workers connect, the driver auto-submits the benchmark.
+# Usage:
+#   set MASTER_IP=192.168.x.x   (your machine's LAN IP from ipconfig)
+#   docker compose -f docker-compose.master.yml down
+#   docker compose -f docker-compose.master.yml up
 # ===========================================================================
 
 services:
@@ -14,60 +13,60 @@ services:
       context: ..
       dockerfile: Dockerfile.worker
     container_name: spark-master
-    hostname: spark-master
     ports:
-      - "8080:8080"     # Spark Web UI
-      - "7077:7077"     # Spark master port (workers connect here)
-      - "4040:4040"     # Spark application UI
+      - "7077:7077"
+      - "8080:8080"
     command: >
       bash -c "
-        echo 'Starting Spark Master...' &&
+        export SPARK_LOCAL_HOSTNAME=192.168.4.100 &&
+        export SPARK_PUBLIC_DNS=192.168.4.100 &&
+        echo 'Starting Spark Master advertising 192.168.4.100:7077...' &&
         /opt/spark/sbin/start-master.sh --host 0.0.0.0 --port 7077 --webui-port 8080 &&
-        echo 'Master started on port 7077' &&
         tail -f /opt/spark/logs/*
       "
     environment:
       - SPARK_NO_DAEMONIZE=1
-      - SPARK_MASTER_HOST=0.0.0.0
+      - MASTER_IP=192.168.4.100
+      - SPARK_LOCAL_HOSTNAME=192.168.4.100
+      - SPARK_PUBLIC_DNS=192.168.4.100
+      - SPARK_MASTER_HOST=192.168.4.100
     deploy:
       resources:
         limits:
           memory: 2g
-    networks:
-      - spark-net
 
-  # Driver — waits for workers, then runs benchmark
   benchmark-driver:
     build:
       context: ..
       dockerfile: Dockerfile.worker
     container_name: benchmark-driver
+    ports:
+      - "4040:4040"
+      - "33000-33010:33000-33010"   # Driver port range for executors to connect back
     volumes:
       - ../benchmark_results:/app/benchmark_results
+    command: >
+      bash -c "
+        echo 'Waiting 20s for workers to connect...' &&
+        sleep 20 &&
+        echo 'Starting benchmark (driver at 192.168.4.100)...' &&
+        python -m pytorch_benchmark.run_inference_only --all --no-gpu --samples 200
+      "
     environment:
-      # Point to the master
-      - SPARK_MASTER=spark://spark-master:7077
+      - SPARK_MASTER=spark://192.168.4.100:7077
+      - SPARK_LOCAL_HOSTNAME=192.168.4.100
+      - SPARK_PUBLIC_DNS=192.168.4.100
+      - SPARK_DRIVER_HOST=192.168.4.100
+      - SPARK_DRIVER_PORT=33000
+      - SPARK_DRIVER_BLOCKMANAGER_PORT=33005
       - SPARK_DRIVER_MEMORY=2g
       - SPARK_EXECUTOR_MEMORY=4g
       - SPARK_EXECUTOR_CORES=2
       - SPARK_NUM_EXECUTORS=2
       - BENCHMARK_OUTPUT_DIR=/app/benchmark_results
-    entrypoint: >
-      bash -c "
-        echo 'Waiting 15s for workers to connect...' &&
-        sleep 15 &&
-        echo 'Starting benchmark...' &&
-        python -m pytorch_benchmark.run_inference_only --all --no-gpu --samples 200
-      "
     depends_on:
       - spark-master
     deploy:
       resources:
         limits:
           memory: 4g
-    networks:
-      - spark-net
-
-networks:
-  spark-net:
-    driver: bridge

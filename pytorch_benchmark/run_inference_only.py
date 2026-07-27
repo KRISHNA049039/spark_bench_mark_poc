@@ -262,16 +262,28 @@ def _run_spark_inference(
         del model
         gc.collect()
 
-        # Spark session
-        spark = (
+        # Spark session — configure driver hostname for cluster mode
+        spark_builder = (
             SparkSession.builder
             .master(SPARK_MASTER)
             .appName(f"InferOnly_{model_name}")
             .config("spark.driver.memory", SPARK_DRIVER_MEMORY)
             .config("spark.executor.memory", SPARK_EXECUTOR_MEMORY)
             .config("spark.python.worker.reuse", "true")
-            .getOrCreate()
         )
+
+        # Set driver host for remote executors to connect back
+        import os as _os
+        if _os.environ.get("SPARK_DRIVER_HOST"):
+            spark_builder = spark_builder.config("spark.driver.host", _os.environ["SPARK_DRIVER_HOST"])
+        if _os.environ.get("SPARK_DRIVER_PORT"):
+            spark_builder = spark_builder.config("spark.driver.port", _os.environ["SPARK_DRIVER_PORT"])
+        if _os.environ.get("SPARK_DRIVER_BLOCKMANAGER_PORT"):
+            spark_builder = spark_builder.config("spark.driver.blockManager.port", _os.environ["SPARK_DRIVER_BLOCKMANAGER_PORT"])
+        if _os.environ.get("SPARK_LOCAL_HOSTNAME"):
+            spark_builder = spark_builder.config("spark.driver.bindAddress", "0.0.0.0")
+
+        spark = spark_builder.getOrCreate()
 
         sc = spark.sparkContext
         num_partitions = min(4, sc.defaultParallelism)  # limit partitions for speed

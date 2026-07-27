@@ -1,0 +1,65 @@
+# ===========================================================================
+# WORKER NODE — Optimized for 32 GB RAM + 8 GB VRAM
+#
+# Deploy on each worker machine (you have 2 workers).
+#
+# Memory Layout:
+#   32 GB Total RAM
+#   ├── 3 GB  → OS + Docker
+#   ├── 1 GB  → Spark Worker daemon
+#   ├── 14 GB → Executor 1 (12 GB heap + 2 GB overhead) — CPU tasks
+#   ├── 12 GB → Executor 2 (10 GB heap + 2 GB overhead) — GPU tasks
+#   └── 2 GB  → Buffer (Python workers, model deserialization)
+#
+# GPU Layout:
+#   8 GB VRAM
+#   ├── ~300 MB → Model weights (largest: DistilBERT 254 MB)
+#   ├── ~500 MB → Activations per batch (batch_size=64)
+#   ├── ~200 MB → CUDA context + overhead
+#   └── ~7 GB  → Available for larger batches / multiple models
+#
+# Usage:
+#   On worker machine:
+#   docker compose -f docker-compose.worker-optimized.yml build
+#   docker compose -f docker-compose.worker-optimized.yml up
+# ===========================================================================
+
+services:
+  spark-worker:
+    build:
+      context: ..
+      dockerfile: Dockerfile.worker
+    container_name: spark-worker-opt
+    ports:
+      - "8081:8081"
+    command: >
+      bash -c "
+        echo '========================================' &&
+        echo 'Spark Worker starting...' &&
+        echo 'Connecting to master: 192.168.4.100:7077' &&
+        echo 'Memory: 28g, Cores: all available' &&
+        echo '========================================' &&
+        /opt/spark/sbin/start-worker.sh spark://192.168.4.100:7077 \
+          -m 28g \
+          -c $$(nproc) \
+          --webui-port 8081 &&
+        echo 'Worker connected!' &&
+        tail -f /opt/spark/logs/*
+      "
+    environment:
+      - SPARK_NO_DAEMONIZE=1
+      - SPARK_WORKER_MEMORY=28g
+      - SPARK_WORKER_CORES=0       # 0 = use all available
+      # GPU visibility
+      - CUDA_VISIBLE_DEVICES=0
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    deploy:
+      resources:
+        limits:
+          memory: 30g
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]

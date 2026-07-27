@@ -1,0 +1,122 @@
+# ===========================================================================
+# OPTIMIZED CLUSTER: 2 Worker Nodes (32 GB RAM, 8 GB VRAM each)
+#
+# Memory Planning (per worker):
+#   Total RAM: 32 GB
+#   OS + Docker overhead: ~3 GB
+#   Spark Worker daemon: ~1 GB
+#   Available for executors: ~28 GB
+#
+#   Strategy: 2 executors per worker (CPU + GPU can work in parallel)
+#     Executor 1 (CPU): 12 GB heap + 2 GB overhead = 14 GB
+#     Executor 2 (GPU): 10 GB heap + 2 GB overhead + 8 GB VRAM = 12 GB + 8 VRAM
+#     Remaining buffer: ~2 GB (for Python workers, model deserialization)
+#
+# GPU Planning (per worker):
+#   Total VRAM: 8 GB
+#   Model weights: ~250 MB (largest = DistilBERT)
+#   Activations/buffers: ~500 MB per batch
+#   Available for batching: ~7 GB
+#   Batch size for GPU: 64-128 (fits comfortably)
+#
+# Parallelism:
+#   2 workers × 2 executors = 4 executor slots
+#   CPU cores per worker: use all available (auto-detect)
+#   Partitions: 8 (2 per executor for good load balancing)
+#
+# Phases:
+#   Phase 1: Distributed CPU only (all cores, no GPU)
+#   Phase 2: Distributed GPU only (GPU executors, minimal CPU)
+#   Phase 3: Hybrid CPU + GPU (both working simultaneously)
+#
+# Usage:
+#   docker compose -f docker-compose.optimized.yml up --build
+# ===========================================================================
+
+services:
+
+  # =========================================================================
+  # MASTER NODE (runs on your main machine)
+  # =========================================================================
+  spark-master:
+    build:
+      context: ..
+      dockerfile: Dockerfile.worker
+    container_name: spark-master-opt
+    ports:
+      - "7077:7077"
+      - "8080:8080"
+      - "4040:4040"
+      - "33000-33020:33000-33020"
+    command: >
+      bash -c "
+        export SPARK_LOCAL_HOSTNAME=192.168.4.100 &&
+        export SPARK_PUBLIC_DNS=192.168.4.100 &&
+        echo '========================================' &&
+        echo 'Spark Master starting on 192.168.4.100' &&
+        echo '========================================' &&
+        /opt/spark/sbin/start-master.sh --host 0.0.0.0 --port 7077 --webui-port 8080 &&
+        tail -f /opt/spark/logs/*
+      "
+    environment:
+      - SPARK_NO_DAEMONIZE=1
+      - SPARK_LOCAL_HOSTNAME=192.168.4.100
+      - SPARK_PUBLIC_DNS=192.168.4.100
+      - SPARK_MASTER_HOST=192.168.4.100
+    deploy:
+      resources:
+        limits:
+          memory: 4g
+
+  # =========================================================================
+  # DRIVER — Runs the 3-phase benchmark
+  # =========================================================================
+  benchmark-driver:
+    build:
+      context: ..
+      dockerfile: Dockerfile.worker
+    container_name: benchmark-driver-opt
+    ports:
+      - "33000-33020"
+    volumes:
+      - ../benchmark_results:/app/benchmark_results
+      - ../pytorch_benchmark:/app/pytorch_benchmark:ro
+    command: >
+      bash -c "
+        echo 'Waiting 30s for workers to register...' &&
+        sleep 30 &&
+        echo '========================================' &&
+        echo 'Starting 3-Phase Cluster Benchmark' &&
+        echo '========================================' &&
+        python -m pytorch_benchmark.cluster_benchmark
+      "
+    environment:
+      # Spark connection
+      - SPARK_MASTER=spark://192.168.4.100:7077
+      - SPARK_LOCAL_HOSTNAME=192.168.4.100
+      - SPARK_PUBLIC_DNS=192.168.4.100
+      - SPARK_DRIVER_HOST=192.168.4.100
+      - SPARK_DRIVER_PORT=33000
+      - SPARK_DRIVER_BLOCKMANAGER_PORT=33005
+
+      # Optimized executor settings for 32 GB RAM workers
+      - SPARK_DRIVER_MEMORY=4g
+      - SPARK_EXECUTOR_MEMORY=12g
+      - SPARK_EXECUTOR_MEMORY_OVERHEAD=2g
+      - SPARK_EXECUTOR_CORES=4
+      - SPARK_NUM_EXECUTORS=4
+
+      # Benchmark config
+      - BENCHMARK_OUTPUT_DIR=/app/benchmark_results
+      - BENCHMARK_SAMPLES=1000
+      - BENCHMARK_BATCH_SIZE=64
+      - BENCHMARK_PARTITIONS=8
+
+      # GPU config
+      - CUDA_VISIBLE_DEVICES=all
+    depends_on:
+      - spark-master
+    deploy:
+      resources:
+        limits:
+          memory: 6g
