@@ -1,0 +1,64 @@
+# ===========================================================================
+# Worker Node — Docker Container
+#
+# Run on each worker machine. The master/driver runs natively on the host.
+#
+# Usage:
+#   docker compose -f docker-compose.worker.yml build
+#   docker compose -f docker-compose.worker.yml up
+#
+# CHANGE THESE before running:
+#   1. SPARK_LOCAL_HOSTNAME → this machine's LAN IP
+#   2. MASTER_IP → master machine's LAN IP
+# ===========================================================================
+
+services:
+  spark-worker:
+    build:
+      context: ../..
+      dockerfile: Dockerfile.worker
+    container_name: spark-worker
+    ports:
+      # Worker RPC port (master connects here)
+      - "7078:7078"
+      # Worker Web UI
+      - "8081:8081"
+      # Executor ports (driver connects here for task execution)
+      - "35000-35050:35000-35050"
+    command: >
+      bash -c "
+        export SPARK_LOCAL_HOSTNAME=192.168.4.101 &&
+        export SPARK_PUBLIC_DNS=192.168.4.101 &&
+        export SPARK_WORKER_PORT=7078 &&
+        CORES=$$(nproc) &&
+        echo '==========================================' &&
+        echo \"Worker: $$SPARK_LOCAL_HOSTNAME ($$CORES cores, 28g)\" &&
+        echo 'Master: spark://192.168.4.100:7077' &&
+        echo '==========================================' &&
+        /opt/spark/sbin/start-worker.sh spark://192.168.4.100:7077 \
+          -h $$SPARK_LOCAL_HOSTNAME \
+          -p 7078 \
+          -m 28g \
+          -c $$CORES \
+          --webui-port 8081 &&
+        tail -f /opt/spark/logs/*
+      "
+    environment:
+      - SPARK_NO_DAEMONIZE=1
+      - SPARK_LOCAL_HOSTNAME=192.168.4.101
+      - SPARK_PUBLIC_DNS=192.168.4.101
+      - SPARK_WORKER_PORT=7078
+      # Pin executor ports to the mapped range
+      - SPARK_WORKER_OPTS=-Dspark.port.maxRetries=50 -Dspark.blockManager.port=35010
+      # GPU
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    deploy:
+      resources:
+        limits:
+          memory: 30g
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
