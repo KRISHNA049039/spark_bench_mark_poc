@@ -1,40 +1,58 @@
 # ===========================================================================
-# NODE 2 (or 3, 4...): Spark Worker
+# Spark Worker with PyTorch — for cluster mode
 #
-# Deploy this on each worker machine.
-# 1. Build:  docker compose -f docker-compose.worker.yml build
-# 2. Start:  MASTER_IP=<node1-ip> docker compose -f docker-compose.worker.yml up
+# This image is used by Spark workers that need to run PyTorch inference
+# on their executors. Each worker gets a copy of the model code + dependencies.
 #
-# Replace <node1-ip> with the IP address of the master node.
+# Build:
+#   docker build -f Dockerfile.worker -t pytorch-spark-worker .
 # ===========================================================================
 
-services:
-  spark-worker:
-    build:
-      context: ..
-      dockerfile: Dockerfile.worker
-    container_name: spark-worker
-    hostname: spark-worker
-    ports:
-      - "8081:8081"     # Worker Web UI
-    command: >
-      bash -c "
-        echo 'Connecting to master at $${SPARK_MASTER_URL}...' &&
-        $$SPARK_HOME/sbin/start-worker.sh $${SPARK_MASTER_URL} \
-          -m $${SPARK_WORKER_MEMORY} \
-          -c $${SPARK_WORKER_CORES} \
-          --webui-port 8081 &&
-        echo 'Worker connected!' &&
-        tail -f $$SPARK_HOME/logs/*
-      "
-    environment:
-      - SPARK_NO_DAEMONIZE=1
-      # Set MASTER_IP env var when running: MASTER_IP=192.168.1.100 docker compose up
-      - SPARK_MASTER_URL=spark://${MASTER_IP:-localhost}:7077
-      - SPARK_WORKER_MEMORY=4g
-      - SPARK_WORKER_CORES=4
-    deploy:
-      resources:
-        limits:
-          cpus: "4"
-          memory: 6g
+FROM python:3.11-slim
+
+# System deps
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    wget \
+    procps \
+    && rm -rf /var/lib/apt/lists/*
+
+# Java for Spark
+RUN mkdir -p /opt/java && \
+    wget -q https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.11%2B9/OpenJDK17U-jre_x64_linux_hotspot_17.0.11_9.tar.gz -O /tmp/java.tar.gz && \
+    tar -xzf /tmp/java.tar.gz -C /opt/java --strip-components=1 && \
+    rm /tmp/java.tar.gz
+
+ENV JAVA_HOME=/opt/java
+ENV PATH="${JAVA_HOME}/bin:${PATH}"
+
+# Install full Spark distribution (includes sbin/start-worker.sh)
+ENV SPARK_VERSION=3.5.1
+ENV HADOOP_VERSION=3
+ENV SPARK_HOME=/opt/spark
+ENV PATH="${SPARK_HOME}/bin:${SPARK_HOME}/sbin:${PATH}"
+
+RUN wget -q "https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz" -O /tmp/spark.tgz && \
+    tar -xzf /tmp/spark.tgz -C /opt && \
+    mv /opt/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION} ${SPARK_HOME} && \
+    rm /tmp/spark.tgz
+
+# Python packages (same as benchmark container)
+RUN pip install --no-cache-dir \
+    torch==2.3.0 --index-url https://download.pytorch.org/whl/cpu && \
+    pip install --no-cache-dir \
+    torchvision==0.18.0 --index-url https://download.pytorch.org/whl/cpu && \
+    pip install --no-cache-dir \
+    pyspark==3.5.1 \
+    psutil==5.9.8 \
+    numpy==1.26.4 \
+    pandas==2.2.1 \
+    scikit-learn==1.4.2
+
+# Copy benchmark code (workers need this to deserialize and run functions)
+COPY pytorch_benchmark/ /app/pytorch_benchmark/
+
+ENV PYTHONPATH=/app
+ENV PYSPARK_PYTHON=python
+
+WORKDIR /app
