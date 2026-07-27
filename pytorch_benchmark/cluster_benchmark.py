@@ -492,8 +492,13 @@ def run_all_phases():
     logger.info("")
 
     has_gpu = torch.cuda.is_available()
+    # In cluster mode, GPUs are on workers, not the driver.
+    # Check env var to force GPU phases even if driver has no GPU.
+    force_gpu = os.environ.get("FORCE_GPU_PHASES", "true").lower() in ("true", "1", "yes")
     if has_gpu:
-        logger.info(f"GPU detected: {torch.cuda.get_device_name(0)}")
+        logger.info(f"GPU detected on driver: {torch.cuda.get_device_name(0)}")
+    elif force_gpu:
+        logger.info("No GPU on driver, but FORCE_GPU_PHASES=true — workers may have GPUs. Running all phases.")
     else:
         logger.info("No GPU detected — Phase 2 (GPU) and Phase 3 (Hybrid) will skip GPU")
 
@@ -530,7 +535,7 @@ def run_all_phases():
             logger.warning(f"  [PHASE 1] FAILED: {phase1['error'][:80]}")
 
         # --- Phase 2: Distributed GPU ---
-        if has_gpu:
+        if has_gpu or force_gpu:
             logger.info(f"\n  [PHASE 2] Distributed GPU ({NUM_PARTITIONS} partitions)...")
             phase2 = run_distributed_phase(model_name, input_data, phase="gpu", use_gpu=True)
             model_results["phase2_dist_gpu"] = phase2
@@ -546,7 +551,7 @@ def run_all_phases():
             logger.info("  [PHASE 2] Skipped (no GPU available)")
 
         # --- Phase 3: Hybrid CPU + GPU ---
-        if has_gpu:
+        if has_gpu or force_gpu:
             logger.info(f"\n  [PHASE 3] Hybrid CPU+GPU ({NUM_PARTITIONS} partitions, split)...")
             phase3 = run_distributed_phase(model_name, input_data, phase="hybrid", use_gpu=True)
             model_results["phase3_hybrid"] = phase3

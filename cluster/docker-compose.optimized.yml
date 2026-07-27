@@ -112,7 +112,8 @@ services:
       - BENCHMARK_BATCH_SIZE=64
       - BENCHMARK_PARTITIONS=8
 
-      # GPU config
+      # GPU config — workers have GPUs, driver may not
+      - FORCE_GPU_PHASES=true
       - CUDA_VISIBLE_DEVICES=all
     depends_on:
       - spark-master
