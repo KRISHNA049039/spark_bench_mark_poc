@@ -22,9 +22,9 @@ services:
     command: >
       bash -c "
         echo 'Starting Spark Master...' &&
-        $$SPARK_HOME/sbin/start-master.sh --host 0.0.0.0 --port 7077 --webui-port 8080 &&
+        /opt/spark/sbin/start-master.sh --host 0.0.0.0 --port 7077 --webui-port 8080 &&
         echo 'Master started on port 7077' &&
-        tail -f $$SPARK_HOME/logs/*
+        tail -f /opt/spark/logs/*
       "
     environment:
       - SPARK_NO_DAEMONIZE=1

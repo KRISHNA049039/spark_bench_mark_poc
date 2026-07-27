@@ -1,0 +1,224 @@
+[
+  {
+    "model": "resnet50",
+    "config": {
+      "type": "vision",
+      "description": "ResNet-50 (ImageNet pretrained)",
+      "input_size": [
+        3,
+        224,
+        224
+      ],
+      "num_classes": 1000
+    },
+    "modes": {
+      "torch_cpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 5.919863695000004,
+        "throughput_samples_per_sec": 33.78456165619534,
+        "avg_latency_ms": 29.59931847500002,
+        "p50_batch_latency_ms": 904.9090840000033,
+        "p95_batch_latency_ms": 1047.0290566999997,
+        "p99_batch_latency_ms": 1057.0899481400008,
+        "predictions_hash": "ccec10e211136db5",
+        "model_info": {
+          "name": "resnet50",
+          "description": "ResNet-50 (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 25557032,
+          "size_mb": 97.49234008789062
+        },
+        "resources": {
+          "memory_delta_mb": 79.9765625,
+          "gc_collections": 0
+        }
+      },
+      "spark_cpu": {
+        "error": "'throughput_samples_per_sec'"
+      }
+    },
+    "reproducibility": {
+      "all_match": true,
+      "hashes": {
+        "torch_cpu": "ccec10e211136db5"
+      }
+    }
+  },
+  {
+    "model": "mobilenet_v3",
+    "config": {
+      "type": "vision",
+      "description": "MobileNetV3-Small (ImageNet pretrained)",
+      "input_size": [
+        3,
+        224,
+        224
+      ],
+      "num_classes": 1000
+    },
+    "modes": {
+      "torch_cpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 0.5546410350000031,
+        "throughput_samples_per_sec": 360.5935864446072,
+        "avg_latency_ms": 2.7732051750000153,
+        "p50_batch_latency_ms": 56.93018300000574,
+        "p95_batch_latency_ms": 166.47778239999545,
+        "p99_batch_latency_ms": 194.54968767999526,
+        "predictions_hash": "a1e49e9f0d1d8c81",
+        "model_info": {
+          "name": "mobilenet_v3",
+          "description": "MobileNetV3-Small (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 2542856,
+          "size_mb": 9.700225830078125
+        },
+        "resources": {
+          "memory_delta_mb": 2.39453125,
+          "gc_collections": 0
+        }
+      },
+      "spark_cpu": {
+        "error": "'throughput_samples_per_sec'"
+      }
+    },
+    "reproducibility": {
+      "all_match": true,
+      "hashes": {
+        "torch_cpu": "a1e49e9f0d1d8c81"
+      }
+    }
+  },
+  {
+    "model": "efficientnet_b0",
+    "config": {
+      "type": "vision",
+      "description": "EfficientNet-B0 (ImageNet pretrained)",
+      "input_size": [
+        3,
+        224,
+        224
+      ],
+      "num_classes": 1000
+    },
+    "modes": {
+      "torch_cpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 2.692568417000004,
+        "throughput_samples_per_sec": 74.27852110916285,
+        "avg_latency_ms": 13.46284208500002,
+        "p50_batch_latency_ms": 426.0064009999951,
+        "p95_batch_latency_ms": 459.308230000002,
+        "p99_batch_latency_ms": 460.9315660000044,
+        "predictions_hash": "162be029d69f8ca2",
+        "model_info": {
+          "name": "efficientnet_b0",
+          "description": "EfficientNet-B0 (ImageNet pretrained)",
+          "type": "vision",
+          "total_params": 5288548,
+          "size_mb": 20.174209594726562
+        },
+        "resources": {
+          "memory_delta_mb": 40.65625,
+          "gc_collections": 0
+        }
+      },
+      "spark_cpu": {
+        "error": "'throughput_samples_per_sec'"
+      }
+    },
+    "reproducibility": {
+      "all_match": true,
+      "hashes": {
+        "torch_cpu": "162be029d69f8ca2"
+      }
+    }
+  },
+  {
+    "model": "distilbert",
+    "config": {
+      "type": "nlp",
+      "description": "DistilBERT (HuggingFace, sentiment classification)",
+      "max_seq_length": 128,
+      "num_classes": 2
+    },
+    "modes": {
+      "torch_cpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 3.93040070699999,
+        "throughput_samples_per_sec": 50.885396912279894,
+        "avg_latency_ms": 19.65200353499995,
+        "p50_batch_latency_ms": 567.3989820000003,
+        "p95_batch_latency_ms": 804.884306600006,
+        "p99_batch_latency_ms": 824.1714477200056,
+        "predictions_hash": "33b41c39440e7682",
+        "model_info": {
+          "name": "distilbert",
+          "description": "DistilBERT (HuggingFace, sentiment classification)",
+          "type": "nlp",
+          "total_params": 66660098,
+          "size_mb": 254.28809356689453
+        },
+        "resources": {
+          "memory_delta_mb": 28.6484375,
+          "gc_collections": 0
+        }
+      },
+      "spark_cpu": {
+        "error": "'throughput_samples_per_sec'"
+      }
+    },
+    "reproducibility": {
+      "all_match": true,
+      "hashes": {
+        "torch_cpu": "33b41c39440e7682"
+      }
+    }
+  },
+  {
+    "model": "tabular_deep",
+    "config": {
+      "type": "tabular",
+      "description": "Deep tabular model with attention (production-grade)",
+      "num_features": 20,
+      "num_classes": 5
+    },
+    "modes": {
+      "torch_cpu": {
+        "num_samples": 200,
+        "batch_size": 32,
+        "total_time_sec": 0.025842621999998983,
+        "throughput_samples_per_sec": 7739.152784110214,
+        "avg_latency_ms": 0.1292131099999949,
+        "p50_batch_latency_ms": 2.7881460000003244,
+        "p95_batch_latency_ms": 7.043217599998283,
+        "p99_batch_latency_ms": 7.6828075200009485,
+        "predictions_hash": "a129b369cc852515",
+        "model_info": {
+          "name": "tabular_deep",
+          "description": "Deep tabular model with attention (production-grade)",
+          "type": "tabular",
+          "total_params": 161605,
+          "size_mb": 0.6164741516113281
+        },
+        "resources": {
+          "memory_delta_mb": 0.34765625,
+          "gc_collections": 0
+        }
+      },
+      "spark_cpu": {
+        "error": "'throughput_samples_per_sec'"
+      }
+    },
+    "reproducibility": {
+      "all_match": true,
+      "hashes": {
+        "torch_cpu": "a129b369cc852515"
+      }
+    }
+  }
+]

@@ -195,9 +195,10 @@ services:
       - "7077:7077"
     command: >
       bash -c "
-        python -m pyspark --version &&
-        $${SPARK_HOME}/sbin/start-master.sh --host 0.0.0.0 --port 7077 --webui-port 8080 &&
-        tail -f $${SPARK_HOME}/logs/*
+        echo 'Starting Spark Master...' &&
+        /opt/spark/sbin/start-master.sh --host 0.0.0.0 --port 7077 --webui-port 8080 &&
+        echo 'Master running on port 7077' &&
+        tail -f /opt/spark/logs/*
       "
     environment:
       - SPARK_NO_DAEMONIZE=1
@@ -218,8 +219,8 @@ services:
     command: >
       bash -c "
         sleep 5 &&
-        $${SPARK_HOME}/sbin/start-worker.sh spark://spark-master:7077 -m 4g -c 2 &&
-        tail -f $${SPARK_HOME}/logs/*
+        /opt/spark/sbin/start-worker.sh spark://spark-master:7077 -m 4g -c 2 &&
+        tail -f /opt/spark/logs/*
       "
     environment:
       - SPARK_NO_DAEMONIZE=1
@@ -241,8 +242,8 @@ services:
     command: >
       bash -c "
         sleep 5 &&
-        $${SPARK_HOME}/sbin/start-worker.sh spark://spark-master:7077 -m 4g -c 2 &&
-        tail -f $${SPARK_HOME}/logs/*
+        /opt/spark/sbin/start-worker.sh spark://spark-master:7077 -m 4g -c 2 &&
+        tail -f /opt/spark/logs/*
       "
     environment:
       - SPARK_NO_DAEMONIZE=1

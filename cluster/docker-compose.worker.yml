@@ -20,12 +20,12 @@ services:
     command: >
       bash -c "
         echo 'Connecting to master at $${SPARK_MASTER_URL}...' &&
-        $$SPARK_HOME/sbin/start-worker.sh $${SPARK_MASTER_URL} \
+        /opt/spark/sbin/start-worker.sh $${SPARK_MASTER_URL} \
           -m $${SPARK_WORKER_MEMORY} \
           -c $${SPARK_WORKER_CORES} \
           --webui-port 8081 &&
         echo 'Worker connected!' &&
-        tail -f $$SPARK_HOME/logs/*
+        tail -f /opt/spark/logs/*
       "
     environment:
       - SPARK_NO_DAEMONIZE=1
