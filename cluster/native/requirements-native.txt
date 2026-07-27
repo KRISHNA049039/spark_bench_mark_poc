@@ -1,0 +1,31 @@
+# Install on ALL machines (master + workers)
+# For GPU machines, replace the first line with the cu128 version (see below)
+
+# CPU-only PyTorch (use this on master/driver if it has no GPU)
+torch==2.3.0
+torchvision==0.18.0
+
+# Spark
+pyspark==3.5.1
+
+# Monitoring
+psutil==5.9.8
+GPUtil==1.4.0
+
+# Data
+numpy==1.26.4
+pandas==2.2.1
+scikit-learn==1.4.2
+
+# Reporting
+tabulate==0.9.0
+matplotlib==3.8.4
+
+# ============================================================
+# For GPU workers (RTX 5060), use this INSTEAD of the above torch lines:
+#
+# pip install --pre torch torchvision --index-url https://download.pytorch.org/whl/nightly/cu128
+#
+# Then install the rest:
+# pip install pyspark==3.5.1 psutil GPUtil numpy pandas scikit-learn tabulate matplotlib
+# ============================================================

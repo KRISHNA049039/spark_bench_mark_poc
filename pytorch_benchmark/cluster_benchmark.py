@@ -119,12 +119,14 @@ def create_spark_session(app_name: str, use_gpu: bool = False):
     if SPARK_DRIVER_BLOCKMANAGER_PORT:
         builder = builder.config("spark.driver.blockManager.port", SPARK_DRIVER_BLOCKMANAGER_PORT)
 
-    # GPU resources
-    if use_gpu:
-        builder = (builder
-            .config("spark.executor.resource.gpu.amount", "1")
-            .config("spark.task.resource.gpu.amount", "1")
-        )
+    # GPU resources — disabled for Spark resource scheduling
+    # Workers handle GPU selection in Python code directly via torch.cuda
+    # (Spark GPU scheduling requires extra config on workers that's complex with Docker Desktop)
+    # if use_gpu:
+    #     builder = (builder
+    #         .config("spark.executor.resource.gpu.amount", "1")
+    #         .config("spark.task.resource.gpu.amount", "1")
+    #     )
 
     return builder.getOrCreate()
 
