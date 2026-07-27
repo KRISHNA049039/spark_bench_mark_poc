@@ -30,10 +30,7 @@ services:
       context: ..
       dockerfile: Dockerfile.worker
     container_name: spark-worker-opt
-    ports:
-      - "8081:8081"
-      - "7078:7078"
-      - "35000-35100:35000-35100"
+    network_mode: host
     command:
       - bash
       - -c
