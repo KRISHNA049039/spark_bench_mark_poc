@@ -1,0 +1,137 @@
+# ===========================================================================
+# Docker Swarm Stack — Multi-Machine Spark Cluster
+#
+# All containers share an overlay network. No IP mismatch.
+# Driver, master, and workers can all reach each other by service name.
+#
+# Setup:
+#   1. On master:  docker swarm init --advertise-addr 192.168.4.100
+#   2. On workers: docker swarm join --token <token> 192.168.4.100:2377
+#   3. On master:  docker stack deploy -c docker-compose.swarm.yml spark
+#
+# Teardown:
+#   docker stack rm spark
+# ===========================================================================
+
+version: "3.8"
+
+services:
+
+  # =========================================================================
+  # SPARK MASTER
+  # =========================================================================
+  spark-master:
+    image: pytorch-spark-worker:latest
+    hostname: spark-master
+    ports:
+      - "7077:7077"
+      - "8080:8080"
+    command: >
+      bash -c "
+        export SPARK_LOCAL_HOSTNAME=spark-master &&
+        export SPARK_PUBLIC_DNS=spark-master &&
+        echo 'Starting Spark Master...' &&
+        /opt/spark/sbin/start-master.sh --host spark-master --port 7077 --webui-port 8080 &&
+        tail -f /opt/spark/logs/*
+      "
+    environment:
+      - SPARK_NO_DAEMONIZE=1
+      - SPARK_LOCAL_HOSTNAME=spark-master
+      - SPARK_PUBLIC_DNS=spark-master
+    networks:
+      - spark-overlay
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+
+  # =========================================================================
+  # SPARK WORKERS (deployed across all swarm nodes)
+  # =========================================================================
+  spark-worker:
+    image: pytorch-spark-worker:latest
+    command: >
+      bash -c "
+        export SPARK_LOCAL_HOSTNAME=$$(hostname) &&
+        export SPARK_PUBLIC_DNS=$$(hostname) &&
+        CORES=$$(nproc) &&
+        echo \"Worker starting: $$(hostname), $$CORES cores, 24g\" &&
+        sleep 10 &&
+        /opt/spark/sbin/start-worker.sh spark://spark-master:7077 \
+          -h $$(hostname) \
+          -m 24g \
+          -c $$CORES \
+          --webui-port 8081 &&
+        tail -f /opt/spark/logs/*
+      "
+    environment:
+      - SPARK_NO_DAEMONIZE=1
+      - SPARK_WORKER_MEMORY=24g
+    networks:
+      - spark-overlay
+    deploy:
+      replicas: 2
+      placement:
+        constraints:
+          - node.role == worker
+      resources:
+        limits:
+          memory: 28g
+
+  # =========================================================================
+  # BENCHMARK DRIVER
+  # =========================================================================
+  benchmark-driver:
+    image: pytorch-spark-worker:latest
+    hostname: benchmark-driver
+    ports:
+      - "4040:4040"
+    volumes:
+      - benchmark-results:/app/benchmark_results
+    command: >
+      bash -c "
+        echo 'Waiting 30s for workers to register with master...' &&
+        sleep 30 &&
+        echo '========================================' &&
+        echo 'Starting 3-Phase Cluster Benchmark' &&
+        echo '========================================' &&
+        python -m pytorch_benchmark.cluster_benchmark
+      "
+    environment:
+      - SPARK_MASTER=spark://spark-master:7077
+      - SPARK_LOCAL_HOSTNAME=benchmark-driver
+      - SPARK_PUBLIC_DNS=benchmark-driver
+      - SPARK_DRIVER_HOST=benchmark-driver
+      - SPARK_DRIVER_PORT=33000
+      - SPARK_DRIVER_BLOCKMANAGER_PORT=33005
+      - SPARK_DRIVER_MEMORY=4g
+      - SPARK_EXECUTOR_MEMORY=12g
+      - SPARK_EXECUTOR_MEMORY_OVERHEAD=2g
+      - SPARK_EXECUTOR_CORES=4
+      - SPARK_NUM_EXECUTORS=4
+      - BENCHMARK_OUTPUT_DIR=/app/benchmark_results
+      - BENCHMARK_SAMPLES=200
+      - BENCHMARK_BATCH_SIZE=64
+      - BENCHMARK_PARTITIONS=4
+      - BENCHMARK_MODELS=efficientnet_b0
+      - FORCE_GPU_PHASES=true
+    networks:
+      - spark-overlay
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          memory: 6g
+
+networks:
+  spark-overlay:
+    driver: overlay
+    attachable: true
+
+volumes:
+  benchmark-results:
+    driver: local
