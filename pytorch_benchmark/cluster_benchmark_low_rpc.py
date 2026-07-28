@@ -76,8 +76,18 @@ _spark_session = None
 def get_spark():
     """Get or create a single SparkSession (reused across all models/phases)."""
     global _spark_session
+    
+    # Check if existing session is still alive
     if _spark_session is not None:
-        return _spark_session
+        try:
+            # Test if session is still valid
+            _spark_session.sparkContext._jsc.sc().isStopped()
+            if not _spark_session.sparkContext._jsc.sc().isStopped():
+                return _spark_session
+        except Exception:
+            pass
+        # Session is dead, clear it
+        _spark_session = None
 
     from pyspark.sql import SparkSession
 

@@ -1,0 +1,1047 @@
+{
+  "resnet50": {
+    "baseline_cpu": {
+      "throughput_samples_per_sec": 38.99510853149534,
+      "total_time_sec": 5.128848400010611,
+      "predictions_hash": "ccec10e211136db5",
+      "num_samples": 200
+    },
+    "phase1_dist_cpu": {
+      "phase": "cpu",
+      "throughput_samples_per_sec": 4.757632125062859,
+      "total_time_sec": 42.03771850001067,
+      "predictions_hash": "ae2dd42b368435c0",
+      "num_samples": 200,
+      "num_partitions": 4,
+      "executor_metrics": {
+        "num_executors_used": 4,
+        "avg_exec_time_sec": 7.041319405250007,
+        "max_exec_time_sec": 7.340734205000018,
+        "min_exec_time_sec": 6.293837396000015,
+        "total_throughput": 28.52029393564592,
+        "devices_used": [
+          "cpu"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "predictions_hash": "0e3583c91e56f405",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 6.293837396000015,
+            "throughput": 7.944278959570356,
+            "memory_delta_mb": 16.0234375,
+            "gpu": {}
+          },
+          {
+            "partition_id": 1,
+            "predictions_hash": "0e3583c91e56f405",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 7.211684902000002,
+            "throughput": 6.93319254507828,
+            "memory_delta_mb": 54.11328125,
+            "gpu": {}
+          },
+          {
+            "partition_id": 2,
+            "predictions_hash": "0e3583c91e56f405",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 7.340734205000018,
+            "throughput": 6.811307779805368,
+            "memory_delta_mb": 53.8359375,
+            "gpu": {}
+          },
+          {
+            "partition_id": 3,
+            "predictions_hash": "0e3583c91e56f405",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 7.319021117999995,
+            "throughput": 6.831514651191916,
+            "memory_delta_mb": 52.515625,
+            "gpu": {}
+          }
+        ]
+      },
+      "rpc_overhead": {
+        "bytes_sent_per_task": "~200 bytes (config only)",
+        "bytes_received_per_task": "~500 bytes (metrics only)",
+        "model_transferred": false,
+        "data_transferred": false,
+        "strategy": "Workers load model + generate data locally"
+      }
+    },
+    "phase2_dist_gpu": {
+      "phase": "gpu",
+      "throughput_samples_per_sec": 21.299859269684706,
+      "total_time_sec": 9.389733400006662,
+      "predictions_hash": "ae2dd42b368435c0",
+      "num_samples": 200,
+      "num_partitions": 4,
+      "executor_metrics": {
+        "num_executors_used": 4,
+        "avg_exec_time_sec": 6.381116100749992,
+        "max_exec_time_sec": 6.458644772999975,
+        "min_exec_time_sec": 6.307658954999994,
+        "total_throughput": 31.345559010505163,
+        "devices_used": [
+          "cpu"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "predictions_hash": "0e3583c91e56f405",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 6.427003146000004,
+            "throughput": 7.779675669074267,
+            "memory_delta_mb": 0.109375,
+            "gpu": {}
+          },
+          {
+            "partition_id": 1,
+            "predictions_hash": "0e3583c91e56f405",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 6.307658954999994,
+            "throughput": 7.9268711825907605,
+            "memory_delta_mb": 52.796875,
+            "gpu": {}
+          },
+          {
+            "partition_id": 2,
+            "predictions_hash": "0e3583c91e56f405",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 6.331157528999995,
+            "throughput": 7.897449995672038,
+            "memory_delta_mb": 0.109375,
+            "gpu": {}
+          },
+          {
+            "partition_id": 3,
+            "predictions_hash": "0e3583c91e56f405",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 6.458644772999975,
+            "throughput": 7.741562163168096,
+            "memory_delta_mb": 0.109375,
+            "gpu": {}
+          }
+        ]
+      },
+      "rpc_overhead": {
+        "bytes_sent_per_task": "~200 bytes (config only)",
+        "bytes_received_per_task": "~500 bytes (metrics only)",
+        "model_transferred": false,
+        "data_transferred": false,
+        "strategy": "Workers load model + generate data locally"
+      }
+    },
+    "phase3_hybrid": {
+      "phase": "hybrid",
+      "throughput_samples_per_sec": 27.567609216993883,
+      "total_time_sec": 7.254891000004136,
+      "predictions_hash": "ae2dd42b368435c0",
+      "num_samples": 200,
+      "num_partitions": 4,
+      "executor_metrics": {
+        "num_executors_used": 4,
+        "avg_exec_time_sec": 6.492671280750002,
+        "max_exec_time_sec": 6.759185042000013,
+        "min_exec_time_sec": 6.3179947630000015,
+        "total_throughput": 30.822970027800448,
+        "devices_used": [
+          "cpu"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "predictions_hash": "0e3583c91e56f405",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 6.3179947630000015,
+            "throughput": 7.913903362632462,
+            "memory_delta_mb": 0.125,
+            "gpu": {}
+          },
+          {
+            "partition_id": 1,
+            "predictions_hash": "0e3583c91e56f405",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 6.759185042000013,
+            "throughput": 7.397341497430765,
+            "memory_delta_mb": 0.125,
+            "gpu": {}
+          },
+          {
+            "partition_id": 2,
+            "predictions_hash": "0e3583c91e56f405",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 6.436448535000011,
+            "throughput": 7.768259114962365,
+            "memory_delta_mb": -7.6875,
+            "gpu": {}
+          },
+          {
+            "partition_id": 3,
+            "predictions_hash": "0e3583c91e56f405",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 6.4570567829999845,
+            "throughput": 7.743466052774856,
+            "memory_delta_mb": -7.6875,
+            "gpu": {}
+          }
+        ]
+      },
+      "rpc_overhead": {
+        "bytes_sent_per_task": "~200 bytes (config only)",
+        "bytes_received_per_task": "~500 bytes (metrics only)",
+        "model_transferred": false,
+        "data_transferred": false,
+        "strategy": "Workers load model + generate data locally"
+      }
+    }
+  },
+  "mobilenet_v3": {
+    "baseline_cpu": {
+      "throughput_samples_per_sec": 391.95588927892675,
+      "total_time_sec": 0.5102615000068909,
+      "predictions_hash": "a1e49e9f0d1d8c81",
+      "num_samples": 200
+    },
+    "phase1_dist_cpu": {
+      "phase": "cpu",
+      "throughput_samples_per_sec": 58.64896421970899,
+      "total_time_sec": 3.4101198999996996,
+      "predictions_hash": "0deadc3574b1f670",
+      "num_samples": 200,
+      "num_partitions": 4,
+      "executor_metrics": {
+        "num_executors_used": 4,
+        "avg_exec_time_sec": 0.27320756750000896,
+        "max_exec_time_sec": 0.358469853999992,
+        "min_exec_time_sec": 0.17640426400001274,
+        "total_throughput": 797.5120016417497,
+        "devices_used": [
+          "cpu"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "predictions_hash": "47ece8f3f669c854",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.22107068600001867,
+            "throughput": 226.1720036459098,
+            "memory_delta_mb": 1.66015625,
+            "gpu": {}
+          },
+          {
+            "partition_id": 1,
+            "predictions_hash": "3a06b2626331ddba",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.33688546600001246,
+            "throughput": 148.41839451749502,
+            "memory_delta_mb": 27.94140625,
+            "gpu": {}
+          },
+          {
+            "partition_id": 2,
+            "predictions_hash": "8fdae6eca0e6add9",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.358469853999992,
+            "throughput": 139.48174286365827,
+            "memory_delta_mb": 55.4921875,
+            "gpu": {}
+          },
+          {
+            "partition_id": 3,
+            "predictions_hash": "92fc36b52cf465ae",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.17640426400001274,
+            "throughput": 283.43986061468667,
+            "memory_delta_mb": 1.66796875,
+            "gpu": {}
+          }
+        ]
+      },
+      "rpc_overhead": {
+        "bytes_sent_per_task": "~200 bytes (config only)",
+        "bytes_received_per_task": "~500 bytes (metrics only)",
+        "model_transferred": false,
+        "data_transferred": false,
+        "strategy": "Workers load model + generate data locally"
+      }
+    },
+    "phase2_dist_gpu": {
+      "phase": "gpu",
+      "throughput_samples_per_sec": 235.13751606289165,
+      "total_time_sec": 0.8505660999944666,
+      "predictions_hash": "0deadc3574b1f670",
+      "num_samples": 200,
+      "num_partitions": 4,
+      "executor_metrics": {
+        "num_executors_used": 4,
+        "avg_exec_time_sec": 0.4406156155000005,
+        "max_exec_time_sec": 0.4670437450000122,
+        "min_exec_time_sec": 0.41153814300000136,
+        "total_throughput": 455.4289867840177,
+        "devices_used": [
+          "cpu"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "predictions_hash": "47ece8f3f669c854",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.41153814300000136,
+            "throughput": 121.49542114253025,
+            "memory_delta_mb": 0.0,
+            "gpu": {}
+          },
+          {
+            "partition_id": 1,
+            "predictions_hash": "3a06b2626331ddba",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.4670437450000122,
+            "throughput": 107.05635293327543,
+            "memory_delta_mb": 53.70703125,
+            "gpu": {}
+          },
+          {
+            "partition_id": 2,
+            "predictions_hash": "8fdae6eca0e6add9",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.4647108869999954,
+            "throughput": 107.59377797835086,
+            "memory_delta_mb": 35.890625,
+            "gpu": {}
+          },
+          {
+            "partition_id": 3,
+            "predictions_hash": "92fc36b52cf465ae",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.419169686999993,
+            "throughput": 119.28343472986116,
+            "memory_delta_mb": 4.5,
+            "gpu": {}
+          }
+        ]
+      },
+      "rpc_overhead": {
+        "bytes_sent_per_task": "~200 bytes (config only)",
+        "bytes_received_per_task": "~500 bytes (metrics only)",
+        "model_transferred": false,
+        "data_transferred": false,
+        "strategy": "Workers load model + generate data locally"
+      }
+    },
+    "phase3_hybrid": {
+      "phase": "hybrid",
+      "throughput_samples_per_sec": 252.12614829230316,
+      "total_time_sec": 0.7932537000015145,
+      "predictions_hash": "0deadc3574b1f670",
+      "num_samples": 200,
+      "num_partitions": 4,
+      "executor_metrics": {
+        "num_executors_used": 4,
+        "avg_exec_time_sec": 0.4339367410000037,
+        "max_exec_time_sec": 0.46793069899999296,
+        "min_exec_time_sec": 0.36218376700000476,
+        "total_throughput": 465.8695474081912,
+        "devices_used": [
+          "cpu"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "predictions_hash": "47ece8f3f669c854",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.46793069899999296,
+            "throughput": 106.85342959300209,
+            "memory_delta_mb": 48.95703125,
+            "gpu": {}
+          },
+          {
+            "partition_id": 1,
+            "predictions_hash": "3a06b2626331ddba",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.46356555900001695,
+            "throughput": 107.8596091302766,
+            "memory_delta_mb": 0.0,
+            "gpu": {}
+          },
+          {
+            "partition_id": 2,
+            "predictions_hash": "8fdae6eca0e6add9",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.44206693900000005,
+            "throughput": 113.10504267318665,
+            "memory_delta_mb": 0.0,
+            "gpu": {}
+          },
+          {
+            "partition_id": 3,
+            "predictions_hash": "92fc36b52cf465ae",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.36218376700000476,
+            "throughput": 138.05146601172586,
+            "memory_delta_mb": 0.0,
+            "gpu": {}
+          }
+        ]
+      },
+      "rpc_overhead": {
+        "bytes_sent_per_task": "~200 bytes (config only)",
+        "bytes_received_per_task": "~500 bytes (metrics only)",
+        "model_transferred": false,
+        "data_transferred": false,
+        "strategy": "Workers load model + generate data locally"
+      }
+    }
+  },
+  "efficientnet_b0": {
+    "baseline_cpu": {
+      "throughput_samples_per_sec": 59.21677232170394,
+      "total_time_sec": 3.377421500001219,
+      "predictions_hash": "162be029d69f8ca2",
+      "num_samples": 200
+    },
+    "phase1_dist_cpu": {
+      "phase": "cpu",
+      "throughput_samples_per_sec": 23.622227107818304,
+      "total_time_sec": 8.466602200001944,
+      "predictions_hash": "ca2b439a81921a86",
+      "num_samples": 200,
+      "num_partitions": 4,
+      "executor_metrics": {
+        "num_executors_used": 4,
+        "avg_exec_time_sec": 2.536620230000004,
+        "max_exec_time_sec": 2.745097529999981,
+        "min_exec_time_sec": 2.310412599000017,
+        "total_throughput": 79.35028647619805,
+        "devices_used": [
+          "cpu"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "predictions_hash": "fc6ec7a16d39b6b3",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 2.310412599000017,
+            "throughput": 21.641156225360263,
+            "memory_delta_mb": 1.11328125,
+            "gpu": {}
+          },
+          {
+            "partition_id": 1,
+            "predictions_hash": "68468e52cafee11c",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 2.360047210999994,
+            "throughput": 21.186016858880592,
+            "memory_delta_mb": 42.96875,
+            "gpu": {}
+          },
+          {
+            "partition_id": 2,
+            "predictions_hash": "fefd7c17f8d43117",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 2.745097529999981,
+            "throughput": 18.214289093036466,
+            "memory_delta_mb": 44.1640625,
+            "gpu": {}
+          },
+          {
+            "partition_id": 3,
+            "predictions_hash": "9cce65d588db4a31",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 2.7309235800000238,
+            "throughput": 18.308824298920722,
+            "memory_delta_mb": -14.453125,
+            "gpu": {}
+          }
+        ]
+      },
+      "rpc_overhead": {
+        "bytes_sent_per_task": "~200 bytes (config only)",
+        "bytes_received_per_task": "~500 bytes (metrics only)",
+        "model_transferred": false,
+        "data_transferred": false,
+        "strategy": "Workers load model + generate data locally"
+      }
+    },
+    "phase2_dist_gpu": {
+      "phase": "gpu",
+      "throughput_samples_per_sec": 61.734067355625065,
+      "total_time_sec": 3.239702299993951,
+      "predictions_hash": "ca2b439a81921a86",
+      "num_samples": 200,
+      "num_partitions": 4,
+      "executor_metrics": {
+        "num_executors_used": 4,
+        "avg_exec_time_sec": 2.7768377292499906,
+        "max_exec_time_sec": 2.922950420999996,
+        "min_exec_time_sec": 2.58836088999999,
+        "total_throughput": 72.17240999830857,
+        "devices_used": [
+          "cpu"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "predictions_hash": "fc6ec7a16d39b6b3",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 2.7521661539999798,
+            "throughput": 18.167507774677897,
+            "memory_delta_mb": 50.2421875,
+            "gpu": {}
+          },
+          {
+            "partition_id": 1,
+            "predictions_hash": "68468e52cafee11c",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 2.922950420999996,
+            "throughput": 17.106003454856435,
+            "memory_delta_mb": 8.27734375,
+            "gpu": {}
+          },
+          {
+            "partition_id": 2,
+            "predictions_hash": "fefd7c17f8d43117",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 2.843873451999997,
+            "throughput": 17.581654333049435,
+            "memory_delta_mb": 20.3359375,
+            "gpu": {}
+          },
+          {
+            "partition_id": 3,
+            "predictions_hash": "9cce65d588db4a31",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 2.58836088999999,
+            "throughput": 19.317244435724803,
+            "memory_delta_mb": -11.51171875,
+            "gpu": {}
+          }
+        ]
+      },
+      "rpc_overhead": {
+        "bytes_sent_per_task": "~200 bytes (config only)",
+        "bytes_received_per_task": "~500 bytes (metrics only)",
+        "model_transferred": false,
+        "data_transferred": false,
+        "strategy": "Workers load model + generate data locally"
+      }
+    },
+    "phase3_hybrid": {
+      "phase": "hybrid",
+      "throughput_samples_per_sec": 60.83592638873866,
+      "total_time_sec": 3.287531099995249,
+      "predictions_hash": "ca2b439a81921a86",
+      "num_samples": 200,
+      "num_partitions": 4,
+      "executor_metrics": {
+        "num_executors_used": 4,
+        "avg_exec_time_sec": 2.758251746499994,
+        "max_exec_time_sec": 2.8840627499999982,
+        "min_exec_time_sec": 2.6218104029999836,
+        "total_throughput": 72.60973924449443,
+        "devices_used": [
+          "cpu"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "predictions_hash": "fc6ec7a16d39b6b3",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 2.8840627499999982,
+            "throughput": 17.336654689638785,
+            "memory_delta_mb": 50.84375,
+            "gpu": {}
+          },
+          {
+            "partition_id": 1,
+            "predictions_hash": "68468e52cafee11c",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 2.6218104029999836,
+            "throughput": 19.070791672345162,
+            "memory_delta_mb": 0.0,
+            "gpu": {}
+          },
+          {
+            "partition_id": 2,
+            "predictions_hash": "fefd7c17f8d43117",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 2.8237571239999966,
+            "throughput": 17.706905305358713,
+            "memory_delta_mb": 32.30078125,
+            "gpu": {}
+          },
+          {
+            "partition_id": 3,
+            "predictions_hash": "9cce65d588db4a31",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 2.703376708999997,
+            "throughput": 18.495387577151778,
+            "memory_delta_mb": 43.06640625,
+            "gpu": {}
+          }
+        ]
+      },
+      "rpc_overhead": {
+        "bytes_sent_per_task": "~200 bytes (config only)",
+        "bytes_received_per_task": "~500 bytes (metrics only)",
+        "model_transferred": false,
+        "data_transferred": false,
+        "strategy": "Workers load model + generate data locally"
+      }
+    }
+  },
+  "distilbert": {
+    "baseline_cpu": {
+      "throughput_samples_per_sec": 55.37216141894717,
+      "total_time_sec": 3.6119232999917585,
+      "predictions_hash": "33b41c39440e7682",
+      "num_samples": 200
+    },
+    "phase1_dist_cpu": {
+      "phase": "cpu",
+      "throughput_samples_per_sec": 36.58512202721175,
+      "total_time_sec": 5.466703099998995,
+      "predictions_hash": "be7d30c986d75282",
+      "num_samples": 200,
+      "num_partitions": 4,
+      "executor_metrics": {
+        "num_executors_used": 4,
+        "avg_exec_time_sec": 5.085288180500001,
+        "max_exec_time_sec": 5.108579758000019,
+        "min_exec_time_sec": 5.0567630999999835,
+        "total_throughput": 39.329691169087994,
+        "devices_used": [
+          "cpu"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "predictions_hash": "f33daf5fc5cddc53",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 5.081448452000018,
+            "throughput": 9.839714103627362,
+            "memory_delta_mb": 3.71875,
+            "gpu": {}
+          },
+          {
+            "partition_id": 1,
+            "predictions_hash": "f33daf5fc5cddc53",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 5.0567630999999835,
+            "throughput": 9.887748152568223,
+            "memory_delta_mb": 3.76953125,
+            "gpu": {}
+          },
+          {
+            "partition_id": 2,
+            "predictions_hash": "26d18c219a0919ea",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 5.094361411999984,
+            "throughput": 9.814772835359284,
+            "memory_delta_mb": 3.59375,
+            "gpu": {}
+          },
+          {
+            "partition_id": 3,
+            "predictions_hash": "f33daf5fc5cddc53",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 5.108579758000019,
+            "throughput": 9.787456077533127,
+            "memory_delta_mb": 3.71484375,
+            "gpu": {}
+          }
+        ]
+      },
+      "rpc_overhead": {
+        "bytes_sent_per_task": "~200 bytes (config only)",
+        "bytes_received_per_task": "~500 bytes (metrics only)",
+        "model_transferred": false,
+        "data_transferred": false,
+        "strategy": "Workers load model + generate data locally"
+      }
+    },
+    "phase2_dist_gpu": {
+      "phase": "gpu",
+      "throughput_samples_per_sec": 36.66419611086043,
+      "total_time_sec": 5.454913000008673,
+      "predictions_hash": "be7d30c986d75282",
+      "num_samples": 200,
+      "num_partitions": 4,
+      "executor_metrics": {
+        "num_executors_used": 4,
+        "avg_exec_time_sec": 4.978853286250001,
+        "max_exec_time_sec": 4.993130393000001,
+        "min_exec_time_sec": 4.959114376999992,
+        "total_throughput": 40.1702093666176,
+        "devices_used": [
+          "cpu"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "predictions_hash": "f33daf5fc5cddc53",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 4.990904667999985,
+            "throughput": 10.018223814328355,
+            "memory_delta_mb": 0.125,
+            "gpu": {}
+          },
+          {
+            "partition_id": 1,
+            "predictions_hash": "f33daf5fc5cddc53",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 4.993130393000001,
+            "throughput": 10.013758116570777,
+            "memory_delta_mb": 0.125,
+            "gpu": {}
+          },
+          {
+            "partition_id": 2,
+            "predictions_hash": "26d18c219a0919ea",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 4.972263707000025,
+            "throughput": 10.055782023308474,
+            "memory_delta_mb": 3.79296875,
+            "gpu": {}
+          },
+          {
+            "partition_id": 3,
+            "predictions_hash": "f33daf5fc5cddc53",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 4.959114376999992,
+            "throughput": 10.082445412409992,
+            "memory_delta_mb": 0.125,
+            "gpu": {}
+          }
+        ]
+      },
+      "rpc_overhead": {
+        "bytes_sent_per_task": "~200 bytes (config only)",
+        "bytes_received_per_task": "~500 bytes (metrics only)",
+        "model_transferred": false,
+        "data_transferred": false,
+        "strategy": "Workers load model + generate data locally"
+      }
+    },
+    "phase3_hybrid": {
+      "phase": "hybrid",
+      "throughput_samples_per_sec": 36.81782507016562,
+      "total_time_sec": 5.4321514000039315,
+      "predictions_hash": "be7d30c986d75282",
+      "num_samples": 200,
+      "num_partitions": 4,
+      "executor_metrics": {
+        "num_executors_used": 4,
+        "avg_exec_time_sec": 4.994527152250001,
+        "max_exec_time_sec": 5.0150778269999705,
+        "min_exec_time_sec": 4.978477494000003,
+        "total_throughput": 40.0441816830201,
+        "devices_used": [
+          "cpu"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "predictions_hash": "f33daf5fc5cddc53",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 5.0150778269999705,
+            "throughput": 9.96993500894683,
+            "memory_delta_mb": 0.125,
+            "gpu": {}
+          },
+          {
+            "partition_id": 1,
+            "predictions_hash": "f33daf5fc5cddc53",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 5.001895079000008,
+            "throughput": 9.99621127798549,
+            "memory_delta_mb": 0.125,
+            "gpu": {}
+          },
+          {
+            "partition_id": 2,
+            "predictions_hash": "26d18c219a0919ea",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 4.978477494000003,
+            "throughput": 10.043231100323212,
+            "memory_delta_mb": 0.125,
+            "gpu": {}
+          },
+          {
+            "partition_id": 3,
+            "predictions_hash": "f33daf5fc5cddc53",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 4.9826582090000215,
+            "throughput": 10.034804295764568,
+            "memory_delta_mb": 0.125,
+            "gpu": {}
+          }
+        ]
+      },
+      "rpc_overhead": {
+        "bytes_sent_per_task": "~200 bytes (config only)",
+        "bytes_received_per_task": "~500 bytes (metrics only)",
+        "model_transferred": false,
+        "data_transferred": false,
+        "strategy": "Workers load model + generate data locally"
+      }
+    }
+  },
+  "tabular_deep": {
+    "baseline_cpu": {
+      "throughput_samples_per_sec": 9974.316134298826,
+      "total_time_sec": 0.020051500003319234,
+      "predictions_hash": "a129b369cc852515",
+      "num_samples": 200
+    },
+    "phase1_dist_cpu": {
+      "phase": "cpu",
+      "throughput_samples_per_sec": 957.0298387775925,
+      "total_time_sec": 0.20897989999502897,
+      "predictions_hash": "b122e8991770bad2",
+      "num_samples": 200,
+      "num_partitions": 4,
+      "executor_metrics": {
+        "num_executors_used": 4,
+        "avg_exec_time_sec": 0.005503803999971524,
+        "max_exec_time_sec": 0.005987950000019282,
+        "min_exec_time_sec": 0.005273158999955285,
+        "total_throughput": 36433.795817156744,
+        "devices_used": [
+          "cpu"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "predictions_hash": "9e428df9cd20b65c",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.00545750699996006,
+            "throughput": 9161.692325885411,
+            "memory_delta_mb": 0.46484375,
+            "gpu": {}
+          },
+          {
+            "partition_id": 1,
+            "predictions_hash": "bb891b0f127e9cb4",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.005987950000019282,
+            "throughput": 8350.10312374669,
+            "memory_delta_mb": 0.453125,
+            "gpu": {}
+          },
+          {
+            "partition_id": 2,
+            "predictions_hash": "8d0036ea966525f0",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.005273158999955285,
+            "throughput": 9481.98224260334,
+            "memory_delta_mb": 0.453125,
+            "gpu": {}
+          },
+          {
+            "partition_id": 3,
+            "predictions_hash": "226d53eb64f08b36",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.005296599999951468,
+            "throughput": 9440.018124921298,
+            "memory_delta_mb": 0.453125,
+            "gpu": {}
+          }
+        ]
+      },
+      "rpc_overhead": {
+        "bytes_sent_per_task": "~200 bytes (config only)",
+        "bytes_received_per_task": "~500 bytes (metrics only)",
+        "model_transferred": false,
+        "data_transferred": false,
+        "strategy": "Workers load model + generate data locally"
+      }
+    },
+    "phase2_dist_gpu": {
+      "phase": "gpu",
+      "throughput_samples_per_sec": 659.1060610433666,
+      "total_time_sec": 0.3034412999986671,
+      "predictions_hash": "b122e8991770bad2",
+      "num_samples": 200,
+      "num_partitions": 4,
+      "executor_metrics": {
+        "num_executors_used": 4,
+        "avg_exec_time_sec": 0.005701220500000659,
+        "max_exec_time_sec": 0.0068515570000045045,
+        "min_exec_time_sec": 0.005160745000011957,
+        "total_throughput": 35523.614679494494,
+        "devices_used": [
+          "cpu"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "predictions_hash": "9e428df9cd20b65c",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.005495213000017429,
+            "throughput": 9098.828380235927,
+            "memory_delta_mb": 0.0,
+            "gpu": {}
+          },
+          {
+            "partition_id": 1,
+            "predictions_hash": "bb891b0f127e9cb4",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.005160745000011957,
+            "throughput": 9688.523653054774,
+            "memory_delta_mb": 0.0,
+            "gpu": {}
+          },
+          {
+            "partition_id": 2,
+            "predictions_hash": "8d0036ea966525f0",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.0052973669999687445,
+            "throughput": 9438.651314944766,
+            "memory_delta_mb": 0.0,
+            "gpu": {}
+          },
+          {
+            "partition_id": 3,
+            "predictions_hash": "226d53eb64f08b36",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.0068515570000045045,
+            "throughput": 7297.6113312590305,
+            "memory_delta_mb": 0.453125,
+            "gpu": {}
+          }
+        ]
+      },
+      "rpc_overhead": {
+        "bytes_sent_per_task": "~200 bytes (config only)",
+        "bytes_received_per_task": "~500 bytes (metrics only)",
+        "model_transferred": false,
+        "data_transferred": false,
+        "strategy": "Workers load model + generate data locally"
+      }
+    },
+    "phase3_hybrid": {
+      "phase": "hybrid",
+      "throughput_samples_per_sec": 606.9485902274255,
+      "total_time_sec": 0.3295172000071034,
+      "predictions_hash": "b122e8991770bad2",
+      "num_samples": 200,
+      "num_partitions": 4,
+      "executor_metrics": {
+        "num_executors_used": 4,
+        "avg_exec_time_sec": 0.005513343500012979,
+        "max_exec_time_sec": 0.0059727320000320105,
+        "min_exec_time_sec": 0.0052584670000328515,
+        "total_throughput": 36361.72083595524,
+        "devices_used": [
+          "cpu"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "predictions_hash": "9e428df9cd20b65c",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.0052584670000328515,
+            "throughput": 9508.474618113536,
+            "memory_delta_mb": 0.0,
+            "gpu": {}
+          },
+          {
+            "partition_id": 1,
+            "predictions_hash": "bb891b0f127e9cb4",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.0059727320000320105,
+            "throughput": 8371.378457920433,
+            "memory_delta_mb": 0.0,
+            "gpu": {}
+          },
+          {
+            "partition_id": 2,
+            "predictions_hash": "8d0036ea966525f0",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.005456369999990329,
+            "throughput": 9163.601442000565,
+            "memory_delta_mb": 0.0,
+            "gpu": {}
+          },
+          {
+            "partition_id": 3,
+            "predictions_hash": "226d53eb64f08b36",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.005365804999996726,
+            "throughput": 9318.266317920705,
+            "memory_delta_mb": 0.0,
+            "gpu": {}
+          }
+        ]
+      },
+      "rpc_overhead": {
+        "bytes_sent_per_task": "~200 bytes (config only)",
+        "bytes_received_per_task": "~500 bytes (metrics only)",
+        "model_transferred": false,
+        "data_transferred": false,
+        "strategy": "Workers load model + generate data locally"
+      }
+    }
+  }
+}

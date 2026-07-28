@@ -7,10 +7,11 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 RESULTS_DIR = os.path.dirname(os.path.abspath(__file__))
-with open(os.path.join(RESULTS_DIR, "cluster_low_rpc_20260728_130622.json")) as f:
+with open(os.path.join(RESULTS_DIR, "cluster_low_rpc_20260728_180310.json")) as f:
     data = json.load(f)
 
 models = [k for k in data.keys() if not k.startswith("_")]
+print(f"Loaded {len(models)} models from cluster_low_rpc_20260728_180310.json")
 COLORS = {"baseline_cpu": "#607D8B", "phase1_dist_cpu": "#2196F3", "phase2_dist_gpu": "#4CAF50", "phase3_hybrid": "#FF9800"}
 LABELS = {"baseline_cpu": "Baseline CPU", "phase1_dist_cpu": "Dist CPU", "phase2_dist_gpu": "Dist GPU", "phase3_hybrid": "Hybrid"}
 
