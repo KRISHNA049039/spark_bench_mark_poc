@@ -1,5 +1,40 @@
 # Low-RPC Methodology — Eliminating Network Overhead in Spark Cluster
 
+## Root Cause: Infrastructure Issue + Bad Practices (Both)
+
+The slow cluster performance was caused by **two compounding problems**:
+
+### 1. Docker Desktop Networking (Infrastructure Issue)
+
+Workers advertise Docker internal IPs (`172.x.x.x`) that the driver can't reach. This causes Spark's block transfer service to retry with exponential backoff, wasting ~200s (50% of total time).
+
+**This would NOT happen on:** Native Linux Docker, RHEL, Kubernetes, or any setup with routable container IPs.
+
+### 2. Heavy RPC Patterns (Code/Architecture Issue)
+
+Even on a perfect network, the original code sent far too much data over Spark:
+
+| Bad Practice | Impact | Best Practice |
+|-------------|--------|---------------|
+| Sending 73 MB model per task | 60s serialization | Workers load model from local cache |
+| Sending 75 MB data per task | 47s transfer | Workers generate data locally from seed |
+| Returning large numpy arrays | Triggers block transfer | Return only hash + metrics (~500 bytes) |
+| New SparkSession per phase | 10s overhead each | Reuse single session |
+| 8 partitions for 200 samples | Overhead > compute | Match partitions to workload size |
+
+### Combined Impact
+
+| Scenario | Expected Time |
+|----------|---:|
+| Yesterday (Docker issue + bad practices) | 397s |
+| Fix Docker only (native/RHEL, same code) | ~100s |
+| Fix practices only (Low-RPC, still Docker) | ~30-50s |
+| **Fix both (RHEL + Low-RPC)** | **~10-15s** |
+
+**Conclusion:** Even on a perfect network (RHEL), you'd still want the Low-RPC approach. And even on Docker Desktop, Low-RPC sidesteps the networking issue by never triggering block transfers. **Production should have both: good infrastructure + good practices.**
+
+---
+
 ## Problem Statement
 
 Yesterday's cluster benchmark showed **87% of execution time was overhead, not inference**:

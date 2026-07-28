@@ -1,0 +1,1142 @@
+{
+  "resnet50": {
+    "baseline_cpu": {
+      "throughput_samples_per_sec": 39.26261356603935,
+      "total_time_sec": 5.093904400011525,
+      "predictions_hash": "ccec10e211136db5",
+      "num_samples": 200
+    },
+    "phase1_dist_cpu": {
+      "phase": "cpu",
+      "throughput_samples_per_sec": 13.897195841200208,
+      "total_time_sec": 14.391392499994254,
+      "predictions_hash": "ae2dd42b368435c0",
+      "num_samples": 200,
+      "num_partitions": 4,
+      "executor_metrics": {
+        "num_executors_used": 4,
+        "avg_exec_time_sec": 6.8065436000033515,
+        "max_exec_time_sec": 6.873768100005691,
+        "min_exec_time_sec": 6.741917399995145,
+        "total_throughput": 29.385304736839903,
+        "devices_used": [
+          "cpu"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "predictions_hash": "0e3583c91e56f405",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 6.842352600011509,
+            "throughput": 7.3074281497735,
+            "memory_delta_mb": 628.74609375,
+            "gpu": {}
+          },
+          {
+            "partition_id": 1,
+            "predictions_hash": "0e3583c91e56f405",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 6.741917399995145,
+            "throughput": 7.416287835273094,
+            "memory_delta_mb": 628.6875,
+            "gpu": {}
+          },
+          {
+            "partition_id": 2,
+            "predictions_hash": "0e3583c91e56f405",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 6.768136300001061,
+            "throughput": 7.3875580785795,
+            "memory_delta_mb": 628.9140625,
+            "gpu": {}
+          },
+          {
+            "partition_id": 3,
+            "predictions_hash": "0e3583c91e56f405",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 6.873768100005691,
+            "throughput": 7.274030673213809,
+            "memory_delta_mb": 628.58984375,
+            "gpu": {}
+          }
+        ]
+      },
+      "rpc_overhead": {
+        "bytes_sent_per_task": "~200 bytes (config only)",
+        "bytes_received_per_task": "~500 bytes (metrics only)",
+        "model_transferred": false,
+        "data_transferred": false,
+        "strategy": "Workers load model + generate data locally"
+      }
+    },
+    "phase2_dist_gpu": {
+      "phase": "gpu",
+      "throughput_samples_per_sec": 25.918477291529236,
+      "total_time_sec": 7.716502700001001,
+      "predictions_hash": "ae2dd42b368435c0",
+      "num_samples": 200,
+      "num_partitions": 4,
+      "executor_metrics": {
+        "num_executors_used": 4,
+        "avg_exec_time_sec": 0.3555740249976225,
+        "max_exec_time_sec": 0.4015993999928469,
+        "min_exec_time_sec": 0.2769583000044804,
+        "total_throughput": 575.061205030482,
+        "devices_used": [
+          "cuda:0"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "predictions_hash": "0e3583c91e56f405",
+            "num_samples": 50,
+            "device": "cuda:0",
+            "execution_time_sec": 0.34797669999534264,
+            "throughput": 143.68778139648202,
+            "memory_delta_mb": 353.953125,
+            "gpu": {
+              "peak_memory_mb": 626.72021484375,
+              "device_name": "NVIDIA GeForce RTX 5060"
+            }
+          },
+          {
+            "partition_id": 1,
+            "predictions_hash": "0e3583c91e56f405",
+            "num_samples": 50,
+            "device": "cuda:0",
+            "execution_time_sec": 0.2769583000044804,
+            "throughput": 180.53259280978813,
+            "memory_delta_mb": 354.55078125,
+            "gpu": {
+              "peak_memory_mb": 626.72021484375,
+              "device_name": "NVIDIA GeForce RTX 5060"
+            }
+          },
+          {
+            "partition_id": 2,
+            "predictions_hash": "0e3583c91e56f405",
+            "num_samples": 50,
+            "device": "cuda:0",
+            "execution_time_sec": 0.4015993999928469,
+            "throughput": 124.50217804332023,
+            "memory_delta_mb": 354.66796875,
+            "gpu": {
+              "peak_memory_mb": 626.72021484375,
+              "device_name": "NVIDIA GeForce RTX 5060"
+            }
+          },
+          {
+            "partition_id": 3,
+            "predictions_hash": "0e3583c91e56f405",
+            "num_samples": 50,
+            "device": "cuda:0",
+            "execution_time_sec": 0.39576169999781996,
+            "throughput": 126.33865278089169,
+            "memory_delta_mb": 355.1875,
+            "gpu": {
+              "peak_memory_mb": 626.72021484375,
+              "device_name": "NVIDIA GeForce RTX 5060"
+            }
+          }
+        ]
+      },
+      "rpc_overhead": {
+        "bytes_sent_per_task": "~200 bytes (config only)",
+        "bytes_received_per_task": "~500 bytes (metrics only)",
+        "model_transferred": false,
+        "data_transferred": false,
+        "strategy": "Workers load model + generate data locally"
+      }
+    },
+    "phase3_hybrid": {
+      "phase": "hybrid",
+      "throughput_samples_per_sec": 16.765667654747933,
+      "total_time_sec": 11.929140199994436,
+      "predictions_hash": "ae2dd42b368435c0",
+      "num_samples": 200,
+      "num_partitions": 4,
+      "executor_metrics": {
+        "num_executors_used": 4,
+        "avg_exec_time_sec": 2.8722778250012198,
+        "max_exec_time_sec": 5.5589317999983905,
+        "min_exec_time_sec": 0.27466230001300573,
+        "total_throughput": 381.0910290543606,
+        "devices_used": [
+          "cuda:0",
+          "cpu"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "predictions_hash": "0e3583c91e56f405",
+            "num_samples": 50,
+            "device": "cuda:0",
+            "execution_time_sec": 0.27661109999462496,
+            "throughput": 180.7591958564627,
+            "memory_delta_mb": 354.61328125,
+            "gpu": {
+              "peak_memory_mb": 626.72021484375,
+              "device_name": "NVIDIA GeForce RTX 5060"
+            }
+          },
+          {
+            "partition_id": 1,
+            "predictions_hash": "0e3583c91e56f405",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 5.378906099998858,
+            "throughput": 9.295570339108655,
+            "memory_delta_mb": 629.3359375,
+            "gpu": {}
+          },
+          {
+            "partition_id": 2,
+            "predictions_hash": "0e3583c91e56f405",
+            "num_samples": 50,
+            "device": "cuda:0",
+            "execution_time_sec": 0.27466230001300573,
+            "throughput": 182.04172905284932,
+            "memory_delta_mb": 354.3984375,
+            "gpu": {
+              "peak_memory_mb": 626.72021484375,
+              "device_name": "NVIDIA GeForce RTX 5060"
+            }
+          },
+          {
+            "partition_id": 3,
+            "predictions_hash": "0e3583c91e56f405",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 5.5589317999983905,
+            "throughput": 8.994533805939925,
+            "memory_delta_mb": 628.52734375,
+            "gpu": {}
+          }
+        ]
+      },
+      "rpc_overhead": {
+        "bytes_sent_per_task": "~200 bytes (config only)",
+        "bytes_received_per_task": "~500 bytes (metrics only)",
+        "model_transferred": false,
+        "data_transferred": false,
+        "strategy": "Workers load model + generate data locally"
+      }
+    }
+  },
+  "mobilenet_v3": {
+    "baseline_cpu": {
+      "throughput_samples_per_sec": 638.1256462926235,
+      "total_time_sec": 0.31341790000442415,
+      "predictions_hash": "a1e49e9f0d1d8c81",
+      "num_samples": 200
+    },
+    "phase1_dist_cpu": {
+      "phase": "cpu",
+      "throughput_samples_per_sec": 29.095479303000747,
+      "total_time_sec": 6.873920099998941,
+      "predictions_hash": "0deadc3574b1f670",
+      "num_samples": 200,
+      "num_partitions": 4,
+      "executor_metrics": {
+        "num_executors_used": 4,
+        "avg_exec_time_sec": 0.23006367499328917,
+        "max_exec_time_sec": 0.25562329999229405,
+        "min_exec_time_sec": 0.20761969999875873,
+        "total_throughput": 874.1122390199507,
+        "devices_used": [
+          "cpu"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "predictions_hash": "47ece8f3f669c854",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.20761969999875873,
+            "throughput": 240.8249313542931,
+            "memory_delta_mb": 133.58203125,
+            "gpu": {}
+          },
+          {
+            "partition_id": 1,
+            "predictions_hash": "3a06b2626331ddba",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.2257987999910256,
+            "throughput": 221.43607495694067,
+            "memory_delta_mb": 133.66796875,
+            "gpu": {}
+          },
+          {
+            "partition_id": 2,
+            "predictions_hash": "8fdae6eca0e6add9",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.2312128999910783,
+            "throughput": 216.25090988404767,
+            "memory_delta_mb": 133.19921875,
+            "gpu": {}
+          },
+          {
+            "partition_id": 3,
+            "predictions_hash": "92fc36b52cf465ae",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.25562329999229405,
+            "throughput": 195.6003228246693,
+            "memory_delta_mb": 134.0390625,
+            "gpu": {}
+          }
+        ]
+      },
+      "rpc_overhead": {
+        "bytes_sent_per_task": "~200 bytes (config only)",
+        "bytes_received_per_task": "~500 bytes (metrics only)",
+        "model_transferred": false,
+        "data_transferred": false,
+        "strategy": "Workers load model + generate data locally"
+      }
+    },
+    "phase2_dist_gpu": {
+      "phase": "gpu",
+      "throughput_samples_per_sec": 27.38852746074286,
+      "total_time_sec": 7.302327600002172,
+      "predictions_hash": "1f77147fb614191f",
+      "num_samples": 200,
+      "num_partitions": 4,
+      "executor_metrics": {
+        "num_executors_used": 4,
+        "avg_exec_time_sec": 0.31370542500008014,
+        "max_exec_time_sec": 0.37348380000912584,
+        "min_exec_time_sec": 0.2539755000034347,
+        "total_throughput": 655.9482182342448,
+        "devices_used": [
+          "cuda:0"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "predictions_hash": "47ece8f3f669c854",
+            "num_samples": 50,
+            "device": "cuda:0",
+            "execution_time_sec": 0.37348380000912584,
+            "throughput": 133.87461517414752,
+            "memory_delta_mb": 355.09765625,
+            "gpu": {
+              "peak_memory_mb": 136.08642578125,
+              "device_name": "NVIDIA GeForce RTX 5060"
+            }
+          },
+          {
+            "partition_id": 1,
+            "predictions_hash": "9153001a958a68d4",
+            "num_samples": 50,
+            "device": "cuda:0",
+            "execution_time_sec": 0.26964469999074936,
+            "throughput": 185.42919627834456,
+            "memory_delta_mb": 354.66015625,
+            "gpu": {
+              "peak_memory_mb": 136.08642578125,
+              "device_name": "NVIDIA GeForce RTX 5060"
+            }
+          },
+          {
+            "partition_id": 2,
+            "predictions_hash": "8fdae6eca0e6add9",
+            "num_samples": 50,
+            "device": "cuda:0",
+            "execution_time_sec": 0.2539755000034347,
+            "throughput": 196.86938306775184,
+            "memory_delta_mb": 354.66796875,
+            "gpu": {
+              "peak_memory_mb": 136.08642578125,
+              "device_name": "NVIDIA GeForce RTX 5060"
+            }
+          },
+          {
+            "partition_id": 3,
+            "predictions_hash": "9af7b543c8dcdc87",
+            "num_samples": 50,
+            "device": "cuda:0",
+            "execution_time_sec": 0.35771769999701064,
+            "throughput": 139.77502371400084,
+            "memory_delta_mb": 355.4609375,
+            "gpu": {
+              "peak_memory_mb": 136.08642578125,
+              "device_name": "NVIDIA GeForce RTX 5060"
+            }
+          }
+        ]
+      },
+      "rpc_overhead": {
+        "bytes_sent_per_task": "~200 bytes (config only)",
+        "bytes_received_per_task": "~500 bytes (metrics only)",
+        "model_transferred": false,
+        "data_transferred": false,
+        "strategy": "Workers load model + generate data locally"
+      }
+    },
+    "phase3_hybrid": {
+      "phase": "hybrid",
+      "throughput_samples_per_sec": 28.90067663995939,
+      "total_time_sec": 6.920253200005391,
+      "predictions_hash": "0deadc3574b1f670",
+      "num_samples": 200,
+      "num_partitions": 4,
+      "executor_metrics": {
+        "num_executors_used": 4,
+        "avg_exec_time_sec": 0.26651269999638316,
+        "max_exec_time_sec": 0.3040943999949377,
+        "min_exec_time_sec": 0.24095659999875352,
+        "total_throughput": 755.9665202785658,
+        "devices_used": [
+          "cuda:0",
+          "cpu"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "predictions_hash": "47ece8f3f669c854",
+            "num_samples": 50,
+            "device": "cuda:0",
+            "execution_time_sec": 0.2551770999998553,
+            "throughput": 195.94234749132409,
+            "memory_delta_mb": 355.6875,
+            "gpu": {
+              "peak_memory_mb": 136.08642578125,
+              "device_name": "NVIDIA GeForce RTX 5060"
+            }
+          },
+          {
+            "partition_id": 1,
+            "predictions_hash": "3a06b2626331ddba",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.26582269999198616,
+            "throughput": 188.09529811226568,
+            "memory_delta_mb": 133.7265625,
+            "gpu": {}
+          },
+          {
+            "partition_id": 2,
+            "predictions_hash": "8fdae6eca0e6add9",
+            "num_samples": 50,
+            "device": "cuda:0",
+            "execution_time_sec": 0.24095659999875352,
+            "throughput": 207.5062480142011,
+            "memory_delta_mb": 354.921875,
+            "gpu": {
+              "peak_memory_mb": 136.08642578125,
+              "device_name": "NVIDIA GeForce RTX 5060"
+            }
+          },
+          {
+            "partition_id": 3,
+            "predictions_hash": "92fc36b52cf465ae",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.3040943999949377,
+            "throughput": 164.42262666077494,
+            "memory_delta_mb": 101.9921875,
+            "gpu": {}
+          }
+        ]
+      },
+      "rpc_overhead": {
+        "bytes_sent_per_task": "~200 bytes (config only)",
+        "bytes_received_per_task": "~500 bytes (metrics only)",
+        "model_transferred": false,
+        "data_transferred": false,
+        "strategy": "Workers load model + generate data locally"
+      }
+    }
+  },
+  "efficientnet_b0": {
+    "baseline_cpu": {
+      "throughput_samples_per_sec": 90.11733231613762,
+      "total_time_sec": 2.2193288999988,
+      "predictions_hash": "162be029d69f8ca2",
+      "num_samples": 200
+    },
+    "phase1_dist_cpu": {
+      "phase": "cpu",
+      "throughput_samples_per_sec": 22.547298906292664,
+      "total_time_sec": 8.870242100005271,
+      "predictions_hash": "ca2b439a81921a86",
+      "num_samples": 200,
+      "num_partitions": 4,
+      "executor_metrics": {
+        "num_executors_used": 4,
+        "avg_exec_time_sec": 2.068441375002294,
+        "max_exec_time_sec": 2.2382576999953017,
+        "min_exec_time_sec": 1.7600267000088934,
+        "total_throughput": 97.5655729917722,
+        "devices_used": [
+          "cpu"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "predictions_hash": "fc6ec7a16d39b6b3",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 2.0754525999946054,
+            "throughput": 24.09113077317688,
+            "memory_delta_mb": 657.8203125,
+            "gpu": {}
+          },
+          {
+            "partition_id": 1,
+            "predictions_hash": "68468e52cafee11c",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 2.2382576999953017,
+            "throughput": 22.33880397244024,
+            "memory_delta_mb": 643.02734375,
+            "gpu": {}
+          },
+          {
+            "partition_id": 2,
+            "predictions_hash": "fefd7c17f8d43117",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 2.200028500010376,
+            "throughput": 22.726978309491987,
+            "memory_delta_mb": 643.18359375,
+            "gpu": {}
+          },
+          {
+            "partition_id": 3,
+            "predictions_hash": "9cce65d588db4a31",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 1.7600267000088934,
+            "throughput": 28.408659936663092,
+            "memory_delta_mb": 643.1171875,
+            "gpu": {}
+          }
+        ]
+      },
+      "rpc_overhead": {
+        "bytes_sent_per_task": "~200 bytes (config only)",
+        "bytes_received_per_task": "~500 bytes (metrics only)",
+        "model_transferred": false,
+        "data_transferred": false,
+        "strategy": "Workers load model + generate data locally"
+      }
+    },
+    "phase2_dist_gpu": {
+      "phase": "gpu",
+      "throughput_samples_per_sec": 29.31846859611902,
+      "total_time_sec": 6.821638699999312,
+      "predictions_hash": "835659a79359ddde",
+      "num_samples": 200,
+      "num_partitions": 4,
+      "executor_metrics": {
+        "num_executors_used": 4,
+        "avg_exec_time_sec": 0.2840509000052407,
+        "max_exec_time_sec": 0.31836350000230595,
+        "min_exec_time_sec": 0.24883760001102928,
+        "total_throughput": 712.7883609670127,
+        "devices_used": [
+          "cuda:0"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "predictions_hash": "1e3006314069a704",
+            "num_samples": 50,
+            "device": "cuda:0",
+            "execution_time_sec": 0.31197480000264477,
+            "throughput": 160.269355087578,
+            "memory_delta_mb": 364.20703125,
+            "gpu": {
+              "peak_memory_mb": 547.40283203125,
+              "device_name": "NVIDIA GeForce RTX 5060"
+            }
+          },
+          {
+            "partition_id": 1,
+            "predictions_hash": "68468e52cafee11c",
+            "num_samples": 50,
+            "device": "cuda:0",
+            "execution_time_sec": 0.25702770000498276,
+            "throughput": 194.53156215859494,
+            "memory_delta_mb": 364.56640625,
+            "gpu": {
+              "peak_memory_mb": 547.40283203125,
+              "device_name": "NVIDIA GeForce RTX 5060"
+            }
+          },
+          {
+            "partition_id": 2,
+            "predictions_hash": "bd91874c6a5e55de",
+            "num_samples": 50,
+            "device": "cuda:0",
+            "execution_time_sec": 0.31836350000230595,
+            "throughput": 157.0531797760668,
+            "memory_delta_mb": 363.7890625,
+            "gpu": {
+              "peak_memory_mb": 547.40283203125,
+              "device_name": "NVIDIA GeForce RTX 5060"
+            }
+          },
+          {
+            "partition_id": 3,
+            "predictions_hash": "9cce65d588db4a31",
+            "num_samples": 50,
+            "device": "cuda:0",
+            "execution_time_sec": 0.24883760001102928,
+            "throughput": 200.93426394477297,
+            "memory_delta_mb": 364.02734375,
+            "gpu": {
+              "peak_memory_mb": 547.40283203125,
+              "device_name": "NVIDIA GeForce RTX 5060"
+            }
+          }
+        ]
+      },
+      "rpc_overhead": {
+        "bytes_sent_per_task": "~200 bytes (config only)",
+        "bytes_received_per_task": "~500 bytes (metrics only)",
+        "model_transferred": false,
+        "data_transferred": false,
+        "strategy": "Workers load model + generate data locally"
+      }
+    },
+    "phase3_hybrid": {
+      "phase": "hybrid",
+      "throughput_samples_per_sec": 27.853952922952125,
+      "total_time_sec": 7.180309400006081,
+      "predictions_hash": "835659a79359ddde",
+      "num_samples": 200,
+      "num_partitions": 4,
+      "executor_metrics": {
+        "num_executors_used": 4,
+        "avg_exec_time_sec": 0.9685644499986665,
+        "max_exec_time_sec": 1.7486820000049192,
+        "min_exec_time_sec": 0.26559029999771155,
+        "total_throughput": 410.5577922019818,
+        "devices_used": [
+          "cuda:0",
+          "cpu"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "predictions_hash": "1e3006314069a704",
+            "num_samples": 50,
+            "device": "cuda:0",
+            "execution_time_sec": 0.3096874999901047,
+            "throughput": 161.45307770445248,
+            "memory_delta_mb": 364.13671875,
+            "gpu": {
+              "peak_memory_mb": 547.40283203125,
+              "device_name": "NVIDIA GeForce RTX 5060"
+            }
+          },
+          {
+            "partition_id": 1,
+            "predictions_hash": "68468e52cafee11c",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 1.5502980000019306,
+            "throughput": 32.25186383517087,
+            "memory_delta_mb": 643.6796875,
+            "gpu": {}
+          },
+          {
+            "partition_id": 2,
+            "predictions_hash": "bd91874c6a5e55de",
+            "num_samples": 50,
+            "device": "cuda:0",
+            "execution_time_sec": 0.26559029999771155,
+            "throughput": 188.25988750504376,
+            "memory_delta_mb": 364.8046875,
+            "gpu": {
+              "peak_memory_mb": 547.40283203125,
+              "device_name": "NVIDIA GeForce RTX 5060"
+            }
+          },
+          {
+            "partition_id": 3,
+            "predictions_hash": "9cce65d588db4a31",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 1.7486820000049192,
+            "throughput": 28.592963157314678,
+            "memory_delta_mb": 666.61328125,
+            "gpu": {}
+          }
+        ]
+      },
+      "rpc_overhead": {
+        "bytes_sent_per_task": "~200 bytes (config only)",
+        "bytes_received_per_task": "~500 bytes (metrics only)",
+        "model_transferred": false,
+        "data_transferred": false,
+        "strategy": "Workers load model + generate data locally"
+      }
+    }
+  },
+  "distilbert": {
+    "baseline_cpu": {
+      "throughput_samples_per_sec": 61.96718484370482,
+      "total_time_sec": 3.227514699989115,
+      "predictions_hash": "33b41c39440e7682",
+      "num_samples": 200
+    },
+    "phase1_dist_cpu": {
+      "phase": "cpu",
+      "throughput_samples_per_sec": 18.25978547379251,
+      "total_time_sec": 10.953031200013356,
+      "predictions_hash": "be7d30c986d75282",
+      "num_samples": 200,
+      "num_partitions": 4,
+      "executor_metrics": {
+        "num_executors_used": 4,
+        "avg_exec_time_sec": 4.883124075000524,
+        "max_exec_time_sec": 4.918580700003076,
+        "min_exec_time_sec": 4.86138149999897,
+        "total_throughput": 40.958218503631905,
+        "devices_used": [
+          "cpu"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "predictions_hash": "f33daf5fc5cddc53",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 4.918580700003076,
+            "throughput": 10.1655341346679,
+            "memory_delta_mb": 203.5703125,
+            "gpu": {}
+          },
+          {
+            "partition_id": 1,
+            "predictions_hash": "f33daf5fc5cddc53",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 4.86138149999897,
+            "throughput": 10.285142196721363,
+            "memory_delta_mb": 203.6328125,
+            "gpu": {}
+          },
+          {
+            "partition_id": 2,
+            "predictions_hash": "26d18c219a0919ea",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 4.884010499998112,
+            "throughput": 10.23748822817218,
+            "memory_delta_mb": 203.59375,
+            "gpu": {}
+          },
+          {
+            "partition_id": 3,
+            "predictions_hash": "f33daf5fc5cddc53",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 4.868523600001936,
+            "throughput": 10.270053944070462,
+            "memory_delta_mb": 203.65625,
+            "gpu": {}
+          }
+        ]
+      },
+      "rpc_overhead": {
+        "bytes_sent_per_task": "~200 bytes (config only)",
+        "bytes_received_per_task": "~500 bytes (metrics only)",
+        "model_transferred": false,
+        "data_transferred": false,
+        "strategy": "Workers load model + generate data locally"
+      }
+    },
+    "phase2_dist_gpu": {
+      "phase": "gpu",
+      "throughput_samples_per_sec": 26.804299597293774,
+      "total_time_sec": 7.461489499997697,
+      "predictions_hash": "be7d30c986d75282",
+      "num_samples": 200,
+      "num_partitions": 4,
+      "executor_metrics": {
+        "num_executors_used": 4,
+        "avg_exec_time_sec": 0.2685925999940082,
+        "max_exec_time_sec": 0.29101669999363367,
+        "min_exec_time_sec": 0.21655749999627005,
+        "total_throughput": 755.5940376314636,
+        "devices_used": [
+          "cuda:0"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "predictions_hash": "f33daf5fc5cddc53",
+            "num_samples": 50,
+            "device": "cuda:0",
+            "execution_time_sec": 0.29101669999363367,
+            "throughput": 171.81144587610885,
+            "memory_delta_mb": 283.203125,
+            "gpu": {
+              "peak_memory_mb": 437.91845703125,
+              "device_name": "NVIDIA GeForce RTX 5060"
+            }
+          },
+          {
+            "partition_id": 1,
+            "predictions_hash": "f33daf5fc5cddc53",
+            "num_samples": 50,
+            "device": "cuda:0",
+            "execution_time_sec": 0.28628079999180045,
+            "throughput": 174.6536966552842,
+            "memory_delta_mb": 283.09765625,
+            "gpu": {
+              "peak_memory_mb": 437.91845703125,
+              "device_name": "NVIDIA GeForce RTX 5060"
+            }
+          },
+          {
+            "partition_id": 2,
+            "predictions_hash": "26d18c219a0919ea",
+            "num_samples": 50,
+            "device": "cuda:0",
+            "execution_time_sec": 0.21655749999627005,
+            "throughput": 230.88556157538386,
+            "memory_delta_mb": 283.10546875,
+            "gpu": {
+              "peak_memory_mb": 437.91845703125,
+              "device_name": "NVIDIA GeForce RTX 5060"
+            }
+          },
+          {
+            "partition_id": 3,
+            "predictions_hash": "f33daf5fc5cddc53",
+            "num_samples": 50,
+            "device": "cuda:0",
+            "execution_time_sec": 0.2805153999943286,
+            "throughput": 178.24333352468665,
+            "memory_delta_mb": 283.01171875,
+            "gpu": {
+              "peak_memory_mb": 437.91845703125,
+              "device_name": "NVIDIA GeForce RTX 5060"
+            }
+          }
+        ]
+      },
+      "rpc_overhead": {
+        "bytes_sent_per_task": "~200 bytes (config only)",
+        "bytes_received_per_task": "~500 bytes (metrics only)",
+        "model_transferred": false,
+        "data_transferred": false,
+        "strategy": "Workers load model + generate data locally"
+      }
+    },
+    "phase3_hybrid": {
+      "phase": "hybrid",
+      "throughput_samples_per_sec": 11.755554045225661,
+      "total_time_sec": 17.013234700003522,
+      "predictions_hash": "be7d30c986d75282",
+      "num_samples": 200,
+      "num_partitions": 4,
+      "executor_metrics": {
+        "num_executors_used": 4,
+        "avg_exec_time_sec": 4.532975950005493,
+        "max_exec_time_sec": 9.812472900011926,
+        "min_exec_time_sec": 0.2372285000019474,
+        "total_throughput": 376.17150694163047,
+        "devices_used": [
+          "cuda:0",
+          "cpu"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "predictions_hash": "f33daf5fc5cddc53",
+            "num_samples": 50,
+            "device": "cuda:0",
+            "execution_time_sec": 0.2372285000019474,
+            "throughput": 210.76725604044015,
+            "memory_delta_mb": 283.5390625,
+            "gpu": {
+              "peak_memory_mb": 437.91845703125,
+              "device_name": "NVIDIA GeForce RTX 5060"
+            }
+          },
+          {
+            "partition_id": 1,
+            "predictions_hash": "f33daf5fc5cddc53",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 7.757238200007123,
+            "throughput": 6.44559296889376,
+            "memory_delta_mb": 203.81640625,
+            "gpu": {}
+          },
+          {
+            "partition_id": 2,
+            "predictions_hash": "26d18c219a0919ea",
+            "num_samples": 50,
+            "device": "cuda:0",
+            "execution_time_sec": 0.32496420000097714,
+            "throughput": 153.86310245820817,
+            "memory_delta_mb": 283.73828125,
+            "gpu": {
+              "peak_memory_mb": 437.91845703125,
+              "device_name": "NVIDIA GeForce RTX 5060"
+            }
+          },
+          {
+            "partition_id": 3,
+            "predictions_hash": "f33daf5fc5cddc53",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 9.812472900011926,
+            "throughput": 5.095555474088416,
+            "memory_delta_mb": 176.375,
+            "gpu": {}
+          }
+        ]
+      },
+      "rpc_overhead": {
+        "bytes_sent_per_task": "~200 bytes (config only)",
+        "bytes_received_per_task": "~500 bytes (metrics only)",
+        "model_transferred": false,
+        "data_transferred": false,
+        "strategy": "Workers load model + generate data locally"
+      }
+    }
+  },
+  "tabular_deep": {
+    "baseline_cpu": {
+      "throughput_samples_per_sec": 6724.768667003709,
+      "total_time_sec": 0.029740800004219636,
+      "predictions_hash": "a129b369cc852515",
+      "num_samples": 200
+    },
+    "phase1_dist_cpu": {
+      "phase": "cpu",
+      "throughput_samples_per_sec": 26.419597634776878,
+      "total_time_sec": 7.570138000010047,
+      "predictions_hash": "b122e8991770bad2",
+      "num_samples": 200,
+      "num_partitions": 4,
+      "executor_metrics": {
+        "num_executors_used": 4,
+        "avg_exec_time_sec": 0.013589000001957174,
+        "max_exec_time_sec": 0.014888000005157664,
+        "min_exec_time_sec": 0.011213199992198497,
+        "total_throughput": 14914.035425778797,
+        "devices_used": [
+          "cpu"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "predictions_hash": "9e428df9cd20b65c",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.01341290000709705,
+            "throughput": 3727.754622307177,
+            "memory_delta_mb": 7.72265625,
+            "gpu": {}
+          },
+          {
+            "partition_id": 1,
+            "predictions_hash": "bb891b0f127e9cb4",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.014841900003375486,
+            "throughput": 3368.840915828063,
+            "memory_delta_mb": 7.77734375,
+            "gpu": {}
+          },
+          {
+            "partition_id": 2,
+            "predictions_hash": "8d0036ea966525f0",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.011213199992198497,
+            "throughput": 4459.030431525982,
+            "memory_delta_mb": 7.75390625,
+            "gpu": {}
+          },
+          {
+            "partition_id": 3,
+            "predictions_hash": "226d53eb64f08b36",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.014888000005157664,
+            "throughput": 3358.409456117575,
+            "memory_delta_mb": 7.80859375,
+            "gpu": {}
+          }
+        ]
+      },
+      "rpc_overhead": {
+        "bytes_sent_per_task": "~200 bytes (config only)",
+        "bytes_received_per_task": "~500 bytes (metrics only)",
+        "model_transferred": false,
+        "data_transferred": false,
+        "strategy": "Workers load model + generate data locally"
+      }
+    },
+    "phase2_dist_gpu": {
+      "phase": "gpu",
+      "throughput_samples_per_sec": 25.729036097174056,
+      "total_time_sec": 7.773318799998378,
+      "predictions_hash": "b122e8991770bad2",
+      "num_samples": 200,
+      "num_partitions": 4,
+      "executor_metrics": {
+        "num_executors_used": 4,
+        "avg_exec_time_sec": 0.2973242750049394,
+        "max_exec_time_sec": 0.3882165000104578,
+        "min_exec_time_sec": 0.21280470000056084,
+        "total_throughput": 719.763439684601,
+        "devices_used": [
+          "cuda:0"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "predictions_hash": "9e428df9cd20b65c",
+            "num_samples": 50,
+            "device": "cuda:0",
+            "execution_time_sec": 0.23171260001254268,
+            "throughput": 215.7845537847035,
+            "memory_delta_mb": 400.0546875,
+            "gpu": {
+              "peak_memory_mb": 35.642578125,
+              "device_name": "NVIDIA GeForce RTX 5060"
+            }
+          },
+          {
+            "partition_id": 1,
+            "predictions_hash": "bb891b0f127e9cb4",
+            "num_samples": 50,
+            "device": "cuda:0",
+            "execution_time_sec": 0.21280470000056084,
+            "throughput": 234.9572166398027,
+            "memory_delta_mb": 399.9375,
+            "gpu": {
+              "peak_memory_mb": 35.642578125,
+              "device_name": "NVIDIA GeForce RTX 5060"
+            }
+          },
+          {
+            "partition_id": 2,
+            "predictions_hash": "8d0036ea966525f0",
+            "num_samples": 50,
+            "device": "cuda:0",
+            "execution_time_sec": 0.3882165000104578,
+            "throughput": 128.79411359036283,
+            "memory_delta_mb": 400.4921875,
+            "gpu": {
+              "peak_memory_mb": 35.642578125,
+              "device_name": "NVIDIA GeForce RTX 5060"
+            }
+          },
+          {
+            "partition_id": 3,
+            "predictions_hash": "226d53eb64f08b36",
+            "num_samples": 50,
+            "device": "cuda:0",
+            "execution_time_sec": 0.3565632999961963,
+            "throughput": 140.22755566973208,
+            "memory_delta_mb": 400.05078125,
+            "gpu": {
+              "peak_memory_mb": 35.642578125,
+              "device_name": "NVIDIA GeForce RTX 5060"
+            }
+          }
+        ]
+      },
+      "rpc_overhead": {
+        "bytes_sent_per_task": "~200 bytes (config only)",
+        "bytes_received_per_task": "~500 bytes (metrics only)",
+        "model_transferred": false,
+        "data_transferred": false,
+        "strategy": "Workers load model + generate data locally"
+      }
+    },
+    "phase3_hybrid": {
+      "phase": "hybrid",
+      "throughput_samples_per_sec": 24.41249201862146,
+      "total_time_sec": 8.192527000006521,
+      "predictions_hash": "b122e8991770bad2",
+      "num_samples": 200,
+      "num_partitions": 4,
+      "executor_metrics": {
+        "num_executors_used": 4,
+        "avg_exec_time_sec": 0.19880919999923208,
+        "max_exec_time_sec": 0.43526529999508057,
+        "min_exec_time_sec": 0.008207899998524226,
+        "total_throughput": 9701.149310088462,
+        "devices_used": [
+          "cuda:0",
+          "cpu"
+        ],
+        "per_partition": [
+          {
+            "partition_id": 0,
+            "predictions_hash": "9e428df9cd20b65c",
+            "num_samples": 50,
+            "device": "cuda:0",
+            "execution_time_sec": 0.33682100000442006,
+            "throughput": 148.44680111793463,
+            "memory_delta_mb": 400.96875,
+            "gpu": {
+              "peak_memory_mb": 35.642578125,
+              "device_name": "NVIDIA GeForce RTX 5060"
+            }
+          },
+          {
+            "partition_id": 1,
+            "predictions_hash": "bb891b0f127e9cb4",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.008207899998524226,
+            "throughput": 6091.692151340777,
+            "memory_delta_mb": 7.84765625,
+            "gpu": {}
+          },
+          {
+            "partition_id": 2,
+            "predictions_hash": "8d0036ea966525f0",
+            "num_samples": 50,
+            "device": "cuda:0",
+            "execution_time_sec": 0.43526529999508057,
+            "throughput": 114.87246973412562,
+            "memory_delta_mb": 399.89453125,
+            "gpu": {
+              "peak_memory_mb": 35.642578125,
+              "device_name": "NVIDIA GeForce RTX 5060"
+            }
+          },
+          {
+            "partition_id": 3,
+            "predictions_hash": "226d53eb64f08b36",
+            "num_samples": 50,
+            "device": "cpu",
+            "execution_time_sec": 0.01494259999890346,
+            "throughput": 3346.137887895625,
+            "memory_delta_mb": 7.875,
+            "gpu": {}
+          }
+        ]
+      },
+      "rpc_overhead": {
+        "bytes_sent_per_task": "~200 bytes (config only)",
+        "bytes_received_per_task": "~500 bytes (metrics only)",
+        "model_transferred": false,
+        "data_transferred": false,
+        "strategy": "Workers load model + generate data locally"
+      }
+    }
+  }
+}

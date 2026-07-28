@@ -100,6 +100,9 @@ def get_spark():
         .config("spark.executor.heartbeatInterval", "30s")
         # Disable dynamic allocation (predictable behavior)
         .config("spark.dynamicAllocation.enabled", "false")
+        # Pass CUDA env to executor processes
+        .config("spark.executorEnv.CUDA_VISIBLE_DEVICES", "0")
+        .config("spark.executorEnv.NVIDIA_VISIBLE_DEVICES", "all")
     )
 
     if SPARK_DRIVER_HOST:
@@ -155,8 +158,22 @@ def worker_inference(config_tuple):
      batch_size, seed, phase, total_partitions) = config_tuple
 
     # ---- Determine device ----
+    # Force CUDA visibility in worker process
+    if "CUDA_VISIBLE_DEVICES" not in _os.environ:
+        _os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+
+    # Initialize CUDA in this worker process
+    cuda_available = False
+    try:
+        cuda_available = torch.cuda.is_available()
+        if cuda_available:
+            # Force CUDA initialization
+            torch.cuda.init()
+    except Exception:
+        cuda_available = False
+
     if phase == "gpu" or (phase == "hybrid" and partition_id % 2 == 0):
-        if torch.cuda.is_available():
+        if cuda_available:
             device = torch.device(f"cuda:{partition_id % torch.cuda.device_count()}")
             torch.backends.cudnn.deterministic = True
             torch.backends.cudnn.benchmark = False
