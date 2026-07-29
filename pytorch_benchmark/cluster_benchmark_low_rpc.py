@@ -172,15 +172,34 @@ def worker_inference(config_tuple):
     if "CUDA_VISIBLE_DEVICES" not in _os.environ:
         _os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
-    # Initialize CUDA in this worker process
+    # Initialize CUDA in this worker process.
+    # IMPORTANT: don't silently swallow the reason CUDA wasn't available --
+    # capture it so it comes back to the driver in the result dict instead
+    # of disappearing into a worker-side log you may never see.
     cuda_available = False
+    cuda_diagnostic = "not attempted"
     try:
+        import socket
+        import sys as _sys
+        cuda_diagnostic = (
+            f"host={socket.gethostname()} python={_sys.executable} "
+            f"torch={torch.__version__} torch.version.cuda={torch.version.cuda}"
+        )
         cuda_available = torch.cuda.is_available()
         if cuda_available:
-            # Force CUDA initialization
             torch.cuda.init()
-    except Exception:
+            cuda_diagnostic += f" device_count={torch.cuda.device_count()}"
+        else:
+            reason = (
+                "torch is a CPU-only build (torch.version.cuda is None)"
+                if torch.version.cuda is None
+                else "torch.cuda.is_available() returned False "
+                     "(driver/GPU not visible to this process)"
+            )
+            cuda_diagnostic += f" reason={reason}"
+    except Exception as e:
         cuda_available = False
+        cuda_diagnostic += f" EXCEPTION={type(e).__name__}: {e}"
 
     if phase == "gpu" or (phase == "hybrid" and partition_id % 2 == 0):
         if cuda_available:
@@ -305,6 +324,7 @@ def worker_inference(config_tuple):
         "throughput": samples_per_partition / exec_time,
         "memory_delta_mb": mem_after - mem_before,
         "gpu": gpu_stats,
+        "cuda_diagnostic": cuda_diagnostic,
     }
 
 
@@ -397,6 +417,16 @@ def run_distributed_phase(model_name: str, phase: str) -> Dict[str, Any]:
 
     # Aggregate results (already sorted by partition_id from map)
     results.sort(key=lambda x: x["partition_id"])
+
+    # Print per-partition device + CUDA diagnostic immediately, so a GPU
+    # phase that's silently running on CPU on some/all nodes is obvious
+    # right here instead of buried in the JSON file.
+    if phase in ("gpu", "hybrid"):
+        for r in results:
+            logger.info(
+                f"    partition={r['partition_id']} device={r['device']} "
+                f"| {r.get('cuda_diagnostic', 'n/a')}"
+            )
 
     # Combine hashes deterministically
     combined_hash = hashlib.sha256(

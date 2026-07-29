@@ -14,10 +14,30 @@ set SPARK_PUBLIC_DNS=192.168.4.101
 REM === Master IP (Node 1) ===
 set MASTER_IP=192.168.4.100
 
+REM === CHANGE THIS to the exact python.exe that has GPU torch installed ===
+REM (the same one you tested with check_gpu.py). If this is wrong or unset,
+REM Spark falls back to whatever "python" is first on PATH, which is often
+REM a CPU-only install -- tasks then silently run on CPU with no error.
+set PYSPARK_PYTHON=C:\Path\To\Your\GPU\python.exe
+
+echo ==========================================
+echo GPU preflight check for this worker...
+echo ==========================================
+"%PYSPARK_PYTHON%" "%~dp0check_gpu.py"
+if %ERRORLEVEL% NEQ 0 (
+    echo.
+    echo WARNING: GPU preflight check FAILED on this node.
+    echo This worker will run Spark GPU tasks on CPU instead, silently.
+    echo Fix PYSPARK_PYTHON above or the GPU torch install, then re-run.
+    echo.
+    pause
+)
+
 echo ==========================================
 echo Starting Spark Worker
 echo Worker IP: %SPARK_LOCAL_HOSTNAME%
 echo Master: spark://%MASTER_IP%:7077
+echo Python: %PYSPARK_PYTHON%
 echo Memory: 28g, Cores: all
 echo ==========================================
 

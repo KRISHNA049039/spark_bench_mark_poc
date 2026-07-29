@@ -32,6 +32,17 @@ set FORCE_GPU_PHASES=true
 REM Python path (so imports work)
 set PYTHONPATH=%~dp0..\..
 
+REM === CHANGE THIS to the exact python.exe that has GPU torch installed ===
+REM Must match what you set PYSPARK_PYTHON to on every worker node, or the
+REM driver and executors can end up on different torch builds.
+set PYSPARK_PYTHON=C:\Path\To\Your\GPU\python.exe
+set PYSPARK_DRIVER_PYTHON=%PYSPARK_PYTHON%
+
+echo ==========================================
+echo GPU preflight check on driver node...
+echo ==========================================
+"%PYSPARK_PYTHON%" "%~dp0check_gpu.py"
+
 echo ==========================================
 echo 3-Phase Cluster Benchmark
 echo Master: %SPARK_MASTER%
