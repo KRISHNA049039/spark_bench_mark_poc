@@ -1,20 +1,22 @@
 # ===========================================================================
-# Spark Worker with PyTorch — for cluster mode
+# Spark Worker with PyTorch + CUDA — for cluster mode with GPU support
 #
-# This image is used by Spark master/workers that need to run PyTorch inference.
-# Includes standalone Spark (with sbin scripts) + PyTorch + benchmark code.
+# Two build targets:
+#   CPU:  docker build --target cpu -t pytorch-spark-worker:cpu .
+#   GPU:  docker build --target gpu -t pytorch-spark-worker:gpu .
 #
-# Build:
+# Default build (GPU):
 #   docker build -f Dockerfile.worker -t pytorch-spark-worker .
 # ===========================================================================
 
-FROM python:3.14-slim
+# ---------------------------------------------------------------------------
+# Stage 1: CPU Worker (no GPU dependencies)
+# ---------------------------------------------------------------------------
+FROM python:3.14-slim AS cpu
 
 # System deps
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl \
-    wget \
-    procps \
+    curl wget procps \
     && rm -rf /var/lib/apt/lists/*
 
 # Java for Spark
@@ -26,7 +28,7 @@ RUN mkdir -p /opt/java && \
 ENV JAVA_HOME=/opt/java
 ENV PATH="${JAVA_HOME}/bin:${PATH}"
 
-# Download standalone Spark 4.2.0 (must match master's pyspark version)
+# Spark 4.2.0
 RUN wget -q https://archive.apache.org/dist/spark/spark-4.2.0/spark-4.2.0-bin-hadoop3.tgz -O /tmp/spark.tgz && \
     tar -xzf /tmp/spark.tgz -C /opt/ && \
     mv /opt/spark-4.2.0-bin-hadoop3 /opt/spark && \
@@ -36,21 +38,77 @@ ENV SPARK_HOME=/opt/spark
 ENV PATH="${SPARK_HOME}/bin:${SPARK_HOME}/sbin:${PATH}"
 ENV PYSPARK_PYTHON=python
 
-# Python packages
+# CPU-only PyTorch
 RUN pip install --no-cache-dir \
     torch --index-url https://download.pytorch.org/whl/cpu && \
     pip install --no-cache-dir \
     torchvision --index-url https://download.pytorch.org/whl/cpu && \
     pip install --no-cache-dir \
-    pyspark==4.2.0 \
-    psutil \
-    numpy \
-    pandas \
-    scikit-learn
+    pyspark==4.2.0 psutil numpy pandas scikit-learn
 
-# Copy benchmark code (workers need this to deserialize and run functions)
 COPY pytorch_benchmark/ /app/pytorch_benchmark/
-
 ENV PYTHONPATH=/app
+WORKDIR /app
 
+# ---------------------------------------------------------------------------
+# Stage 2: GPU Worker (CUDA 12.8 + RTX 5060 Blackwell support)
+# ---------------------------------------------------------------------------
+FROM nvidia/cuda:12.8.0-cudnn-runtime-ubuntu22.04 AS gpu
+
+# Prevent interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Etc/UTC
+
+# System deps + Python 3.14
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    software-properties-common curl wget procps \
+    && add-apt-repository -y ppa:deadsnakes/ppa \
+    && apt-get update && apt-get install -y --no-install-recommends \
+    python3.14 python3.14-venv python3.14-distutils \
+    && rm -rf /var/lib/apt/lists/* \
+    && update-alternatives --install /usr/bin/python python /usr/bin/python3.14 1 \
+    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.14 1
+
+# pip for Python 3.14
+RUN wget -q https://bootstrap.pypa.io/get-pip.py -O /tmp/get-pip.py && \
+    python /tmp/get-pip.py && \
+    rm /tmp/get-pip.py
+
+# Java for Spark
+RUN mkdir -p /opt/java && \
+    wget -q https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.11%2B9/OpenJDK17U-jre_x64_linux_hotspot_17.0.11_9.tar.gz -O /tmp/java.tar.gz && \
+    tar -xzf /tmp/java.tar.gz -C /opt/java --strip-components=1 && \
+    rm /tmp/java.tar.gz
+
+ENV JAVA_HOME=/opt/java
+ENV PATH="${JAVA_HOME}/bin:${PATH}"
+
+# Spark 4.2.0
+RUN wget -q https://archive.apache.org/dist/spark/spark-4.2.0/spark-4.2.0-bin-hadoop3.tgz -O /tmp/spark.tgz && \
+    tar -xzf /tmp/spark.tgz -C /opt/ && \
+    mv /opt/spark-4.2.0-bin-hadoop3 /opt/spark && \
+    rm /tmp/spark.tgz
+
+ENV SPARK_HOME=/opt/spark
+ENV PATH="${SPARK_HOME}/bin:${SPARK_HOME}/sbin:${PATH}"
+ENV PYSPARK_PYTHON=python
+
+# GPU PyTorch (CUDA 12.8 — supports RTX 5060 Blackwell sm_120)
+RUN pip install --no-cache-dir --pre \
+    torch torchvision \
+    --index-url https://download.pytorch.org/whl/nightly/cu128 \
+    --extra-index-url https://pypi.org/simple && \
+    pip install --no-cache-dir \
+    pyspark==4.2.0 psutil numpy pandas scikit-learn
+
+# GPU environment
+ENV NVIDIA_VISIBLE_DEVICES=all
+ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility
+ENV CUDA_VISIBLE_DEVICES=0
+
+# Verify GPU on build (optional — comment out if slow)
+# RUN python -c "import torch; print(f'CUDA available: {torch.cuda.is_available()}')"
+
+COPY pytorch_benchmark/ /app/pytorch_benchmark/
+ENV PYTHONPATH=/app
 WORKDIR /app

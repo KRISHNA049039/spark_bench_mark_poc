@@ -1,15 +1,17 @@
 # ===========================================================================
-# Worker Node — Docker Container
+# Worker Node — GPU-enabled Docker Container
 #
-# Run on each worker machine. The master/driver runs natively on the host.
+# Prerequisites on worker machine:
+#   1. Docker Desktop with WSL2 backend
+#   2. Latest NVIDIA driver installed (supports WSL2 GPU passthrough)
+#   3. Verify: docker run --rm --gpus all nvidia/cuda:12.8.0-base-ubuntu22.04 nvidia-smi
 #
 # Usage:
-#   docker compose -f docker-compose.worker.yml build
-#   docker compose -f docker-compose.worker.yml up
+#   Build CPU:  docker compose -f docker-compose.worker.yml build --build-arg TARGET=cpu
+#   Build GPU:  docker compose -f docker-compose.worker.yml build
+#   Run:        docker compose -f docker-compose.worker.yml up
 #
-# CHANGE THESE before running:
-#   1. SPARK_LOCAL_HOSTNAME → this machine's LAN IP
-#   2. MASTER_IP → master machine's LAN IP
+# CHANGE SPARK_LOCAL_HOSTNAME to this machine's LAN IP before running.
 # ===========================================================================
 
 services:
@@ -17,37 +19,47 @@ services:
     build:
       context: ../..
       dockerfile: Dockerfile.worker
+      target: gpu                    # Use 'cpu' for CPU-only worker
     container_name: spark-worker
     ports:
-      # Worker RPC port (master connects here)
-      - "7078:7078"
-      # Worker Web UI
-      - "8081:8081"
-      # Executor ports (driver connects here for task execution)
-      - "35000-35050:35000-35050"
+      - "7078:7078"                  # Worker RPC port
+      - "8081:8081"                  # Worker Web UI
+      - "35000-35050:35000-35050"    # Executor communication ports
     command: >
       bash -c "
+        export SPARK_LOCAL_HOSTNAME=192.168.4.101 &&
+        export SPARK_PUBLIC_DNS=192.168.4.101 &&
+        export SPARK_WORKER_PORT=7078 &&
         CORES=$$(nproc) &&
         echo '==========================================' &&
-        echo \"Worker: 192.168.4.101 ($$CORES cores, 28g)\" &&
+        echo \"Worker: $$SPARK_LOCAL_HOSTNAME ($$CORES cores, 24g)\" &&
         echo 'Master: spark://192.168.4.100:7077' &&
+        python -c \"import torch; print(f'CUDA: {torch.cuda.is_available()}, GPU: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else None}')\" &&
         echo '==========================================' &&
-        /opt/spark/sbin/start-worker.sh spark://192.168.4.100:7077 --webui-port 8081 &&
+        /opt/spark/sbin/start-worker.sh spark://192.168.4.100:7077 \
+          -h $$SPARK_LOCAL_HOSTNAME \
+          -p 7078 \
+          -m 24g \
+          -c $$CORES \
+          --webui-port 8081 &&
         tail -f /opt/spark/logs/*
       "
     environment:
       - SPARK_NO_DAEMONIZE=1
-      - SPARK_WORKER_MEMORY=28g
-      - SPARK_WORKER_WEBUI_PORT=8081
-      # GPU
+      - SPARK_LOCAL_HOSTNAME=192.168.4.101
+      - SPARK_PUBLIC_DNS=192.168.4.101
+      - SPARK_WORKER_PORT=7078
+      - SPARK_WORKER_OPTS=-Dspark.port.maxRetries=50
+      # GPU environment
       - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+      - CUDA_VISIBLE_DEVICES=0
     deploy:
       resources:
         limits:
-          memory: 30g
+          memory: 28g
         reservations:
           devices:
             - driver: nvidia
               count: all
-              capabilities: [gpu]
+              capabilities: [gpu]    # Enables --gpus all

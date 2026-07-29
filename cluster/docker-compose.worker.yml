@@ -15,8 +15,16 @@ services:
     build:
       context: ..
       dockerfile: Dockerfile.worker
+      target: gpu          # change to 'cpu' for CPU-only workers
     container_name: spark-worker
     network_mode: host
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
     command: >
       bash -c "
         echo 'Connecting to master at spark://192.168.4.100:7077...' &&
