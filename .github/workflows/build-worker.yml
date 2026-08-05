@@ -1,0 +1,32 @@
+name: Build Worker Images
+on:
+  workflow_dispatch:
+
+jobs:
+  build-cpu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build CPU image
+        run: docker build --target cpu -t pytorch-spark-worker:cpu -f Dockerfile.worker .
+      - name: Save image
+        run: docker save pytorch-spark-worker:cpu | gzip > worker_cpu.tar.gz
+      - uses: actions/upload-artifact@v4
+        with:
+          name: worker-cpu-image
+          path: worker_cpu.tar.gz
+
+  build-gpu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Free up disk space
+        run: docker system prune -af
+      - name: Build GPU image
+        run: docker build --target gpu -t pytorch-spark-worker:gpu -f Dockerfile.worker .
+      - name: Save image
+        run: docker save pytorch-spark-worker:gpu | gzip > worker_gpu.tar.gz
+      - uses: actions/upload-artifact@v4
+        with:
+          name: worker-gpu-image
+          path: worker_gpu.tar.gz
