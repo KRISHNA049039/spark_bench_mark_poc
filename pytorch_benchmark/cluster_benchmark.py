@@ -119,6 +119,18 @@ def create_spark_session(app_name: str, use_gpu: bool = False):
     if SPARK_DRIVER_BLOCKMANAGER_PORT:
         builder = builder.config("spark.driver.blockManager.port", SPARK_DRIVER_BLOCKMANAGER_PORT)
 
+    # Explicitly propagate Python executable to all executors
+    pyspark_python = os.environ.get("PYSPARK_PYTHON", sys.executable)
+    builder = builder.config("spark.pyspark.python", pyspark_python)
+    builder = builder.config("spark.python.worker.python", pyspark_python)
+
+    # On Windows, Spark temp dir must not have spaces (breaks worker launch)
+    import tempfile
+    spark_tmp = os.environ.get("SPARK_LOCAL_DIRS", "C:\\spark_tmp")
+    os.makedirs(spark_tmp, exist_ok=True)
+    builder = builder.config("spark.local.dir", spark_tmp)
+    builder = builder.config("spark.worker.dir", spark_tmp)
+
     # GPU resources — disabled for Spark resource scheduling
     # Workers handle GPU selection in Python code directly via torch.cuda
     # (Spark GPU scheduling requires extra config on workers that's complex with Docker Desktop)

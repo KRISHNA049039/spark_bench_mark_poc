@@ -1,35 +1,50 @@
 # ===========================================================================
-# Spark Worker with PyTorch + CUDA — for cluster mode with GPU support
+# Spark Worker with PyTorch + CUDA
 #
-# Two build targets:
-#   CPU:  docker build --target cpu -t pytorch-spark-worker:cpu .
-#   GPU:  docker build --target gpu -t pytorch-spark-worker:gpu .
+# Single Python version (3.12, official slim base) across CPU and GPU
+# targets — matches Dockerfile and the native install so results and wheel
+# bundles line up everywhere.
 #
-# Default build (GPU):
-#   docker build -f Dockerfile.worker -t pytorch-spark-worker .
+# CACHE STRATEGY:
+#   Stage 'base-gpu' — Java + Spark (slow-ish, rarely changes)
+#   Stage 'gpu'       — CUDA 12.8 torch + benchmark code (pip layer isolated)
+#   Stage 'cpu'       — CPU-only worker
+# Each pip layer only invalidates when the specific requirements file it
+# installs from changes, because that file is COPYed immediately before it.
+#
+# Build targets:
+#   CPU:  docker build --target cpu -t pytorch-spark-worker:cpu -f Dockerfile.worker .
+#   GPU:  docker build --target gpu -t pytorch-spark-worker:gpu -f Dockerfile.worker .
 # ===========================================================================
 
 # ---------------------------------------------------------------------------
-# Stage 1: CPU Worker (no GPU dependencies)
+# Stage 0: GPU base — python:3.12-slim + Java + Spark
+# No CUDA base image needed: the torch cu128 wheel (installed in the 'gpu'
+# stage below) bundles its own CUDA/cuDNN runtime libs as pip dependencies.
+# GPU access at `docker run --gpus all` time comes from the NVIDIA Container
+# Toolkit / Docker Desktop mounting the host driver into the container
+# regardless of base image — NVIDIA_DRIVER_CAPABILITIES below is what makes
+# that mount happen.
 # ---------------------------------------------------------------------------
-FROM python:3.14-slim AS cpu
+FROM python:3.12-slim AS base-gpu
 
-# System deps
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl wget procps \
     && rm -rf /var/lib/apt/lists/*
 
-# Java for Spark
+# Java 17 JRE (pinned version)
 RUN mkdir -p /opt/java && \
-    wget -q https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.11%2B9/OpenJDK17U-jre_x64_linux_hotspot_17.0.11_9.tar.gz -O /tmp/java.tar.gz && \
+    wget -q https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.11%2B9/OpenJDK17U-jre_x64_linux_hotspot_17.0.11_9.tar.gz \
+         -O /tmp/java.tar.gz && \
     tar -xzf /tmp/java.tar.gz -C /opt/java --strip-components=1 && \
     rm /tmp/java.tar.gz
 
 ENV JAVA_HOME=/opt/java
 ENV PATH="${JAVA_HOME}/bin:${PATH}"
 
-# Spark 4.2.0
-RUN wget -q https://archive.apache.org/dist/spark/spark-4.2.0/spark-4.2.0-bin-hadoop3.tgz -O /tmp/spark.tgz && \
+# Spark 4.2.0 (already the pinned cluster version — unchanged)
+RUN wget -q https://archive.apache.org/dist/spark/spark-4.2.0/spark-4.2.0-bin-hadoop3.tgz \
+         -O /tmp/spark.tgz && \
     tar -xzf /tmp/spark.tgz -C /opt/ && \
     mv /opt/spark-4.2.0-bin-hadoop3 /opt/spark && \
     rm /tmp/spark.tgz
@@ -37,47 +52,54 @@ RUN wget -q https://archive.apache.org/dist/spark/spark-4.2.0/spark-4.2.0-bin-ha
 ENV SPARK_HOME=/opt/spark
 ENV PATH="${SPARK_HOME}/bin:${SPARK_HOME}/sbin:${PATH}"
 ENV PYSPARK_PYTHON=python
+ENV NVIDIA_VISIBLE_DEVICES=all
+ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility
 
-# CPU-only PyTorch
+WORKDIR /app
+RUN pip install --no-cache-dir --upgrade pip
+
+# ---------------------------------------------------------------------------
+# Stage 1: GPU Worker — CUDA 12.8 torch + deps on top of base-gpu
+# ---------------------------------------------------------------------------
+FROM base-gpu AS gpu
+
+# Torch layer — isolated so it stays cached when only requirements-base.txt changes
+COPY pytorch_benchmark/requirements-torch-gpu.txt /app/requirements-torch-gpu.txt
 RUN pip install --no-cache-dir \
-    torch --index-url https://download.pytorch.org/whl/cpu && \
-    pip install --no-cache-dir \
-    torchvision --index-url https://download.pytorch.org/whl/cpu && \
-    pip install --no-cache-dir \
-    pyspark==4.2.0 psutil numpy pandas scikit-learn
+    --index-url https://download.pytorch.org/whl/cu128 \
+    -r requirements-torch-gpu.txt
 
+# Everything else — isolated so it stays cached when only torch's pin changes
+COPY pytorch_benchmark/requirements-base.txt /app/requirements-base.txt
+RUN pip install --no-cache-dir -r requirements-base.txt
+
+# Benchmark code — only layer that changes during dev
 COPY pytorch_benchmark/ /app/pytorch_benchmark/
 ENV PYTHONPATH=/app
 WORKDIR /app
 
 # ---------------------------------------------------------------------------
-# Stage 2: GPU Worker (CUDA 12.8 + RTX 5060 Blackwell support)
+# Stage 2: CPU Worker
 # ---------------------------------------------------------------------------
-FROM nvidia/cuda:12.8.0-cudnn-runtime-ubuntu22.04 AS gpu
+FROM python:3.12-slim AS cpu
 
-# Prevent interactive prompts
-ENV DEBIAN_FRONTEND=noninteractive
-ENV TZ=Etc/UTC
-
-# System deps + Python 3.11 (stable on Ubuntu 22.04, no PPA needed)
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    software-properties-common curl wget procps \
-    python3.11 python3.11-venv python3-pip \
-    && rm -rf /var/lib/apt/lists/* \
-    && update-alternatives --install /usr/bin/python python /usr/bin/python3.11 1 \
-    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 1
+    curl wget procps \
+    && rm -rf /var/lib/apt/lists/*
 
-# Java for Spark
+# Java 17 (pinned version)
 RUN mkdir -p /opt/java && \
-    wget -q https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.11%2B9/OpenJDK17U-jre_x64_linux_hotspot_17.0.11_9.tar.gz -O /tmp/java.tar.gz && \
+    wget -q https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.11%2B9/OpenJDK17U-jre_x64_linux_hotspot_17.0.11_9.tar.gz \
+         -O /tmp/java.tar.gz && \
     tar -xzf /tmp/java.tar.gz -C /opt/java --strip-components=1 && \
     rm /tmp/java.tar.gz
 
 ENV JAVA_HOME=/opt/java
 ENV PATH="${JAVA_HOME}/bin:${PATH}"
 
-# Spark 4.2.0
-RUN wget -q https://archive.apache.org/dist/spark/spark-4.2.0/spark-4.2.0-bin-hadoop3.tgz -O /tmp/spark.tgz && \
+# Spark 4.2.0 (already the pinned cluster version — unchanged)
+RUN wget -q https://archive.apache.org/dist/spark/spark-4.2.0/spark-4.2.0-bin-hadoop3.tgz \
+         -O /tmp/spark.tgz && \
     tar -xzf /tmp/spark.tgz -C /opt/ && \
     mv /opt/spark-4.2.0-bin-hadoop3 /opt/spark && \
     rm /tmp/spark.tgz
@@ -86,21 +108,18 @@ ENV SPARK_HOME=/opt/spark
 ENV PATH="${SPARK_HOME}/bin:${SPARK_HOME}/sbin:${PATH}"
 ENV PYSPARK_PYTHON=python
 
-# GPU PyTorch (CUDA 12.8 — supports RTX 5060 Blackwell sm_120)
-RUN pip install --no-cache-dir --pre \
-    torch torchvision \
-    --index-url https://download.pytorch.org/whl/nightly/cu128 \
-    --extra-index-url https://pypi.org/simple && \
-    pip install --no-cache-dir \
-    pyspark==4.2.0 psutil numpy pandas scikit-learn
+WORKDIR /app
+RUN pip install --no-cache-dir --upgrade pip
 
-# GPU environment
-ENV NVIDIA_VISIBLE_DEVICES=all
-ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility
-ENV CUDA_VISIBLE_DEVICES=0
+# Torch layer — isolated so it stays cached when only requirements-base.txt changes
+COPY pytorch_benchmark/requirements-torch-cpu.txt /app/requirements-torch-cpu.txt
+RUN pip install --no-cache-dir \
+    --index-url https://download.pytorch.org/whl/cpu \
+    -r requirements-torch-cpu.txt
 
-# Verify GPU on build (optional — comment out if slow)
-# RUN python -c "import torch; print(f'CUDA available: {torch.cuda.is_available()}')"
+# Everything else — isolated so it stays cached when only torch's pin changes
+COPY pytorch_benchmark/requirements-base.txt /app/requirements-base.txt
+RUN pip install --no-cache-dir -r requirements-base.txt
 
 COPY pytorch_benchmark/ /app/pytorch_benchmark/
 ENV PYTHONPATH=/app

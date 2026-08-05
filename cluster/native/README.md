@@ -1,10 +1,13 @@
 # Native Multi-Node Cluster Setup (No Docker)
 
 This runs Spark + PyTorch natively on each Windows machine, avoiding Docker Desktop's networking issues.
+This doc covers the multi-node Windows topology specifically; for plain
+single-machine package install steps (Windows *and* Linux), see
+[DOWNLOAD.md](DOWNLOAD.md).
 
 ## Prerequisites (install on ALL machines)
 
-1. **Python 3.11+** — https://www.python.org/downloads/
+1. **Python 3.12** (pinned to match `Dockerfile`/`Dockerfile.worker`) — https://www.python.org/downloads/
 2. **Java 17** — https://adoptium.net/temurin/releases/
 3. **Set JAVA_HOME** — System Environment Variables → `JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-17...`
 

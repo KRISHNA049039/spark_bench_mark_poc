@@ -3,7 +3,8 @@ REM ============================================
 REM Start Spark Worker (run on Node 2 / Node 3)
 REM ============================================
 
-set SPARK_HOME=%~dp0spark\spark-3.5.1-bin-hadoop3
+REM Use Spark bundled inside pyspark package
+for /f "delims=" %%i in ('C:\Users\pc\AppData\Local\Python\pythoncore-3.12-64\python.exe -c "import pyspark, os; print(os.path.dirname(pyspark.__file__))"') do set SPARK_HOME=%%i
 set JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-17.0.11.9-hotspot
 set PATH=%SPARK_HOME%\bin;%JAVA_HOME%\bin;%PATH%
 
@@ -18,7 +19,7 @@ REM === CHANGE THIS to the exact python.exe that has GPU torch installed ===
 REM (the same one you tested with check_gpu.py). If this is wrong or unset,
 REM Spark falls back to whatever "python" is first on PATH, which is often
 REM a CPU-only install -- tasks then silently run on CPU with no error.
-set PYSPARK_PYTHON=C:\Path\To\Your\GPU\python.exe
+set PYSPARK_PYTHON=C:\Users\pc\AppData\Local\Python\pythoncore-3.12-64\python.exe
 
 echo ==========================================
 echo GPU preflight check for this worker...

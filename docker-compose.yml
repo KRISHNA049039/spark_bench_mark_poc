@@ -186,9 +186,7 @@ services:
 
   # Spark Master — coordinates the cluster
   spark-master:
-    build:
-      context: .
-      dockerfile: Dockerfile.worker
+    image: pytorch-spark-worker:gpu
     container_name: spark-master
     ports:
       - "8080:8080"
@@ -210,9 +208,7 @@ services:
   # Spark Workers — each simulates a separate node
   # Workers have PyTorch + benchmark code installed so they can execute UDFs
   spark-worker-1:
-    build:
-      context: .
-      dockerfile: Dockerfile.worker
+    image: pytorch-spark-worker:gpu
     container_name: spark-worker-1
     depends_on:
       - spark-master
@@ -231,11 +227,14 @@ services:
         limits:
           cpus: "2"
           memory: 4g
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
 
   spark-worker-2:
-    build:
-      context: .
-      dockerfile: Dockerfile.worker
+    image: pytorch-spark-worker:gpu
     container_name: spark-worker-2
     depends_on:
       - spark-master
@@ -254,25 +253,41 @@ services:
         limits:
           cpus: "2"
           memory: 4g
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
 
   # Driver — submits work to the cluster
   benchmark-cluster:
-    build:
-      context: .
-      target: cpu
+    image: pytorch-spark-worker:gpu
     container_name: pytorch-benchmark-cluster
     volumes:
       - ./benchmark_results:/app/benchmark_results
       - ./pytorch_benchmark:/app/pytorch_benchmark:ro
     environment:
       - SPARK_MASTER=spark://spark-master:7077
+      - SPARK_DRIVER_HOST=pytorch-benchmark-cluster
+      - SPARK_DRIVER_PORT=33000
+      - SPARK_DRIVER_BLOCKMANAGER_PORT=33005
       - SPARK_DRIVER_MEMORY=2g
-      - SPARK_EXECUTOR_MEMORY=4g
+      - SPARK_EXECUTOR_MEMORY=3g
+      - SPARK_EXECUTOR_MEMORY_OVERHEAD=1g
       - SPARK_EXECUTOR_CORES=2
       - SPARK_NUM_EXECUTORS=2
       - BENCHMARK_OUTPUT_DIR=/app/benchmark_results
-    entrypoint: ["python", "-m", "pytorch_benchmark.run_inference_only"]
-    command: ["--all", "--no-gpu", "--samples", "200"]
+      - BENCHMARK_SAMPLES=200
+      - BENCHMARK_BATCH_SIZE=64
+      - BENCHMARK_PARTITIONS=4
+      - FORCE_GPU_PHASES=true
+      - PYSPARK_PYTHON=python3
+      - PYSPARK_DRIVER_PYTHON=python3
+    ports:
+      - "4040:4040"
+      - "33000:33000"
+      - "33005:33005"
+    entrypoint: ["python3", "-m", "pytorch_benchmark.cluster_benchmark"]
     depends_on:
       - spark-master
       - spark-worker-1
@@ -281,3 +296,8 @@ services:
       resources:
         limits:
           memory: 4g
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]

@@ -3,7 +3,8 @@ REM ============================================
 REM Start Spark Master on Node 1 (192.168.4.100)
 REM ============================================
 
-set SPARK_HOME=%~dp0spark\spark-3.5.1-bin-hadoop3
+REM Use Spark bundled inside pyspark package
+for /f "delims=" %%i in ('C:\Users\pc\AppData\Local\Python\pythoncore-3.12-64\python.exe -c "import pyspark, os; print(os.path.dirname(pyspark.__file__))"') do set SPARK_HOME=%%i
 set PATH=%SPARK_HOME%\bin;%PATH%
 
 REM Find Java — check common locations

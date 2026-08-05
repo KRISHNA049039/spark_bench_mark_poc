@@ -12,7 +12,7 @@
 │  │ Web UI: 8080     │  │ Submits tasks to workers      │  │
 │  └──────────────────┘  └───────────────────────────────┘  │
 │                                                            │
-│  Runs NATIVELY (not Docker) — Python 3.14 + PySpark 4.2   │
+│  Runs NATIVELY (not Docker) — Python 3.12 + PySpark 4.2   │
 └────────────────────────────────────────────────────────────┘
          │                              │
          │ spark://192.168.4.100:7077   │
@@ -21,7 +21,7 @@
 │ WORKER 1 (192.168.4.101)│  │ WORKER 2 (192.168.4.102) │
 │                         │  │                           │
 │  Docker container with: │  │  Docker container with:   │
-│  - Python 3.14          │  │  - Python 3.14            │
+│  - Python 3.12          │  │  - Python 3.12            │
 │  - PySpark 4.2.0        │  │  - PySpark 4.2.0          │
 │  - PyTorch (CPU/GPU)    │  │  - PyTorch (CPU/GPU)      │
 │  - Spark 4.2.0          │  │  - Spark 4.2.0            │
@@ -36,7 +36,7 @@
 
 | Component | Version | Why |
 |-----------|---------|-----|
-| Python | 3.14 | Driver & worker must match exactly |
+| Python | 3.12 | Driver & worker must match exactly (also what `Dockerfile`/`Dockerfile.worker` and `cluster/native` pin) |
 | PySpark | 4.2.0 | Spark serialization protocol must match |
 | Spark | 4.2.0 | Master, worker, driver — all same version |
 | Java | 17 | Required by Spark (on master machine) |
@@ -47,7 +47,7 @@
 
 ### Master Machine (192.168.4.100)
 
-**Install Python 3.14:**
+**Install Python 3.12:**
 - Download from https://www.python.org/downloads/
 - Check "Add Python to PATH" during install
 
@@ -55,9 +55,9 @@
 - Download from https://adoptium.net/temurin/releases/?os=windows&arch=x64&package=jdk&version=17
 - Check "Set JAVA_HOME" during install
 
-**Install Python packages:**
+**Install Python packages** (pinned versions, matches Docker images — see `pytorch_benchmark/requirements-*.txt`):
 ```cmd
-python -m pip install pyspark==4.2.0 torch torchvision psutil numpy pandas scikit-learn matplotlib
+python -m pip install -r pytorch_benchmark\requirements-base.txt -r pytorch_benchmark\requirements-torch-cpu.txt --index-url https://download.pytorch.org/whl/cpu
 ```
 
 **Clone the repo (if not already):**

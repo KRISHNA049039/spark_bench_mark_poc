@@ -1,0 +1,24 @@
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+
+# Airgap packaging artifacts — large binaries (Docker tars, wheels, Spark
+# tgz, Java JRE, Python offline-install packages, Container Toolkit RPMs)
+# and DVD-split chunks. Fully regenerable via airgap/download_all.bat +
+# airgap/save_docker_images.bat + airgap/split_for_dvd.bat. Already
+# transferred to physical media — don't belong in git.
+airgap/packages/
+airgap/dvd/
+
+# Vendored/extracted runtime distributions — large binaries, regenerable
+# via cluster/native/download_spark.py or airgap/install_native.bat
+cluster/native/spark/
+cluster/native/java/
+
+# Benchmark run output — raw data, not source. Regenerate by running a
+# benchmark. (Written analysis reports like INFERENCE_REPORT.md etc. are
+# separate tracked files, not covered by these patterns.)
+benchmark_results/*.json
+benchmark_results/*.log
+benchmark_results/airgap_test/

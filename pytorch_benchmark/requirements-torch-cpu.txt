@@ -1,0 +1,7 @@
+# CPU-only torch/torchvision, pinned to an exact local version so this file
+# works both online (pip download/install --index-url .../whl/cpu) and
+# offline (pip install --no-index --find-links <wheel-dir>). Do NOT add an
+# --index-url line here — airgapped installs use --no-index and any network
+# directive in this file would make that fail.
+torch==2.11.0+cpu
+torchvision==0.26.0+cpu

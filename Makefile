@@ -18,6 +18,14 @@ build-cpu: ## Build CPU Docker image
 build-gpu: ## Build GPU Docker image (requires NVIDIA base image)
 	docker build --target gpu -t pytorch-benchmark:gpu .
 
+build-worker-cpu: ## Build CPU Spark worker image
+	docker build --file Dockerfile.worker --target cpu -t pytorch-spark-worker:cpu .
+
+build-worker-gpu: ## Build GPU Spark worker image
+	docker build --file Dockerfile.worker --target gpu -t pytorch-spark-worker:gpu .
+
+rebuild: build-cpu build-gpu build-worker-cpu build-worker-gpu ## Rebuild all 4 Docker images (cache-aware — see rebuild.sh for native env too)
+
 # ---------------------------------------------------------------------------
 # Run
 # ---------------------------------------------------------------------------

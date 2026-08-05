@@ -1,0 +1,8 @@
+# CUDA 12.8 torch/torchvision (Blackwell/RTX 50-series, sm_120), pinned to
+# an exact local version so this file works both online (pip download/install
+# --index-url .../whl/cu128) and offline (pip install --no-index --find-links
+# <wheel-dir>). Stable release wheels, not --pre/nightly, so the airgap
+# package built today is byte-for-byte reproducible on a rebuild. Do NOT add
+# an --index-url line here — see requirements-torch-cpu.txt for why.
+torch==2.11.0+cu128
+torchvision==0.26.0+cu128
