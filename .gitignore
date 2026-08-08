@@ -11,6 +11,13 @@ __pycache__/
 airgap/packages/
 airgap/dvd/
 
+# Docker images saved manually at the repo root (docker save ... > *.tar[.gz]),
+# e.g. pytorch-spark-worker-gpu.tar.gz — same "regenerable, don't commit"
+# rule as the airgap packages above. Rebuild via `docker build` + `docker save`,
+# see OFFLINE_CLUSTER_SINGLE_IMAGE.md.
+/*.tar
+/*.tar.gz
+
 # Vendored/extracted runtime distributions — large binaries, regenerable
 # via cluster/native/download_spark.py or airgap/install_native.bat
 cluster/native/spark/

@@ -19,7 +19,42 @@ REM   native\java\     - OpenJDK17 portable zip (Windows only)
 REM ============================================================
 setlocal enabledelayedexpansion
 
-set PYTHON=C:\Users\pc\AppData\Local\Python\pythoncore-3.12-64\python.exe
+REM ---- Detect Python 3.12 (same approach as install_native.bat) ----
+REM Tries, in order: `py` launcher's -3.12 selector (python.org/Store
+REM installs), `uv python find` (uv-managed installs, tagged under a
+REM different "company" so the py launcher's -3.12 shorthand can't see
+REM them), a couple of common fixed paths, then bare `python` on PATH.
+set PYTHON=
+where py >nul 2>&1
+if !ERRORLEVEL!==0 (
+    for /f "delims=" %%i in ('py -3.12 -c "import sys; print(sys.executable)" 2^>nul') do set PYTHON=%%i
+)
+if not defined PYTHON (
+    where uv >nul 2>&1
+    if !ERRORLEVEL!==0 (
+        for /f "delims=" %%i in ('uv python find 3.12 2^>nul') do set PYTHON=%%i
+    )
+)
+if not defined PYTHON (
+    for %%P in (
+        "C:\Users\%USERNAME%\AppData\Local\Python\pythoncore-3.12-64\python.exe"
+        "C:\Python312\python.exe"
+    ) do (
+        if not defined PYTHON (
+            if exist %%P set PYTHON=%%~P
+        )
+    )
+)
+if not defined PYTHON (
+    where python >nul 2>&1
+    if !ERRORLEVEL!==0 set PYTHON=python
+)
+if not defined PYTHON (
+    echo [ERROR] Python 3.12 not found. Install it, or if using uv: uv python install 3.12
+    pause & exit /b 1
+)
+echo [OK] Python: %PYTHON%
+
 set ROOT=%~dp0..
 set TESTS=%~dp0tests
 set PKG=%~dp0packages
@@ -50,12 +85,12 @@ echo.
     --dest "%WHEELS%" ^
     --index-url https://download.pytorch.org/whl/cu128 ^
     -r "%ROOT%\pytorch_benchmark\requirements-torch-gpu.txt"
-if %ERRORLEVEL% NEQ 0 (echo [ERROR] pip download (torch) failed. & pause & exit /b 1)
+if %ERRORLEVEL% NEQ 0 (echo [ERROR] pip download torch wheels failed. & pause & exit /b 1)
 
 "%PYTHON%" -m pip download ^
     --dest "%WHEELS%" ^
     -r "%ROOT%\pytorch_benchmark\requirements-base.txt"
-if %ERRORLEVEL% NEQ 0 (echo [ERROR] pip download (base deps) failed. & pause & exit /b 1)
+if %ERRORLEVEL% NEQ 0 (echo [ERROR] pip download base deps failed. & pause & exit /b 1)
 
 echo.
 echo [OK] Wheels saved to: %WHEELS%

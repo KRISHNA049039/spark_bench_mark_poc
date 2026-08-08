@@ -51,7 +51,7 @@ for the cu128 torch build, the bundled `nvidia-*` CUDA runtime wheels
 
 | Item | Native (Windows) | Docker |
 |---|---|---|
-| Python 3.12 installer | Needed — **not** included in the kit, get from python.org | Baked into image (`python:3.12-slim`) |
+| Python 3.12 installer | Needed — **not** included in the kit by default; see §1.3 for a lighter alternative than a python.org installer | Baked into image (`python:3.12-slim`) |
 | Temurin JRE 17.0.11+9 | Auto-downloaded by `download_all.bat` | Baked into image |
 | `spark-4.2.0-bin-hadoop3.tgz` | Auto-downloaded by `download_all.bat` | Baked into image |
 | NVIDIA driver | Needed — **not** included in the kit | Host-level, not in image |
@@ -63,6 +63,49 @@ The Docker images ([`Dockerfile`](Dockerfile), [`Dockerfile.worker`](Dockerfile.
 the internet-connected machine and shipped as `.tar`/`.tar.gz` — never build
 on the airgapped target. `airgap/save_docker_images.bat` already does this
 correctly.
+
+### 1.3 Shipping Python 3.12 itself, instead of requiring it pre-installed
+
+`airgap/README.md` currently lists "Python 3.12 installed" as a prerequisite
+the airgapped machine must already satisfy — this kit doesn't provide it.
+If your build machine manages Python via [`uv`](https://docs.astral.sh/uv/)
+(`uv python install 3.12`), you already have a better option than hunting
+down a python.org offline `.exe` installer: `uv`'s Python builds come from
+the [`python-build-standalone`](https://github.com/astral-sh/python-build-standalone)
+project and are **self-contained and relocatable** — no installer, no
+registry entries, just a folder you can zip and copy. It's small (~64 MB)
+compared to everything else in the bundle.
+
+**On the connected build machine — find and package it:**
+```powershell
+uv python find 3.12
+REM e.g. C:\Users\<you>\AppData\Roaming\uv\python\cpython-3.12.12-windows-x86_64-none\python.exe
+
+Compress-Archive -Path "<that folder>\*" -DestinationPath "airgap\packages\native\python\python312-portable.zip"
+```
+This fits alongside the existing `native\wheels\`, `native\spark\`,
+`native\java\` folders `download_all.bat` already produces — same transfer
+batch, same USB/DVD trip.
+
+**On the airgapped machine — extract and use it directly, no install step:**
+```cmd
+mkdir C:\spark_pytorch_poc\python312
+tar -xf python312-portable.zip -C C:\spark_pytorch_poc\python312
+REM tar.exe ships built into Windows 10/11 — no separate unzip tool needed
+
+C:\spark_pytorch_poc\python312\python.exe -c "import sys; print(sys.version)"
+```
+Then either add it to `PATH` for the session
+(`set PATH=C:\spark_pytorch_poc\python312;%PATH%`) or reference the full
+path directly wherever `install_native.bat` or the wheel-install step needs
+`python.exe`.
+
+**Not yet wired into the scripts.** Today this is a manual step — `download_all.bat`
+doesn't package it automatically and `install_native.bat` doesn't extract or
+prefer it (it still expects Python 3.12 to already be present on the target,
+same as before). Doing so would fully close this table row instead of just
+offering a lighter alternative — same treatment Java/Spark already get via
+`native\java\` / `native\spark\` extraction in `install_native.bat`.
 
 ---
 
