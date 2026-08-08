@@ -40,19 +40,35 @@ passthrough available, those containers fail to start.
 **On the internet-connected build machine:**
 ```cmd
 docker build --file Dockerfile.worker --target gpu --tag pytorch-spark-worker:gpu .
-docker save pytorch-spark-worker:gpu | gzip > pytorch-spark-worker-gpu.tar.gz
+docker save -o pytorch-spark-worker-gpu.tar pytorch-spark-worker:gpu
 ```
-(This is the same output `airgap\save_docker_images.bat` produces as part
-of `gpu-images-combined.tar.gz` — if you already ran that script, you can
-skip straight to transferring the existing file instead of rebuilding.)
+(This is the same image `airgap\save_docker_images.bat` produces as part of
+`gpu-images-combined.tar.gz` — if you already ran that script, skip straight
+to transferring the existing file instead of rebuilding.)
 
-Transfer `pytorch-spark-worker-gpu.tar.gz` to the airgapped machine (USB /
-file share / DVD), along with the project source
-(`spark_bench_mark_poc.zip` or equivalent).
+> **PowerShell note:** `gzip` is not a Windows/PowerShell built-in — piping
+> `docker save` into it as shown in some guides
+> (`docker save ... | gzip > file.tar.gz`) fails with
+> `gzip: term not recognized` unless something provides it. `docker save -o`
+> above sidesteps this by writing the tar directly, no pipe needed — this is
+> also safer than piping binary output through PowerShell's pipeline, which
+> isn't a raw byte stream by default. If you want it gzip-compressed (worth
+> it for a 13+ GB image) and have Git for Windows installed, call its
+> bundled gzip explicitly:
+> ```powershell
+> docker save pytorch-spark-worker:gpu | & "C:\Program Files\Git\usr\bin\gzip.exe" > pytorch-spark-worker-gpu.tar.gz
+> ```
+> (`save_docker_images.bat` already handles this same PATH gap internally —
+> see its `GZIP` detection logic.)
+
+Transfer `pytorch-spark-worker-gpu.tar` (or `.tar.gz` if you compressed it)
+to the airgapped machine (USB / file share / DVD), along with the project
+source (`spark_bench_mark_poc.zip` or equivalent).
 
 **On the airgapped machine:**
 ```cmd
-docker load -i pytorch-spark-worker-gpu.tar.gz
+docker load -i pytorch-spark-worker-gpu.tar
+REM (docker load also accepts .tar.gz directly if you compressed it)
 docker images
 REM Confirm pytorch-spark-worker:gpu is listed
 ```
