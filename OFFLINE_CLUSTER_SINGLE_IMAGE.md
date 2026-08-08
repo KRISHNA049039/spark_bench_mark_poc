@@ -186,7 +186,82 @@ random init in this repo, no external weights fetched.
 
 ---
 
-## 6. If you actually need the multi-machine (not single-box) topology
+## 6. Caveat: which script decides CPU vs. GPU differs
+
+Every worker container has **both** CPU and GPU available to it — Docker's
+GPU device passthrough (the `deploy.resources.reservations.devices: nvidia`
+block on each worker service) never restricts CPU access, it only adds GPU
+visibility on top. So `torch.cuda.is_available()` is `True` and the CPU is
+always usable in the same container, same Python process. What differs is
+**who decides** which device a given task actually runs on — Spark's
+scheduler, or the application code — and that depends on which script you
+ran (§4):
+
+| Script | GPU-aware at the Spark level? | How device is chosen |
+|---|---|---|
+| `cluster_benchmark.py` (§4.1) | **No.** `spark.executor.resource.gpu.amount` / `spark.task.resource.gpu.amount` are explicitly commented out ([cluster_benchmark.py:139-140](pytorch_benchmark/cluster_benchmark.py#L139-L140)) | App code picks per-partition inside the task function ([cluster_benchmark.py:273-281](pytorch_benchmark/cluster_benchmark.py#L273-L281)): Phase 1 forces `torch.device("cpu")`, Phase 2 forces `torch.device(f"cuda:{partition_id % gpu_count}")`, Phase 3 (hybrid) splits by `partition_id % 2` ([line 384](pytorch_benchmark/cluster_benchmark.py#L384)). Spark just schedules generic tasks across whatever workers are registered — it has no idea some are GPU-capable. |
+| `cluster_benchmark_low_rpc.py` (§4.2) | No — same pattern as above (env-var/code driven, no Spark GPU resource config). | |
+| `main.py --modes spark_gpu` (§4.4) | **Yes.** `runners/spark_gpu_runner.py:121-122` sets `spark.executor.resource.gpu.amount` and `spark.task.resource.gpu.amount` on the SparkSession. | Spark's own resource-aware scheduler only places tasks on executors that declared a GPU. |
+
+**Practical implication:** if you're running `cluster_benchmark.py` (the
+default `benchmark-cluster` service), a CPU-only worker sitting in the same
+cluster would still get GPU-phase tasks routed to it by Spark and then fail
+inside the task (no CUDA) — because Spark isn't filtering by GPU
+availability in that path. Mixing GPU and CPU workers safely only works
+today with the `spark_gpu` runner path, or by keeping the cluster
+homogeneous (all-GPU or all-CPU) for `cluster_benchmark.py`.
+
+### Do you need extra image config for Spark itself to discover the GPU?
+
+**Not for `cluster_benchmark.py`/`cluster_benchmark_low_rpc.py`** — they
+never ask Spark about GPU resources, so no discovery config does anything
+for them. Skip this if that's all you run.
+
+**For real Spark-level GPU scheduling** (what `spark_gpu_runner.py` expects,
+and what `airgapped_dep.md §10.4` describes but never wires up in the actual
+compose files), Spark Standalone needs the **worker** to announce the GPU
+via a discovery script — the executor-side config alone
+(`spark.executor.resource.gpu.amount`) isn't enough on its own without the
+worker having discovered and advertised the resource first. Three things,
+none of which exist in this repo yet:
+
+1. **A discovery script baked into the image**, e.g. add to
+   `Dockerfile.worker`:
+   ```dockerfile
+   COPY getGpuResources.sh /opt/spark/getGpuResources.sh
+   RUN chmod +x /opt/spark/getGpuResources.sh
+   ```
+   where `getGpuResources.sh` is:
+   ```bash
+   #!/bin/bash
+   ADDRS=$(nvidia-smi --query-gpu=index --format=csv,noheader | paste -sd, -)
+   echo "{\"name\": \"gpu\", \"addresses\":[$ADDRS]}"
+   ```
+
+2. **Worker startup flags** telling it to run that script — currently
+   `docker-compose.yml`'s `start-worker.sh` call has no `SPARK_WORKER_OPTS`
+   at all. Add:
+   ```yaml
+   environment:
+     - SPARK_WORKER_OPTS=-Dspark.worker.resource.gpu.amount=1 -Dspark.worker.resource.gpu.discoveryScript=/opt/spark/getGpuResources.sh
+   ```
+   to `spark-worker-1` / `spark-worker-2` (and to `cluster/docker-compose.worker.yml`'s
+   `spark-worker` service if using the multi-machine topology).
+
+3. **Executor/task resource requests on the driver side** — already present
+   for the `spark_gpu` runner (`spark_gpu_runner.py:121-122`), but you'd
+   need the equivalent in `cluster_benchmark.py` too if you want that script
+   to become Spark-GPU-aware instead of doing its own device selection.
+
+Only bother with this if you specifically want Spark's scheduler to route
+GPU-tagged tasks only to GPU-declared workers (e.g. for a real mixed
+CPU+GPU cluster). For a same-image, all-GPU-worker cluster running
+`cluster_benchmark.py` as-is, none of this is required — the code-level
+device selection in §6 already covers it.
+
+---
+
+## 7. If you actually need the multi-machine (not single-box) topology
 
 Everything above is `docker-compose.yml`'s single-box demo cluster. If
 you're deploying to separate physical/VM machines instead (matching
